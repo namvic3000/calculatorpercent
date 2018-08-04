@@ -9,6 +9,4 @@ const rootReducer = combineReducers({
 
 console.log('STORE STATE IS:', rootReducer)
 
-
-
 export default rootReducer
