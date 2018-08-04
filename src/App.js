@@ -1,6 +1,9 @@
-import React, {Component} from '../../../Library/Caches/typescript/2.9/node_modules/@types/react';
+import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import PercentAndStandardCalculator from "./PercentAndStandardCalculator";
+import { Provider } from "react-redux";
+import store from '../store'
+
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
 //   android:
@@ -12,9 +15,12 @@ import PercentAndStandardCalculator from "./PercentAndStandardCalculator";
 export default class App extends Component {//<Props> {
   render() {
     return (
-      <View style={styles.container}>
-          <PercentAndStandardCalculator />
-      </View>
+      
+        <Provider store={store}>
+          <View style={styles.container}>
+              <PercentAndStandardCalculator />
+          </View>
+       </Provider>
     );
   }
 }

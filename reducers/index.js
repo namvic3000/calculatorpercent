@@ -3,12 +3,12 @@ import keyboardReducer from './keyboardReducer';
 
 
 
-const rootReducer = () => {
-
-    combineReducers({
+const rootReducer = combineReducers({
         keyBoardStatus: keyboardReducer
-    })
-}
+})
+
+console.log('STORE STATE IS:', rootReducer)
+
 
 
 export default rootReducer

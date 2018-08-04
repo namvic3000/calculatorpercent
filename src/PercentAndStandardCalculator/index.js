@@ -1,7 +1,7 @@
-import React, {Component} from '../../../../Library/Caches/typescript/2.9/node_modules/@types/react';
+import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, onLayout} from 'react-native';
-
-
+import {connect} from 'react-redux'
+import {updateCurrentOperandNumber} from '../../actions/keyboardActions'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -27,7 +27,16 @@ class PercentAndStandardCalculator extends Component {
     // let value = ReactNativeComponentTree.getInstanceFromNode(e.currentTarget)._currentElement.props.cx
     console.log('at handlecalbuttonclick, value is ', calcButtonValue)
     // this.setState({line1CalculatorInput: calcButtonValue})
-  }
+  
+    // ////testing to delte
+    if(calcButtonValue == 0) {
+        console.log('button 0 pressed')
+        this.props.dispatch(updateCurrentOperandNumber(2))
+    }
+    
+    
+
+}
 
   componentDidMount = () => {
   }
@@ -319,5 +328,8 @@ class PercentAndStandardCalculator extends Component {
 }
  
 
+const mapStateToProps = (state) => ({
+    currentOperandNumber: state.keyBoardStatus.currentOperandNumber
+})
 
-export default PercentAndStandardCalculator
+export default connect(mapStateToProps)(PercentAndStandardCalculator)
