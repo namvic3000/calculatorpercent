@@ -1,0 +1,3 @@
+rootProject.name = 'calculator365RN'
+
+include ':app'
