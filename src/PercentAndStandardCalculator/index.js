@@ -58,9 +58,9 @@ class PercentAndStandardCalculator extends Component {
     return (
       <View style={styles.pageContainer}>
         
-        <View style={styles.screenContainer}>
+        {/* <View style={styles.screenContainer}>
             <Screen/>
-        </View>
+        </View> */}
         
         <View style={styles.keyboardContainer}>
             <Keyboard/>
