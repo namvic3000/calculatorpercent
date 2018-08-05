@@ -89,9 +89,56 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
     if(newKeyInput === '<-') {//backspace button
-      
-    }
-
+        //if 1st segment and last char in segment, do a CA
+        if(currentSegmentIndex === 0) {
+            if(segmentsArray[currentSegmentIndex].stringValue.length<=1) {
+                //treats as if its a CA
+                currentSegmentIndex = 0 //reset
+                segmentsArray = []//clear the array
+                return objectToReturn = {
+                    screenMainTextLine1: "",
+                    screenMainTextLine2: "",
+                    screenMainTextLine3: "Ready"
+                }
+            }
+            else {//llength is more than 1
+                //remove last char
+                //slice(startindex, endindex): (0,-1)means substring from 0 to lastchar-1
+                segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
+                let collatedString = collateString(segmentsArray)
+                return objectToReturn = {
+                    screenMainTextLine1: collatedString,
+                    screenMainTextLine2: "anser",
+                    screenMainTextLine3: ""
+                }
+            }
+        }
+        else {//currnt segment is not the first segment, element
+            //if is last char in segment, pop the segment off the array
+            if(segmentsArray[currentSegmentIndex].stringValue.length<=1) {//last char
+                segmentsArray.pop()//remove from array
+                currentSegmentIndex--//move index back
+                let collatedString = collateString(segmentsArray)
+                return objectToReturn = {
+                    screenMainTextLine1: collatedString,
+                    screenMainTextLine2: "anser",
+                    screenMainTextLine3: ""
+                }
+            }
+            else {//not last char of segment
+                //take the last char off
+                segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
+                let collatedString = collateString(segmentsArray)
+                return objectToReturn = {
+                    screenMainTextLine1: collatedString,
+                    screenMainTextLine2: "anser",
+                    screenMainTextLine3: ""
+                }
+            }
+        }
+    }//if <-
+    
+ 
 
     //first detect if current segment is a number or not
     let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
@@ -185,7 +232,30 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
 
+}//method
+
+
+
+
+
+
+
+const collateString = (arr) => {
+
+    //colate all the string values of all the segments together to send to 
+    //calculate method
+    let collatedString = "";
+    arr.forEach((obj, index) => {
+        collatedString = collatedString + obj.stringValue + ' '
+    })
+
+    return collatedString
 }
+
+
+
+
+
 
 
 export const f = () => {
