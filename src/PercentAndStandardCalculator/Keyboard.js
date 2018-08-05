@@ -1,27 +1,34 @@
 import React from 'react'
 import {Dimensions,onLayout,StyleSheet, Button, TouchableOpacity, View, Text} from 'react-native'
 import {updateCurrentOperandNumber} from '../../actions/keyboardActions'
+import {updateContentOfScreenMainTextLine1} from '../../actions/screenActions'
 import {connect} from 'react-redux'
 
 
 class Keyboard extends React.Component {
 
-    handleCalcButtonClicked = calcButtonValue => {
+    handleCalcButtonClicked = calcButtonString => {
+
+        // let currentContent = this.props.screenMainTextLine1Content
+        this.props.dispatch(updateContentOfScreenMainTextLine1(calcButtonString))
+        
+        
+        
         // this.setState( prevState => ({
         //   ...prevState,
-        //   line1CalculatorInput: prevState.line1CalculatorInput + calcButtonValue
+        //   line1CalculatorInput: prevState.line1CalculatorInput + calcButtonString
         // }))
 
         // alert('clicked')
         // let value = ReactNativeComponentTree.getInstanceFromNode(e.currentTarget)._currentElement.props.cx
-        console.log('at handlecalbuttonclick, value is ', calcButtonValue)
-        // this.setState({line1CalculatorInput: calcButtonValue})
+        console.log('at handlecalbuttonclick, value is ', calcButtonString)
+        // this.setState({line1CalculatorInput: calcButtonString})
       
         // ////testing to delte
-        if(calcButtonValue == 0) {
-            console.log('button 0 pressed')
-            this.props.dispatch(updateCurrentOperandNumber(2))
-        }
+        // if(calcButtonString == 0) {
+        //     console.log('button 0 pressed')
+        //     this.props.dispatch(updateCurrentOperandNumber(2))
+        // }
     }
     
 
@@ -29,38 +36,74 @@ class Keyboard extends React.Component {
 
 
         this.standardButtonWidth = Dimensions.get('window').width/5
-        console.log('STANDARDBUTTONWIDTH IS '+ this.standardButtonWidth)
-        this.fontSizeOfStandardButton = this.standardButtonWidth/3
 
+        this.fontSizeOfStandardButton = this.standardButtonWidth/2.5
+
+        this.fontSizeOfScreenMainLine1 = Dimensions.get('window').width/11.5
+        
+        
         let styles = StyleSheet.create({
             container: {
                 // flex of 1 fills all space in parent container
                 flex: 1,
-                backgroundColor: "yellow",
+                backgroundColor: "lightgray",
                 width: "100%",
                 // justifyContent: "center"
             },
             screen: {
-                flex: 1.8,
-                backgroundColor: "pink",
+                flex: 2,
+                flexWrap: "wrap",
+                backgroundColor: "white",
                 width: "100%",
                 paddingLeft: this.calculatorScreenHeight/30,
                 paddingRight: this.calculatorScreenHeight/30,
                 paddingBottom: 0,//-this.calculatorScreenHeight/40,
-                paddingTop: this.calculatorScreenHeight/18,
+                paddingTop: 0//this.calculatorScreenHeight/18,
               },
-              line1CalculatorInput: {
+              screenMainTextLine1: {
                 display: "flex",
                 flexDirection: "row",
                 flex:1, 
                 width: "100%",
-                fontSize: this.calculatorScreenLine1FontSize,//32,
-                lineHeight: this.calculatorScreenLine1FontSize + (this.calculatorScreenLine1FontSize/5.5),
+                marginTop: this.fontSizeOfScreenMainLine1/6,
+                fontSize: this.fontSizeOfScreenMainLine1,//32,
+                lineHeight: this.fontSizeOfScreenMainLine1 + (this.fontSizeOfScreenMainLine1/12),
                 color: "black",
                 backgroundColor: "white",
                 // height: "25%",
-                width: "100%"
               },
+            allMemoriesContainer: {
+                flexDirection: "row",
+                flex: 0.5,
+            },
+            memory1: {
+                flex: 1,
+                flexDirection: "row",
+                paddingLeft: "1%",
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                backgroundColor: "transparent",
+                borderWidth: 1,
+                borderColor: "black"
+            },
+            memory2: {
+                flex: 1,
+                flexDirection: "row",
+                paddingRight: "1%",
+                // width: "49%",
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                backgroundColor: "transparent",
+                borderWidth: 1,
+                borderColor: "black"
+            },
+            memoryText: {
+                alignItems: "center",
+                fontSize: this.fontSizeOfStandardButton*0.7,
+                color: "blue",
+            },
             standardButtonRowContainer: {
                 // flex of 1 for each standard button row, results in equall height of row
                 flexDirection: "row",
@@ -104,29 +147,28 @@ class Keyboard extends React.Component {
                 height: "100%",
             },
             percentButtonText:{
-                fontSize: this.fontSizeOfStandardButton*0.7,
+                fontSize: this.fontSizeOfStandardButton*0.65,
                 color: "white",
-                // justifyContent: "center"
             },
             afterPercentAddedButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.7,
-                lineHeight: this.fontSizeOfStandardButton*0.7,
+                fontSize: this.fontSizeOfStandardButton*0.65,
+                lineHeight: this.fontSizeOfStandardButton*0.65,
                 color: "white",
             },
             afterPercentDeductedButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.7,
+                fontSize: this.fontSizeOfStandardButton*0.65,
                 color: "white",
-                lineHeight: this.fontSizeOfStandardButton*0.7,
+                lineHeight: this.fontSizeOfStandardButton*0.65,
             },
             buttonSmallRowContainer: {
                 flexDirection: "row",
-                flex: 0.6,
+                flex: 0.3,
             },
             buttonSmallContainer: {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: "yellow",
+                backgroundColor: "lightgray",
                 borderWidth: 1,
                 height: "100%",
             },
@@ -145,20 +187,30 @@ class Keyboard extends React.Component {
                     {/* <Text style={styles.line2CalculatorInput}>{this.state.line1CalculatorInput}</Text>
                     <Text style={styles.line3CalculatorInput}>{this.state.line1CalculatorInput}</Text>
                     <Text style={styles.line4CalculatorInput}>{this.state.line1CalculatorInput}</Text> */}
-                    <Text>THIS IS THE SCREEN</Text>
+                    <Text style={styles.screenMainTextLine1}>{this.props.screenMainTextLine1Content}</Text>
+                </View>
+
+                <View style={styles.allMemoriesContainer}>
+                    <View style={styles.memory1}>
+                        {/* <Text style={styles.memTitle}>Mem1</Text> */}
+                        <Text style={styles.memoryText}> M1: 222278.7777</Text>
+                    </View>
+                    <View style={styles.memory2}>
+                        <Text style={styles.memoryText}> M2: 77778888.8888</Text>
+                    </View>
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" % of ")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" () ")}>
                         <Text style={styles.percentButtonText}>( )</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" out of ")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" M+ ")}>
                         <Text style={styles.percentButtonText}>M+</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" add ")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" MC ")}>
                         <Text style={styles.percentButtonText}>MC</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" deduct ")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" MR ")}>
                         <Text style={styles.percentButtonText}>MR</Text>
                     </TouchableOpacity>
                 </View>
@@ -179,29 +231,29 @@ class Keyboard extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("-")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" change ")}>
                         <Text style={styles.percentButtonText}>% change</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(0)}>
                         <Text style={styles.percentButtonText}>if % is</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(".")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" after added")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>added</Text></View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(".")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(" after deducted")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
                     </TouchableOpacity>
                  </View>
                  
 
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity onLayout={e => this.standardButtonHeight = e.nativeEvent.layout.height} style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(7)}>
+                        <TouchableOpacity onLayout={e => this.standardButtonHeight = e.nativeEvent.layout.height} style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("7")}>
                             <Text style={styles.calcButtonText}>7</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(8)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("8")}>
                             <Text style={styles.calcButtonText}>8</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(9)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("9")}>
                             <Text style={styles.calcButtonText}>9</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(" ÷ ")}>
@@ -213,13 +265,13 @@ class Keyboard extends React.Component {
                 </View>
 
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(4)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("4")}>
                             <Text style={styles.calcButtonText}>4</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(5)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("5")}>
                             <Text style={styles.calcButtonText}>5</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(6)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("6")}>
                             <Text style={styles.calcButtonText}>6</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(" x ")}>
@@ -231,13 +283,13 @@ class Keyboard extends React.Component {
                 </View>
                     
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={ () => this.handleCalcButtonClicked(1)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={ () => this.handleCalcButtonClicked("1")}>
                             <Text style={styles.calcButtonText} >1</Text> 
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} value={2} onPress={ () => this.handleCalcButtonClicked(2)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} value={2} onPress={ () => this.handleCalcButtonClicked("2")}>
                             <Text style={styles.calcButtonText}>2</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} value={3} onPress={ () => this.handleCalcButtonClicked(3)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} value={3} onPress={ () => this.handleCalcButtonClicked("3")}>
                             <Text style={styles.calcButtonText}>3</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => this.handleCalcButtonClicked(" + ")}>
@@ -249,10 +301,10 @@ class Keyboard extends React.Component {
                 </View>
                 
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("-")}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(" +- ")}>
                             <Text style={styles.calcButtonText}>+-</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(0)}>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("0")}>
                             <Text style={styles.calcButtonText}>0</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(".")}>
@@ -285,5 +337,7 @@ class Keyboard extends React.Component {
     }
 }
 
-
-export default connect()(Keyboard)
+const mapStateToProps = (state) => ({
+    screenMainTextLine1Content: state.screenStatus.screenMainTextLine1Content
+}) 
+export default connect(mapStateToProps)(Keyboard)

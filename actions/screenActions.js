@@ -3,9 +3,9 @@ export const UPDATE_CONTENT_OF_SCREEN_MAIN_TEXTLINE1 = "UPDATE_CONTENT_OF_SCREEN
 
 
 
-export const updateContentOfScreenMainTextLine1 = (newContent) => ({
+export const updateContentOfScreenMainTextLine1 = (newInput) => ({
     type: UPDATE_CONTENT_OF_SCREEN_MAIN_TEXTLINE1,
     payload: {
-        newContent//string
+        newInput//string
     }
 })
