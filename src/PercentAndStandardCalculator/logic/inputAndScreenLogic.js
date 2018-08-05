@@ -23,7 +23,7 @@ let segmentsArray = []///stores each segment of the mainscreenline1 string
 
 export const updateScreenWithNewInput = (newKeyInput) => {
     
-    console.log('***AT LOGIC, UPDATE WITH NEW INPUT, INDEXPOINTER IS ' + currentSegmentIndex++)
+    console.log('***AT LOGIC, UPDATE WITH NEW INPUT, INDEXPOINTER IS ' + currentSegmentIndex)
     console.log('***AT LOGIC, UPDATE WITH NEW INPUT, KEY PASSED IN IS  ' + newKeyInput)
 
         
@@ -57,7 +57,6 @@ export const updateScreenWithNewInput = (newKeyInput) => {
     
 
           
-    return  segmentsArray
     //  objectToReturn = {
     //     screenMainTextLine1: "",
     //     screenMainTextLine2: "",
@@ -78,16 +77,33 @@ export const updateScreenWithNewInput = (newKeyInput) => {
     //     }
     // }
 
-
+    console.log('AT POINT 100, SEGMNTARRAY IS ',segmentsArray)
+    console.log('AT POINT 100, CURRENTSEGMNTINDEX IS ',currentSegmentIndex)
     //if gets here, segments array is not empty
 
     //first detect if current segment is a number or not
     let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
      
+    //if current segment is a number
+    if(currentSegmentIsANumber) {
+        console.log('GOT TO CURENTSEGMENTIS A NUMBER')
+        //if input is a number, append to current number
+        if(newKeyInputIsANumber) {
+            //append to current segment number string
+            segmentsArray[currentSegmentIndex].stringValue += newKeyInput
+        }
+        else {//is an operator
+            //move to next segment, this segment is done
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {}//create newobject
+            segmentsArray[currentSegmentIndex].stringValue = newKeyInput
+        }
+
+    }
 
 
 
-
+    return  segmentsArray
 
 
 
