@@ -5,29 +5,26 @@ import {updateContentOfScreenMainTextLine1} from '../../actions/screenActions'
 import {connect} from 'react-redux'
 
 
-let counter = 8
 
 class Keyboard extends React.Component {
 
-    handleCalcButtonClicked = calcButtonString => {
+    handleCalcButtonClicked = oneCalcButtonString => {
 
         // let currentContent = this.props.screenMainTextLine1Content
-        this.props.dispatch(updateContentOfScreenMainTextLine1(calcButtonString))
-        
-        
+        this.props.dispatch(updateContentOfScreenMainTextLine1(oneCalcButtonString))
         
         // this.setState( prevState => ({
         //   ...prevState,
-        //   line1CalculatorInput: prevState.line1CalculatorInput + calcButtonString
+        //   line1CalculatorInput: prevState.line1CalculatorInput + oneCalcButtonString
         // }))
 
         // alert('clicked')
         // let value = ReactNativeComponentTree.getInstanceFromNode(e.currentTarget)._currentElement.props.cx
-        console.log('at handlecalbuttonclick, value is ', calcButtonString)
-        // this.setState({line1CalculatorInput: calcButtonString})
+        console.log('at handlecalbuttonclick, value is ', oneCalcButtonString)
+        // this.setState({line1CalculatorInput: oneCalcButtonString})
       
         // ////testing to delte
-        // if(calcButtonString == 0) {
+        // if(oneCalcButtonString == 0) {
         //     console.log('button 0 pressed')
         //     this.props.dispatch(updateCurrentOperandNumber(2))
         // }
@@ -103,7 +100,7 @@ class Keyboard extends React.Component {
             },
             memoryText: {
                 alignItems: "center",
-                fontSize: this.fontSizeOfStandardButton*0.7,
+                fontSize: this.fontSizeOfStandardButton*0.65,
                 color: "blue",
             },
             standardButtonRowContainer: {
@@ -196,10 +193,10 @@ class Keyboard extends React.Component {
                 <View style={styles.allMemoriesContainer}>
                     <View style={styles.memory1}>
                         {/* <Text style={styles.memTitle}>Mem1</Text> */}
-                        <Text style={styles.memoryText}> M1 222278.7777</Text>
+                        <Text style={styles.memoryText}> 222278.7777</Text>
                     </View>
                     <View style={styles.memory2}>
-                        <Text style={styles.memoryText}> M2 77778888.8888</Text>
+                        <Text style={styles.memoryText}> 77778888.8888</Text>
                     </View>
                 </View>
 
