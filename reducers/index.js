@@ -1,12 +1,13 @@
 import {combineReducers} from 'redux'
 import keyboardReducer from './keyboardReducer';
+import screenReducer from './screenReducer';
 
 
 
 const rootReducer = combineReducers({
-        keyBoardStatus: keyboardReducer
+        keyBoardStatus: keyboardReducer,
+        screenStatus: screenReducer
 })
 
-console.log('STORE STATE IS:', rootReducer)
 
 export default rootReducer
