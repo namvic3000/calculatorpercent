@@ -32,6 +32,7 @@ export const updateScreenWithNewInput = (newKeyInput) => {
     // detect if newkeyinput is a number
     let newKeyInputIsANumber = /[0-9]/.test(newKeyInput)//returns a boolean
     
+    //if array is empty, screen main text line is empty, segments array is empty
     if(segmentsArray.length <=0) {//empty array, first key input
         console.log('**GOT TO INSIDE EMPTY SEGMENTSARRAY')
         currentSegmentIndex = 0 //reset if not already, redundant
@@ -44,42 +45,53 @@ export const updateScreenWithNewInput = (newKeyInput) => {
                 screenMainTextLine3: ""
             }
         }
-        else {//operator input on empty line, ignore key input
-            objectToReturn = {
-                screenMainTextLine1: "operatorpressed",
-                screenMainTextLine2: "",
-                screenMainTextLine3: "Ready"//ready msg when both lines empty
+        else //is not number, check if is a decipoint
+            if (newKeyInput === '.') {//if decipoint when empty, add preceding 0
+                segmentsArray[0] = {}//create empty object
+                segmentsArray[0].stringValue = '0.'
+                objectToReturn =  {
+                    screenMainTextLine1: segmentsArray[0].stringValue,
+                    screenMainTextLine2: "line2",//calculateResult(segmentsArray[0].stringValue),
+                    screenMainTextLine3: ""
+                }
             }
+            else {//operator, including +- sign, ignore key input
+                objectToReturn = {
+                    screenMainTextLine1: "operatorpressed",
+                    screenMainTextLine2: "",
+                    screenMainTextLine3: "Ready"//ready msg when both lines empty
+                }
         }
 
         return objectToReturn
     }
     
-
-          
-    //  objectToReturn = {
-    //     screenMainTextLine1: "",
-    //     screenMainTextLine2: "",
-    //     screenMainTextLine3: "segmentsarrynotempty"//ready msg when both lines empty
-    // }
-
-    // //if gets here, element 0 has at least 1 number unit
-    // if(currentSegmentIndex === 0) { //array at first nonempty element,
-    //     if( newKeyInputIsANumber) { //if is a number
-    //         //append to existing string
-    //         segmentsArray[currentSegmentIndex].stringValue += newKeyInput
-    //     }
-    //     else {//is an operator
-    //         // console.log('NEWINPUT IS AN OPERATOR AT FIRST ELEMENT, RETURNNIG BLANK')
-    //         //move to next element and store the operator
-    //         currentSegmentIndex++
-    //         segmentsArray[currentSegmentIndex].stringValue = newKeyInput
-    //     }
-    // }
-
+ 
     console.log('AT POINT 100, SEGMNTARRAY IS ',segmentsArray)
     console.log('AT POINT 100, CURRENTSEGMNTINDEX IS ',currentSegmentIndex)
+    
+    
+    
     //if gets here, segments array is not empty
+
+
+    //since segments array is not empty, there is something in the
+    //screen textline. check if ca button is pressed, if so clearall
+    if(newKeyInput === 'ca') {//clearall button
+        currentSegmentIndex = 0 //reset
+        segmentsArray = []//clear the array
+        return objectToReturn = {
+            screenMainTextLine1: "",
+            screenMainTextLine2: "",
+            screenMainTextLine3: "Ready"
+        }
+    }
+
+
+    if(newKeyInput === '<-') {//backspace button
+      
+    }
+
 
     //first detect if current segment is a number or not
     let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
@@ -92,18 +104,67 @@ export const updateScreenWithNewInput = (newKeyInput) => {
             //append to current segment number string
             segmentsArray[currentSegmentIndex].stringValue += newKeyInput
         }
-        else {//is an operator
-            //move to next segment, this segment is done
+        else //keyinput is an operator or .point or -sign
+            if(newKeyInput == '+-') {//check to see if is +- neg sign operator
+                console.log('GOT TO OPERATOR IS -SIGN')
+                //toggle the - sign
+                let tempStr = segmentsArray[currentSegmentIndex].stringValue
+                //see if string has the - sign at the front
+                let hasNegSign = (tempStr[0]==='-')
+                console.log('HAS NEG SIGN VALUE IS ' + hasNegSign)
+                if(hasNegSign) {
+                    //replace - with nothing
+                    segmentsArray[currentSegmentIndex].stringValue = tempStr.replace('-','')
+                }
+                else {//no neg - sign, so add it
+                    segmentsArray[currentSegmentIndex].stringValue = '-' + segmentsArray[currentSegmentIndex].stringValue
+                }
+            }
+            else 
+                if(newKeyInput == '.') { //decipoint
+                    //check if already exists on this ssame numbr before adding
+                    if( ! /[.]/.test(segmentsArray[currentSegmentIndex].stringValue)) { //if not already on this number
+                        segmentsArray[currentSegmentIndex].stringValue += '.'                    
+                    }
+                }
+                else {//all other operators
+                    //move to next segment, this segment is done
+                    currentSegmentIndex++
+                    segmentsArray[currentSegmentIndex] = {}//create newobject
+                    segmentsArray[currentSegmentIndex].stringValue = newKeyInput
+                }
+    }
+    
+    
+    if( ! currentSegmentIsANumber) {//if currentsegment is an operator
+        console.log('GOT TO CURRENTSEGMENT IS AN OPERATOR')
+        if(newKeyInputIsANumber) {
+            //move to next segment and store the number
             currentSegmentIndex++
-            segmentsArray[currentSegmentIndex] = {}//create newobject
+            segmentsArray[currentSegmentIndex] = {}//create new object
             segmentsArray[currentSegmentIndex].stringValue = newKeyInput
         }
-
+        else {//input is an ooperator
+            //input is another operator, ignore it
+            console.log('ANOTHER OPERATOR ONTOP OF OPERATOR: IGNORED')
+        }
     }
+    
 
 
-
-    return  segmentsArray
+    //colate all the string values of all the segments together to send to 
+    //calculate method
+    let collatedString = "";
+    segmentsArray.forEach((obj, index) => {
+        collatedString = collatedString + obj.stringValue + ' '
+    })
+    
+    objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+    return  objectToReturn
 
 
 

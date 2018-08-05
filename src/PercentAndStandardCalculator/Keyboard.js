@@ -83,7 +83,7 @@ class Keyboard extends React.Component {
                 alignItems: "center",
                 justifyContent: "flex-start",
                 backgroundColor: "transparent",
-                borderWidth: 1,
+                borderWidth: 0,
                 borderColor: "black"
             },
             memory2: {
@@ -95,7 +95,7 @@ class Keyboard extends React.Component {
                 alignItems: "center",
                 justifyContent: "flex-start",
                 backgroundColor: "transparent",
-                borderWidth: 1,
+                borderWidth: 0,
                 borderColor: "black"
             },
             memoryText: {
@@ -115,7 +115,7 @@ class Keyboard extends React.Component {
                 justifyContent: 'center',
                 color: 'blue',
                 backgroundColor: "gray",//"rgb(250,250,255)",
-                borderWidth: 1,
+                borderWidth: 0,
                 height: "100%",
             },
             calcButtonText: {
@@ -141,7 +141,7 @@ class Keyboard extends React.Component {
                 justifyContent: 'center',
                 textAlign: "center",
                 backgroundColor: "gray",
-                borderWidth: 1,
+                borderWidth: 0,
                 borderColor: "black",
                 height: "100%",
             },
@@ -168,7 +168,7 @@ class Keyboard extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: "lightgray",
-                borderWidth: 1,
+                borderWidth: 0,
                 height: "100%",
             },
             buttonSmallText:{

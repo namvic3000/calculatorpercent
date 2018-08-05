@@ -16,21 +16,13 @@ const screenReducer = (state = initialState, action) => {
             //call logic method, add keyinput to string to display
             let resultObject = updateScreenWithNewInput(action.payload.newKeyInput)
             console.log('AT REDUCER, GOT RESULT OBJCT IS :' , resultObject)
-            return state
 
 
-            let prevContent = state.screenMainTextLine1Content
+            // let prevContent = state.screenMainTextLine1Content
 
-            updatedContent = prevContent + action.payload.newKeyInput
-            
-            //if 'ca' key, then clear all
-            if(action.payload.newInput === ' ca ') {
-                updatedContent = ""
-            }
-            
-            // if(action.payload.newInput === ' <- ') {
-            //     updatedContent = ""//prevContent
-            // }
+            updatedContent = resultObject.screenMainTextLine1
+             
+             
             
             return {
                 ...state,
