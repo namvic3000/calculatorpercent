@@ -14,5 +14,9 @@ const screenReducer = (state = initialState, action) => {
                 ...state,
                 screenMainTextLine1Content: action.payload.newContent
             }
+            break
+        default: return state
     }
 }
+
+export default screenReducer
