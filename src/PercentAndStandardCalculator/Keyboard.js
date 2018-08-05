@@ -5,6 +5,8 @@ import {updateContentOfScreenMainTextLine1} from '../../actions/screenActions'
 import {connect} from 'react-redux'
 
 
+let counter = 8
+
 class Keyboard extends React.Component {
 
     handleCalcButtonClicked = calcButtonString => {
@@ -173,7 +175,8 @@ class Keyboard extends React.Component {
                 height: "100%",
             },
             buttonSmallText:{
-                fontSize: this.fontSizeOfStandardButton*0.7,
+                fontSize: this.fontSizeOfStandardButton*0.6,
+                // lineHeight: this.fontSizeOfStandardButton*0.8,
                 color: "darkblue"
             },
             
@@ -193,10 +196,10 @@ class Keyboard extends React.Component {
                 <View style={styles.allMemoriesContainer}>
                     <View style={styles.memory1}>
                         {/* <Text style={styles.memTitle}>Mem1</Text> */}
-                        <Text style={styles.memoryText}> M1: 222278.7777</Text>
+                        <Text style={styles.memoryText}> M1 222278.7777</Text>
                     </View>
                     <View style={styles.memory2}>
-                        <Text style={styles.memoryText}> M2: 77778888.8888</Text>
+                        <Text style={styles.memoryText}> M2 77778888.8888</Text>
                     </View>
                 </View>
 

@@ -5,12 +5,16 @@ let initialState = {
 }
 
 
+let segmentIndexPointer = 0//initially points to 1st segment
 
 const screenReducer = (state = initialState, action) => {
 
     switch(action.type) {
         case UPDATE_CONTENT_OF_SCREEN_MAIN_TEXTLINE1: 
             console.log('GOT TO SCREEN REDUCER, PAYLOAD IS ',action.payload)
+            
+            segmentIndexPointer++
+            console.log('****SEGMENT POINETER IS ' + segmentIndexPointer)
             
             let prevContent = state.screenMainTextLine1Content
 
