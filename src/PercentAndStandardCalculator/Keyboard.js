@@ -75,25 +75,26 @@ class Keyboard extends React.Component {
                 flexDirection: "row",
                 flex: 0.5,
             },
-            memory1: {
+            memory1Container: {
                 flex: 1,
                 flexDirection: "row",
                 paddingLeft: "1%",
                 height: "100%",
                 alignItems: "center",
-                justifyContent: "flex-start",
+                justifyContent: "center",
                 backgroundColor: "transparent",
                 borderWidth: 0,
-                borderColor: "black"
+                // borderRightWidth: 1,
+                // borderColor: "gray"
             },
-            memory2: {
+            memory2Container: {
                 flex: 1,
                 flexDirection: "row",
                 paddingRight: "1%",
                 // width: "49%",
                 height: "100%",
                 alignItems: "center",
-                justifyContent: "flex-start",
+                justifyContent: "center",
                 backgroundColor: "transparent",
                 borderWidth: 0,
                 borderColor: "black"
@@ -191,11 +192,11 @@ class Keyboard extends React.Component {
                 </View>
 
                 <View style={styles.allMemoriesContainer}>
-                    <View style={styles.memory1}>
+                    <View style={styles.memory1Container}>
                         {/* <Text style={styles.memTitle}>Mem1</Text> */}
                         <Text style={styles.memoryText}> 222278.7777</Text>
                     </View>
-                    <View style={styles.memory2}>
+                    <View style={styles.memory2Container}>
                         <Text style={styles.memoryText}> 77778888.8888</Text>
                     </View>
                 </View>
@@ -216,24 +217,6 @@ class Keyboard extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("% of")}>
-                        <Text style={styles.percentButtonText}>% of</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("out of")}>
-                        <Text style={styles.percentButtonText}>out of</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("add %")}>
-                        <Text style={styles.percentButtonText}>add %</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("deduct %")}>
-                        <Text style={styles.percentButtonText}>deduct %</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("% change")}>
-                        <Text style={styles.percentButtonText}>% change</Text>
-                    </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("if % is")}>
                         <Text style={styles.percentButtonText}>if % is</Text>
                     </TouchableOpacity>
@@ -243,8 +226,25 @@ class Keyboard extends React.Component {
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after % deducted")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
                     </TouchableOpacity>
-                 </View>
-                 
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("out of")}>
+                        <Text style={styles.percentButtonText}>out of</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.percentButtonsRowContainer}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("% of")}>
+                        <Text style={styles.percentButtonText}>% of</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("add %")}>
+                        <Text style={styles.percentButtonText}>add %</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("deduct %")}>
+                        <Text style={styles.percentButtonText}>deduct %</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("% change")}>
+                        <Text style={styles.percentButtonText}>% change</Text>
+                    </TouchableOpacity>
+                </View>
 
                 <View style={styles.standardButtonRowContainer}>
                 {/* doesnt work onLayout={e => this.standardButtonHeight = e.nativeEvent.layout.height} */}

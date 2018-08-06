@@ -28,8 +28,10 @@ export default class App extends Component {//<Props> {
   }
 
   componentDidMount = () => {
-    const {StatusBarManager} = NativeModules
-    StatusBarManager.getHeight( result => console.log('STATUS BAR HEIGHT IS ', result.height))
+    // if(Platform.OS === 'ios' {
+    //   const {StatusBarManager} = NativeModules
+    //   StatusBarManager.getHeight( result => console.log('STATUS BAR HEIGHT IS ', result.height))
+    // }
     
   }
   

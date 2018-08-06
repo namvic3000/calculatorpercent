@@ -1,5 +1,5 @@
 import { UPDATE_CONTENT_OF_SCREEN_MAIN_TEXTLINE1 } from "../actions/screenActions";
-import {updateScreenWithNewInput} from '../src/PercentAndStandardCalculator/logic/inputAndScreenLogic'
+import * as Logic from '../src/PercentAndStandardCalculator/logic/inputAndScreenLogic'
 
 let initialState = {
     screenMainTextLine1Content: ""
@@ -14,7 +14,7 @@ const screenReducer = (state = initialState, action) => {
             console.log('GOT TO SCREEN REDUCER, PAYLOAD IS ',action.payload)
            
             //call logic method, add keyinput to string to display
-            let resultObject = updateScreenWithNewInput(action.payload.newKeyInput)
+            let resultObject = Logic.updateScreenWithNewInput(action.payload.newKeyInput)
             console.log('AT REDUCER, GOT RESULT OBJCT IS :' , resultObject)
 
 
