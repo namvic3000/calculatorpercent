@@ -1,7 +1,7 @@
 import React from 'react'
 import {Dimensions,onLayout,StyleSheet, Button, TouchableOpacity, View, Text} from 'react-native'
-import {updateCurrentOperandNumber} from '../../actions/keyboardActions'
-import {updateContentOfScreenMainTextLine1} from '../../actions/screenActions'
+import {updateCurrentOperandNumber} from '../../../actions/keyboardActions'
+import {updateContentOfScreenMainTextLine1} from '../../../actions/screenActions'
 import {connect} from 'react-redux'
 
 
@@ -341,4 +341,6 @@ class Keyboard extends React.Component {
 const mapStateToProps = (state) => ({
     screenMainTextLine1Content: state.screenStatus.screenMainTextLine1Content
 }) 
+
+
 export default connect(mapStateToProps)(Keyboard)

@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, onLayout} from 'react-native';
 import {connect} from 'react-redux'
-import Keyboard from "./Keyboard"
-import Screen from "./Screen"
-import {updateCurrentOperandNumber} from '../../actions/keyboardActions'
+import KeyboardAndScreen from "./components/KeyboardAndScreen"
+// import Screen from "./components/Screen"
+// import {updateCurrentOperandNumber} from '../../actions/keyboardActions'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -23,9 +23,9 @@ class PercentAndStandardCalculator extends Component {
     // this.calculatorScreenLine1FontSize = this.calculatorScreenWidth / 6
     // console.log('*****screenwidth is, and fontsize is : ' + this.calculatorScreenWidth + this.calculatorScreenLine1FontSize)
     
-    // this.calculatorScreenHeight = Dimensions.get('window').width
-    this.calculatorScreenLine1FontSize = this.calculatorScreenHeight / 4
-    console.log('*****screenheight is' + this.calculatorScreenHeight)
+    // // this.calculatorScreenHeight = Dimensions.get('window').width
+    // this.calculatorScreenLine1FontSize = this.calculatorScreenHeight / 4
+    // console.log('*****screenheight is' + this.calculatorScreenHeight)
     
 
     const styles = StyleSheet.create({
@@ -36,13 +36,13 @@ class PercentAndStandardCalculator extends Component {
         // alignItems: 'center',
         backgroundColor: 'black',
       },
-      screenContainer: {
+      // screenContainer: {
+      //     flex: 1,
+      //     backgroundColor: "green",
+      //     width: "100%"
+      // },
+      keyboardAndScreenContainer: {
           flex: 1,
-          backgroundColor: "green",
-          width: "100%"
-      },
-      keyboardContainer: {
-          flex: 2,
           backgroundColor: "blue",
           width: "100%"
       },
@@ -62,8 +62,8 @@ class PercentAndStandardCalculator extends Component {
             <Screen/>
         </View> */}
         
-        <View style={styles.keyboardContainer}>
-            <Keyboard/>
+        <View style={styles.keyboardAndScreenContainer}>
+            <KeyboardAndScreen/>
         </View>
       
       </View>
@@ -71,9 +71,8 @@ class PercentAndStandardCalculator extends Component {
   }
 }
  
+ 
 
-const mapStateToProps = (state) => ({
-    currentOperandNumber: state.keyBoardStatus.currentOperandNumber
-})
 
-export default connect(mapStateToProps)(PercentAndStandardCalculator)
+
+export default PercentAndStandardCalculator

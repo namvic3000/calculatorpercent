@@ -1,5 +1,5 @@
 import { UPDATE_CONTENT_OF_SCREEN_MAIN_TEXTLINE1 } from "../actions/screenActions";
-import * as Logic from '../src/PercentAndStandardCalculator/logic/inputAndScreenLogic'
+import * as Logic from '../src/PercentAndStandardCalculator/logic'
 
 let initialState = {
     screenMainTextLine1Content: ""
