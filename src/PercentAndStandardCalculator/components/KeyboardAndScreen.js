@@ -101,7 +101,7 @@ class Keyboard extends React.Component {
             },
             memoryText: {
                 alignItems: "center",
-                fontSize: this.fontSizeOfStandardButton*0.65,
+                fontSize: this.fontSizeOfStandardButton*0.67,
                 color: "blue",
             },
             standardButtonRowContainer: {

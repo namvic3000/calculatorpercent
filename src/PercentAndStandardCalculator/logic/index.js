@@ -71,12 +71,42 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
 
+    //if button is +-x÷ arith buttons
     if(newKeyInput === '+' || newKeyInput === '-' ||
         newKeyInput === 'x' || newKeyInput === '÷') {//if + - x ÷
         
         objectToReturn = processInputFor4ArithmeticKeys(newKeyInput)
         return objectToReturn
     }
+
+
+
+    //if key is -sign
+    if(newKeyInput == '+-') {// +- neg sign operator
+        objectToReturn = processInputForNegSignKey(newKeyInput)
+        return objectToReturn
+    }
+
+
+    //if key is decipoint
+    if(newKeyInput == '.') {// +- neg sign operator
+        objectToReturn = processInputForDeciPointKey(newKeyInput)
+        return objectToReturn
+    }
+
+
+
+    //if key is % of
+    if(newKeyInput === '% of') {
+        objectToReturn = processInputForPercentOfKey(newKeyInput)
+        return objectToReturn
+    }
+
+
+
+
+
+
 
 
     console.log('GOT TO POINT1000')
@@ -182,10 +212,6 @@ export const updateScreenWithNewInput = (newKeyInput) => {
             // - if newKeyInput is an operator, ignore, because cannot have 2 consecutive ooperators,
             //     cann only have 1 operator between 2 numbers
        
-
-
-
-
 
 
 
@@ -342,6 +368,100 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
         screenMainTextLine3: ''
     }
 }//method process 4ariths operators
+
+
+
+
+
+
+
+
+const processInputForNegSignKey = (newKeyInput) => {
+
+    console.log('GOT TO PROCESS OPERATOR -SIGN')
+
+    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+        
+    //if segment is a number, ok, can toggle sign,
+    //if is ooperator, then ignore key input
+    
+    
+    //toggle the - sign
+    if(currentSegmentIsANumber) {
+        let tempStr = segmentsArray[currentSegmentIndex].stringValue
+        //see if string has the - sign at the front
+        let hasNegSign = (tempStr[0]==='-')
+        console.log('HAS NEG SIGN VALUE IS ' + hasNegSign)
+        if(hasNegSign) {
+            //replace - with nothing
+            segmentsArray[currentSegmentIndex].stringValue = tempStr.replace('-','')
+        }
+        else {//no neg - sign, so add it
+            segmentsArray[currentSegmentIndex].stringValue = '-' + segmentsArray[currentSegmentIndex].stringValue
+        }
+    }
+
+    else {
+        //is ann operator, ignore
+    }
+
+    //collate stirng to return 
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+
+}
+
+
+
+
+
+
+const processInputForDeciPointKey = (newKeyInput) => {
+
+    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    
+    //note: current segment is never empty, except when whole array
+    //is empty at start or after CA, so no need to check that condition
+
+    //if currentsegment is a number then add . if not existed alreay
+    if(currentSegmentIsANumber) {
+        if(segmentsArray[currentSegmentIndex].stringValue)
+        //add only if not already exists
+        if( ! /[.]/.test(segmentsArray[currentSegmentIndex].stringValue)) { //if not already on this number
+            //decipoint not yet exist, add it
+            segmentsArray[currentSegmentIndex].stringValue += '.'                    
+        }
+        else {
+            //decipoint already exists, igonore decipoint key input
+        }
+    }
+    else {//curr segment is an operator
+        //move to next segment and add 0.
+        currentSegmentIndex++
+        segmentsArray[currentSegmentIndex] = {}//create
+        segmentsArray[currentSegmentIndex].stringValue = '0.'
+    }
+
+    //collate stirng to return 
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+
+}//mthod
+
+
+
+
+
 
 
 
