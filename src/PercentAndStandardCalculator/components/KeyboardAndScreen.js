@@ -61,7 +61,7 @@ class Keyboard extends React.Component {
               },
               screenMainTextLine1: {
                 display: "flex",
-                flexDirection: "row",
+                // flexDirection: "row",
                 flex:1, 
                 width: "100%",
                 marginTop: this.fontSizeOfScreenMainLine1/6,
@@ -69,6 +69,7 @@ class Keyboard extends React.Component {
                 lineHeight: this.fontSizeOfScreenMainLine1 + (this.fontSizeOfScreenMainLine1/12),
                 color: "black",
                 backgroundColor: "white",
+                textAlign: "right",
                 // height: "25%",
               },
             allMemoriesContainer: {
@@ -202,8 +203,11 @@ class Keyboard extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("()")}>
-                        <Text style={styles.percentButtonText}>( )</Text>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("(")}>
+                        <Text style={styles.percentButtonText}>(</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked(")")}>
+                        <Text style={styles.percentButtonText}>)</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("m+")}>
                         <Text style={styles.percentButtonText}>M+</Text>

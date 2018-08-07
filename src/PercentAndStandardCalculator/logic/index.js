@@ -96,6 +96,20 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
 
+    //if key is ( key
+    if(newKeyInput === '(') {
+        objectToReturn = processInputForOpenBracketKey(newKeyInput)
+        return objectToReturn
+    }
+
+    //if key is ) key
+    if(newKeyInput === ')') {
+        objectToReturn = processInputForCloseBracketKey(newKeyInput)
+        return objectToReturn
+    }
+
+
+
     //if key is % of
     if(newKeyInput === '% of') {
         objectToReturn = processInputForPercentOfKey(newKeyInput)
@@ -128,10 +142,10 @@ export const updateScreenWithNewInput = (newKeyInput) => {
  
 
     //first detect if current segment is a number or not
-    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
      
     //if current segment is a number
-    if(currentSegmentIsANumber) {
+    if(currentSegmentIsANumberFlag) {
         console.log('GOT TO CURENTSEGMENTIS A NUMBER')
         //if input is a number, append to current number
         if(newKeyInputIsANumber) {
@@ -170,7 +184,7 @@ export const updateScreenWithNewInput = (newKeyInput) => {
     }
     
     
-    if( ! currentSegmentIsANumber) {//if currentsegment is an operator
+    if( ! currentSegmentIsANumberFlag) {//if currentsegment is an operator
         console.log('GOT TO CURRENTSEGMENT IS AN OPERATOR')
         if(newKeyInputIsANumber) {
             //move to next segment and store the number
@@ -258,7 +272,7 @@ const processInputWhenEmptyScreenMainTextLines = (newKeyInput) => {
             }
         }
         else //check if bracket
-            if(newKeyInput === '()'){
+            if(newKeyInput === '('){
                 segmentsArray[0] = {}//create empty object
                 segmentsArray[0].stringValue = '('
                 objectToReturn =  {
@@ -269,7 +283,7 @@ const processInputWhenEmptyScreenMainTextLines = (newKeyInput) => {
             }
             else {//operator,ignore key input
                 objectToReturn = {
-                    screenMainTextLine1: "operatorpressed",
+                    screenMainTextLine1: "",
                     screenMainTextLine2: "",
                     screenMainTextLine3: "Ready"//ready msg when both lines empty
                 }
@@ -292,21 +306,45 @@ const processInputFor0To9Keys = (newKeyInput) => {
     let objectToReturn = {}
 
     //first detect if current segment is a number or not
-    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
-    console.log('AT PROCESS 0-9, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumber)
+    let currentSegmentIsANumberFlag = /([0-9]|\)|\()/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    console.log('AT PROCESS 0-9, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
     
-    let isEmptySegment = segmentsArray[currentSegmentIndex].stringValue.length <= 0
-    console.log('AT PROCESS 0-9, ISEMPTYSEGMENT FLAG IS ' + isEmptySegment)
+    let isEmptySegmentFlag = segmentsArray[currentSegmentIndex].stringValue.length <= 0
+    console.log('AT PROCESS 0-9, ISEMPTYSEGMENT FLAG IS ' + isEmptySegmentFlag)
     
-    let hasOpenBracket = segmentsArray[currentSegmentIndex].stringValue[0] === '('
-    console.log('AT PROCESS 0-9, HAS OPENBRACKET FLAG IS ' + hasOpenBracket)
+    let hasOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS 0-9, HAS OPENBRACKET FLAG IS ' + hasOpenBracketFlag)
     
+    let hasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS 0-9, HAS CLOSE BRACKET FLAG IS ' + hasCloseBracketFlag)
     
-    //if current segment is a number
-    if(currentSegmentIsANumber || isEmptySegment || hasOpenBracket) {
-        console.log('AT PROCESS0-9KEYS, CURENTSEGMENTIS A NUMBER')
-         //append to current segment number string
-         segmentsArray[currentSegmentIndex].stringValue += newKeyInput
+    //segment is never empty, always has number or operator, except at 
+    //start when string is empty.
+    //if segmnt is empty, just add the string value
+    if(isEmptySegmentFlag) {
+        //never gets here
+        segmentsArray[currentSegmentIndex].stringValue = newKeyInput
+    }
+
+
+    //if segment is a number
+    if(currentSegmentIsANumberFlag) {
+        console.log('AT PROCESS0-9KEYS, GOT TO CURENTSEGMENTIS A NUMBER')
+
+        //if has closing bracket, insert number before that closing bracket
+        if(hasCloseBracketFlag) {
+            //get the string, minus the last char whichis the ) bracket
+            let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
+            //append key value and reinsert the )
+            tempStr = tempStr + newKeyInput + ')'
+            //copy back to real string
+            segmentsArray[currentSegmentIndex].stringValue = tempStr
+        }
+        //if has open bracket, or no brackets, append the key value string
+        else {
+            segmentsArray[currentSegmentIndex].stringValue += newKeyInput
+        }
+
     }
     else {//curr segent is ann operator
         //move to next segment, and put input value there
@@ -316,7 +354,7 @@ const processInputFor0To9Keys = (newKeyInput) => {
         segmentsArray[currentSegmentIndex].stringValue = newKeyInput
     }
 
-    //collate the string from all segments
+    //collate stirng from all segments, to return     
     let collatedString = collateStringsIntoOneString(segmentsArray)
     return objectToReturn = {
         screenMainTextLine1: collatedString,
@@ -337,13 +375,13 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
     let objectToReturn = {}
 
     //first detect if current segment is a number or not
-    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
-    console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumber)
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
     
 
     //if current segment is a number, then move to next segment
     //and put the + there and move pointer on again to next segment
-    if(currentSegmentIsANumber) {
+    if(currentSegmentIsANumberFlag) {
         console.log('AT PROCESS4ARITHS, CURENTSEGMENT IS A NUMBER, MOVING TO NEXT ELEMTN TO PUT VALUE THERE')
         currentSegmentIndex++
         segmentsArray[currentSegmentIndex] = {} //create new element
@@ -359,7 +397,7 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
         console.log('AT PROCESS4ARITHS, ANOTHER OPERATOR PRESSED, IGINORED')
     }
 
-    //collate stirng to return 
+    //collate stirng from all segments, to return 
     let collatedString = collateStringsIntoOneString(segmentsArray)
 
     return objectToReturn = {
@@ -380,14 +418,14 @@ const processInputForNegSignKey = (newKeyInput) => {
 
     console.log('GOT TO PROCESS OPERATOR -SIGN')
 
-    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
         
     //if segment is a number, ok, can toggle sign,
     //if is ooperator, then ignore key input
     
     
     //toggle the - sign
-    if(currentSegmentIsANumber) {
+    if(currentSegmentIsANumberFlag) {
         let tempStr = segmentsArray[currentSegmentIndex].stringValue
         //see if string has the - sign at the front
         let hasNegSign = (tempStr[0]==='-')
@@ -405,7 +443,7 @@ const processInputForNegSignKey = (newKeyInput) => {
         //is ann operator, ignore
     }
 
-    //collate stirng to return 
+    //collate stirng from all segments, to return 
     let collatedString = collateStringsIntoOneString(segmentsArray)
 
     return objectToReturn = {
@@ -423,13 +461,13 @@ const processInputForNegSignKey = (newKeyInput) => {
 
 const processInputForDeciPointKey = (newKeyInput) => {
 
-    let currentSegmentIsANumber = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     
     //note: current segment is never empty, except when whole array
     //is empty at start or after CA, so no need to check that condition
 
     //if currentsegment is a number then add . if not existed alreay
-    if(currentSegmentIsANumber) {
+    if(currentSegmentIsANumberFlag) {
         if(segmentsArray[currentSegmentIndex].stringValue)
         //add only if not already exists
         if( ! /[.]/.test(segmentsArray[currentSegmentIndex].stringValue)) { //if not already on this number
@@ -447,7 +485,7 @@ const processInputForDeciPointKey = (newKeyInput) => {
         segmentsArray[currentSegmentIndex].stringValue = '0.'
     }
 
-    //collate stirng to return 
+    //collate stirng from all segments, to return 
     let collatedString = collateStringsIntoOneString(segmentsArray)
 
     return objectToReturn = {
@@ -464,6 +502,240 @@ const processInputForDeciPointKey = (newKeyInput) => {
 
 
 
+
+
+const processInputForOpenBracketKey = (newKeyInput) => {
+
+    console.log('GOT TO PROCESS BRACKET OPEN KEY')
+
+    let objectToReturn = {}
+
+    ///can only enter a open bracket if current segment is 
+    //empty then ok to add openbracket, or is arithmetic of percent operator,
+    // e.g 'of' 'to' '+' 'x' 'add' etc...
+    //then jump to next segment then add the open bracket
+    
+    //first detect if current segment is either arith or percent operator or not
+    let currentSegmentIsAnArithOrPercentOperatorFlag = /(\+|-|x|÷|of|add|deduct|to|is|deducted|added|\()/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    console.log('AT PROCESS BRACKET OPEN, CURENTSEGENT IS A OPERATOR FLAG IS ' + currentSegmentIsAnArithOrPercentOperatorFlag)
+    
+    //let segmentAlreadyHasOpenBracket = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    
+    let isEmptySegmentFlag = segmentsArray[currentSegmentIndex].stringValue.length <= 0
+    console.log('AT PROCESS BRACKET OPEN, ISEMPTYSEGMENT FLAG IS ' + isEmptySegmentFlag)
+     
+     
+    if(isEmptySegmentFlag) {
+        //never gets here, pointer always points to current segment which 
+        //jumps from last on char input, so is never empty
+        segmentsArray[currentSegmentIndex].stringValue = newKeyInput
+    }
+
+
+    if(currentSegmentIsAnArithOrPercentOperatorFlag) {
+        //ok, move to next segment then add open bracket
+        //NOTE: an open bracket is included in operator search,
+        //so if already has a open bracket or more, ok to add on.
+        currentSegmentIndex++
+        segmentsArray[currentSegmentIndex] = {}//create new element
+        segmentsArray[currentSegmentIndex].stringValue = '('
+    }
+ 
+    //collate stirng from all segments, to return 
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+const processInputForCloseBracketKey = (newKeyInput) => {
+
+    console.log('GOT TO PROCESS BRACKET CLOSE KEY')
+
+    let objectToReturn = {}
+
+    ///can only enter a close bracket if current segment is a number,
+    //and nett bracket count is -1 or less
+    //Each ( has value of -1
+    //Each ) has value of +1
+    //if nett is 0 means equal, correct.
+
+    //must be a number, can already have a closing bracket , ok
+    //but cant have a open bracket
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
+    
+    let hasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT HASOPENBRACKET FLAG IS ' + hasAnOpenBracketFlag)
+
+    //first scan array and determine nett value of brackets
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+    let tempArr = collatedString.match(/\(/g) || []//if not found
+    let numberOfOpenBrackets = tempArr.length
+    // let numberOfOpenBrackets = (collatedString.match(/\(/g))
+    
+    
+    // let numberOfCloseBrackets = collatedString.match(/\)/g).length
+    tempArr = collatedString.match(/\)/g) || []  
+    numberOfCloseBrackets = tempArr.length
+    
+    let nettValue = numberOfCloseBrackets - numberOfOpenBrackets
+
+    console.log('AT PROCESS BRACKET CLOSE, NETTVALUE OF BRACKETS IS  ' + nettValue)
+     
+
+    //if segment has a number, no open brackets, and -1 or less nett bracket,
+    //then ok to proceed and add close bracket
+    if(currentSegmentIsANumberFlag && (! hasAnOpenBracketFlag) && (nettValue <= -1)) {
+        segmentsArray[currentSegmentIndex].stringValue += ')'
+    }
+
+
+    //collate stirng from all segments, to return 
+    collatedString = collateStringsIntoOneString(segmentsArray)
+
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+
+}//mthod
+
+
+
+// const processInputForPercentOfKey = (newKeyInput) => {
+
+//     //1.current segment must be a number for this key to respond
+//     //2. previous operator must be arithmetic, cant be any percent operator
+//     //so cant have e.g '27% of 30% of 555' , or '27 out of 30% of 55'
+//     //so preceding must either be no operator, or arithmetic operator,
+//     //can not be percent operators
+
+//     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+//     let hasPrecedingPercentOperators = /(of|add|deduct|from|if|after|is)/.test(collateStringsIntoOneString(segmentsArray))
+//     console.log('PREVIOUS OPERATOR IS PERCENTRELATED FLAG IS '+hasPrecedingPercentOperators)
+//     let hasPrecedingArithmeticOperators = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
+//     console.log('PREVIOUS OPERATOR IS ARITHMETIC FLAG IS '+hasPrecedingArithmeticOperators)
+
+//     //if previious operators are not percent related, ok to proceed
+//     if( ! hasPrecedingPercentOperators) {//no previous percent operators
+//         if(currentSegmentIsANumberFlag) {//is a number, ok
+//             //if there is no preceding arith operator, then dont put
+//             //brackets in front of this segment
+//             // e.g 55% of (77 X 88) , there is no arith operator prededing 55,
+//             //so there is no brackets inserted in front of 55, we just add the '% of ' text
+            
+//             if( ! hasPrecedingArithmeticOperators) {//no preceding arith operators
+//                 //no brackets required before 55% e.g 55% of 888 or (...x..) 
+//                 //add the % sign at end of this segmnt
+//                 segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
+//                 //add 'of' into next segment
+//                 currentSegmentIndex++
+//                 segmentsArray[currentSegmentIndex] = {} //create
+//                 segmentsArray[currentSegmentIndex].stringValue = 'of'
+//             }
+//             else { //does have preceding arith operators
+//                 // eg. 35 + 68 x (55% of (77 x 88) ) so we put a opening bracket before 55%
+//                 //and closing brackt ) in segment after the 'of', ie hereit is the last closing bracket
+//                 segmentsArray[currentSegmentIndex].stringValue = '(' + segmentsArray[currentSegmentIndex].stringValue
+//                 //add the % sign at end of this segmnt
+//                 segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
+//                 //add 'of' into next segment
+//                 currentSegmentIndex++
+//                 segmentsArray[currentSegmentIndex] = {} //create
+//                 segmentsArray[currentSegmentIndex].stringValue = 'of'
+//                 //add ) in the next segmnt, so we get: 35 + 3 x (55% of )
+//                 currentSegmentIndex++
+//                 segmentsArray[currentSegmentIndex] = {} //create
+//                 segmentsArray[currentSegmentIndex].stringValue = ')'
+//             }
+
+//         }
+//         else {//current segment is not a number, is an operator, ignore key
+//             //ignore key input
+//         }
+//     }
+//     else { //is a percent related operator in previous inputs
+        
+//         //ignore key input
+        
+//     }
+
+//     //collate stirng from all segments, to return 
+//     let collatedString = collateStringsIntoOneString(segmentsArray)
+
+//     return objectToReturn = {
+//         screenMainTextLine1: collatedString,
+//         screenMainTextLine2: 'answer',
+//         screenMainTextLine3: ''
+//     }
+    
+// }
+
+
+
+
+
+
+
+
+
+const processInputForPercentOfKey = (newKeyInput) => {
+
+    //to get valid '% of' input, current segment must be a
+    //number, number with open bracket, or numbr with close bracket at end.
+    //e.g   367% of,   or (5 x 63)% of .. , or (55% of ..
+    //so 1. must be a number e.g 367% or (367% of ..
+    //2. number with )  e.g (5 x 6)% of ..
+    //so current segment must have a 0-9 number in it, we dont
+    //need to check if there is a closing bracket in it, becuase
+    //it makes no differncce
+    //If segment is a 'x' or a '+' or a 'of' or a 'to' etc.. means it
+    //is not a number segment, and %of key wont work for the segment.
+
+
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    
+    
+    if(currentSegmentIsANumberFlag) {
+        //ok to proceed
+         //add the % sign at end of this segmnt and 'of' in the next segment
+         segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
+         //add 'of' into next segment
+         currentSegmentIndex++
+         segmentsArray[currentSegmentIndex] = {} //create
+         segmentsArray[currentSegmentIndex].stringValue = 'of'
+    }
+    else {//not a number segment,
+        //ignore key input
+    }
+    
+      
+    //collate stirng from all segments, to return 
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+    
+}
 
 
 
