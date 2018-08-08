@@ -1,6 +1,5 @@
 import React from 'react'
 import {Dimensions,onLayout,StyleSheet, Button, TouchableOpacity, View, Text} from 'react-native'
-import {updateCurrentOperandNumber} from '../../../actions/keyboardActions'
 import {updateContentOfScreenMainTextLine1} from '../../../actions/screenActions'
 import {connect} from 'react-redux'
 
