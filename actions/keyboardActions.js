@@ -1,10 +1,10 @@
-export const UPDATE_CURRENT_OPERAND_NUMBER = "UPDATE_CURRENT_OPERAND_NUMBER"
+export const UPDATE_IF_PERCENT_IS_BUTTON_STATUS = "UPDATE_IF_PERCENT_IS_BUTTON_STATUS"
 
 
 
-export const updateCurrentOperandNumber = (operandNumber) => ({
-    type: UPDATE_CURRENT_OPERAND_NUMBER,
+export const updateIfPercentIsButtonStatus = (status) => ({
+    type: UPDATE_IF_PERCENT_IS_BUTTON_STATUS,
     payload: {
-        operandNumber
+        status
     }
 })

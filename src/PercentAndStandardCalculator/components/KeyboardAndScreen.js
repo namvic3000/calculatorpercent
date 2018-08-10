@@ -6,27 +6,46 @@ import {connect} from 'react-redux'
 
 
 class Keyboard extends React.Component {
+ 
+    state = {
+        showThenButtonFlag: false,
+    }
 
-    handleCalcButtonClicked = oneCalcButtonString => {
 
+    handleCalcButtonClicked = calcButtonStringValue => {
+  
         // let currentContent = this.props.screenMainTextLine1Content
-        this.props.dispatch(updateContentOfScreenMainTextLine1(oneCalcButtonString))
+        this.props.dispatch(updateContentOfScreenMainTextLine1(calcButtonStringValue))
         
+
+
         // this.setState( prevState => ({
         //   ...prevState,
-        //   line1CalculatorInput: prevState.line1CalculatorInput + oneCalcButtonString
+        //   line1CalculatorInput: prevState.line1CalculatorInput + calcButtonStringValue
         // }))
 
         // alert('clicked')
         // let value = ReactNativeComponentTree.getInstanceFromNode(e.currentTarget)._currentElement.props.cx
-        console.log('at handlecalbuttonclick, value is ', oneCalcButtonString)
-        // this.setState({line1CalculatorInput: oneCalcButtonString})
+        console.log('at handlecalbuttonclick, value is ', calcButtonStringValue)
+        // this.setState({line1CalculatorInput: calcButtonStringValue})
       
         // ////testing to delte
-        // if(oneCalcButtonString == 0) {
+        // if(calcButtonStringValue == 0) {
         //     console.log('button 0 pressed')
         //     this.props.dispatch(updateCurrentOperandNumber(2))
         // }
+
+
+        let tempTextLineArr = this.props.screenMainTextLine1Content.split(' ')
+        if(tempTextLineArr[tempTextLineArr.length-2] === 'is' || tempTextLineArr[tempTextLineArr.length-3]==='is'){
+            console.log('*****SHOW THENN BUTTON NOW***')
+            this.setState({showThenButtonFlag: true})
+        }
+        else {
+            this.setState({showThenButtonFlag: false})
+        }
+       
+
     }
     
 
@@ -223,10 +242,10 @@ class Keyboard extends React.Component {
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("if % is")}>
                         <Text style={styles.percentButtonText}>if % is</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after % added")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after added %")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>added</Text></View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after % deducted")}>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after deducted %")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("out of")}>
@@ -317,9 +336,18 @@ class Keyboard extends React.Component {
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("-")}>
                             <Text style={styles.calcButtonText}>-</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("=")}>
-                            <Text style={styles.calcButtonText}>=</Text>
-                        </TouchableOpacity>
+                        {
+                            this.state.showThenButtonFlag ? (
+                                <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("then")}>
+                                    <Text style={styles.calcButtonText}>then</Text>
+                                </TouchableOpacity>
+                            )
+                            : (
+                                <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("=")}>
+                                    <Text style={styles.calcButtonText}>=</Text>
+                                </TouchableOpacity>
+                            )
+                        }
                 </View>
 
                 <View style={styles.buttonSmallRowContainer}>

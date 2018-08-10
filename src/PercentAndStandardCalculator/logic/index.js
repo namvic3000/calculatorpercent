@@ -1,3 +1,10 @@
+// import store from '../../../store'
+import React from 'react'
+
+import {connect} from 'react-redux'
+
+
+
 let currentSegmentIndex = 0//initially points to 1st segment
 
 let segmentsArray = []///stores each segment of the mainscreenline1 string
@@ -146,6 +153,37 @@ export const updateScreenWithNewInput = (newKeyInput) => {
         return objectToReturn
     }
 
+
+    //if key is 'after added %'
+    if(newKeyInput === 'after added %') {
+        objectToReturn = processInputForAfterAddedPercentKey(newKeyInput)
+        return objectToReturn
+    }
+
+
+    
+    //if key is 'after deducted %'
+    if(newKeyInput === 'after deducted %') {
+        objectToReturn = processInputForAfterDeductedPercentKey(newKeyInput)
+        return objectToReturn
+    }
+    
+
+    
+    //if key is 'if % is'
+    if(newKeyInput === 'if % is') {
+        objectToReturn = processInputForIfPercentIsKey(newKeyInput)
+        return objectToReturn
+    }
+
+
+
+    //if key is 'then'
+    if(newKeyInput === 'then') {
+        objectToReturn = processInputForThenKey(newKeyInput)
+        return objectToReturn
+    }
+ 
 
 
 
@@ -572,7 +610,7 @@ const processInputForOpenBracketKey = (newKeyInput) => {
     //then jump to next segment then add the open bracket
     
     //first detect if current segment is either arith or percent operator or not
-    let currentSegmentIsAnArithOrPercentOperatorFlag = /(\+|-|x|÷|of|add|deduct|to|is|deducted|added)/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    let currentSegmentIsAnArithOrPercentOperatorFlag = /(\+|-|x|÷|of|add|deduct|to|is|then|deducted|added)/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
     console.log('AT PROCESS BRACKET OPEN, CURENTSEGENT IS A OPERATOR FLAG IS ' + currentSegmentIsAnArithOrPercentOperatorFlag)
     
     let currentSegmentAlreadyHasOpenBracket = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
@@ -706,76 +744,7 @@ const processInputForCloseBracketKey = (newKeyInput) => {
 }//mthod
 
 
-
-// const processInputForPercentOfKey = (newKeyInput) => {
-
-//     //1.current segment must be a number for this key to respond
-//     //2. previous operator must be arithmetic, cant be any percent operator
-//     //so cant have e.g '27% of 30% of 555' , or '27 out of 30% of 55'
-//     //so preceding must either be no operator, or arithmetic operator,
-//     //can not be percent operators
-
-//     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-//     let hasPrecedingPercentOperators = /(of|add|deduct|from|if|after|is)/.test(collateStringsIntoOneString(segmentsArray))
-//     console.log('PREVIOUS OPERATOR IS PERCENTRELATED FLAG IS '+hasPrecedingPercentOperators)
-//     let hasPrecedingArithmeticOperators = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
-//     console.log('PREVIOUS OPERATOR IS ARITHMETIC FLAG IS '+hasPrecedingArithmeticOperators)
-
-//     //if previious operators are not percent related, ok to proceed
-//     if( ! hasPrecedingPercentOperators) {//no previous percent operators
-//         if(currentSegmentIsANumberFlag) {//is a number, ok
-//             //if there is no preceding arith operator, then dont put
-//             //brackets in front of this segment
-//             // e.g 55% of (77 X 88) , there is no arith operator prededing 55,
-//             //so there is no brackets inserted in front of 55, we just add the '% of ' text
-            
-//             if( ! hasPrecedingArithmeticOperators) {//no preceding arith operators
-//                 //no brackets required before 55% e.g 55% of 888 or (...x..) 
-//                 //add the % sign at end of this segmnt
-//                 segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
-//                 //add 'of' into next segment
-//                 currentSegmentIndex++
-//                 segmentsArray[currentSegmentIndex] = {} //create
-//                 segmentsArray[currentSegmentIndex].stringValue = 'of'
-//             }
-//             else { //does have preceding arith operators
-//                 // eg. 35 + 68 x (55% of (77 x 88) ) so we put a opening bracket before 55%
-//                 //and closing brackt ) in segment after the 'of', ie hereit is the last closing bracket
-//                 segmentsArray[currentSegmentIndex].stringValue = '(' + segmentsArray[currentSegmentIndex].stringValue
-//                 //add the % sign at end of this segmnt
-//                 segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
-//                 //add 'of' into next segment
-//                 currentSegmentIndex++
-//                 segmentsArray[currentSegmentIndex] = {} //create
-//                 segmentsArray[currentSegmentIndex].stringValue = 'of'
-//                 //add ) in the next segmnt, so we get: 35 + 3 x (55% of )
-//                 currentSegmentIndex++
-//                 segmentsArray[currentSegmentIndex] = {} //create
-//                 segmentsArray[currentSegmentIndex].stringValue = ')'
-//             }
-
-//         }
-//         else {//current segment is not a number, is an operator, ignore key
-//             //ignore key input
-//         }
-//     }
-//     else { //is a percent related operator in previous inputs
-        
-//         //ignore key input
-        
-//     }
-
-//     //collate stirng from all segments, to return 
-//     let collatedString = collateStringsIntoOneString(segmentsArray)
-
-//     return objectToReturn = {
-//         screenMainTextLine1: collatedString,
-//         screenMainTextLine2: 'answer',
-//         screenMainTextLine3: ''
-//     }
-    
-// }
-
+ 
 
 
 
@@ -837,7 +806,7 @@ const processInputForPercentOfKey = (newKeyInput) => {
     //first make sure that there has been no previous percentage related
     //operator in the whole calculatoion
     let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|deducted|added)/.test(collatedString)//returns a boolean
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
 
     if(wholeCalculationHasAPercentOperatorFlag) {
         //has prior percentage operator, so no action,
@@ -986,7 +955,7 @@ const processInputForOutOfKey = (newKeyInput) => {
     //first make sure that there has been no previous percentage related
     //operator in the whole calculatoion
     let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|deducted|added)/.test(collatedString)//returns a boolean
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
 
     if(wholeCalculationHasAPercentOperatorFlag) {
         //has prior percentage operator, so no action,
@@ -1130,7 +1099,7 @@ const processInputForAddPercentKey = (newKeyInput) => {
     //first make sure that there has been no previous percentage related
     //operator in the whole calculatoion
     let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|deducted|added)/.test(collatedString)//returns a boolean
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
 
     if(wholeCalculationHasAPercentOperatorFlag) {
         //has prior percentage operator, so no action,
@@ -1297,7 +1266,7 @@ const processInputForDeductPercentKey = (newKeyInput) => {
     //first make sure that there has been no previous percentage related
     //operator in the whole calculatoion
     let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|deducted|added)/.test(collatedString)//returns a boolean
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
 
     if(wholeCalculationHasAPercentOperatorFlag) {
         //has prior percentage operator, so no action,
@@ -1462,7 +1431,7 @@ const processInputForPercentChangeKey = (newKeyInput) => {
     //first make sure that there has been no previous percentage related
     //operator in the whole calculatoion
     let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|deducted|added)/.test(collatedString)//returns a boolean
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
 
     if(wholeCalculationHasAPercentOperatorFlag) {
         //has prior percentage operator, so no action,
@@ -1635,7 +1604,7 @@ const processInputForPercentChangeKey = (newKeyInput) => {
 
 const processInputForAfterAddedPercentKey = (newKeyInput) => {
  
-    //logic is same as add % key, but insert the '(is' before
+    //logic is same as %change key, but insert the '(is' or 'is' before
     //the start of the current unit, 
     //eg if unit is 37 becomes 'is 37 after added ...'
     //if is  (32 x 57) becomes '(is (32 x 57) after added ...
@@ -1643,19 +1612,19 @@ const processInputForAfterAddedPercentKey = (newKeyInput) => {
     
 
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT CHANGE% INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
+    console.log('AT AFTERADDED% INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
     let currentSegmentHasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT CHANGE% INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
+    console.log('AT AFTERADDED% INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
 
     let currentSegmentHasACloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT CHANGE% INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
+    console.log('AT AFTERADDED% INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
     
     let currentSegmentHasNoOpenOrCloseBracketFlag = ! /(\(|\))/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT CHANGE% INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
+    console.log('AT AFTERADDED% INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
     
     let currentSegmentHasPriorArithOperator = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
-    console.log('AT CHANGE% INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
+    console.log('AT AFTERADDED% INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
     
 
 
@@ -1665,7 +1634,460 @@ const processInputForAfterAddedPercentKey = (newKeyInput) => {
     //first make sure that there has been no previous percentage related
     //operator in the whole calculatoion
     let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|deducted|added)/.test(collatedString)//returns a boolean
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
+
+    if(wholeCalculationHasAPercentOperatorFlag) {
+        //has prior percentage operator, so no action,
+        //ignore input, return as is.
+
+        //collate stirng from all segments, to return as is
+        let collatedString = collateStringsIntoOneString(segmentsArray)
+        console.log('COLLATED STRING IS: ', collatedString)
+        return objectToReturn = {
+            screenMainTextLine1: collatedString,
+            screenMainTextLine2: 'answer',
+            screenMainTextLine3: ''
+        }
+    }
+
+
+
+
+    //if gets to here then has no previous percent operator in the line
+ 
+
+
+
+    //if current segment is NOT a number , ignore user key input
+    if( ! currentSegmentIsANumberFlag ){ //not a number segment
+        //ignore
+    }
+    else {//is a number segment, so proceed
+        if(currentSegmentHasNoOpenOrCloseBracketFlag) {
+            if( ! currentSegmentHasPriorArithOperator) {//no prior arith operator.
+                console.log('AT AFTERADDED%, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
+                //no priior arith operator, no closing or open bracket, 
+                //e.g 37 on its own, becomes 'is 37 after added ...'
+                // so we  just proceed to insert 'is' infront of this segment
+                //and 'after added' at the next segment, leaving current segment alone,
+                //and we add the % sign in segment after that.
+                
+
+                //first create an empty object and add to front of current segment element
+                segmentsArray.splice(currentSegmentIndex,0,{}) //insert empty object
+                console.log('AFTER SPLICE NEW OBJJECT INFRONT OF CURRENT OBJ, SEGMENTSARRAY IS ', segmentsArray)
+                //at insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                segmentsArray[currentSegmentIndex].stringValue = 'is'
+
+                //move pointer to next segment, create new object and insert 'after added', 
+                //need to skip 2 times, because when insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                currentSegmentIndex++//move to original segment eg 37
+                currentSegmentIndex++ //moves to next segment which is empty
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = 'after added'
+                //insert % sign at next segment
+                currentSegmentIndex++ //moves to next segment
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = '%'
+            }
+            else {//has prior arith operator.
+                console.log('AT AFTERADDED%, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
+                //e.g 5 x 20, so we put open bracket and 'is' in front of 20, 
+                //and 'after added' in next segment, and  '%' in segment after that,
+                //becomes 5 x (is 20 after added %
+
+                //first create an empty object and add to front of current segment element
+                segmentsArray.splice(currentSegmentIndex,0,{}) //insert empty object
+                console.log('AFTER SPLICE NEW OBJJECT INFRONT OF CURRENT OBJ, SEGMENTSARRAY IS ', segmentsArray)
+                //at insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                segmentsArray[currentSegmentIndex].stringValue = '(is'//insert 'from' with open bracket in front
+
+                //move pointer to next segment, create new object and insert 'to', 
+                //need to skip 2 times, because when insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                currentSegmentIndex++//move to original segment eg 37
+                currentSegmentIndex++ //moves to next segment
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = 'after added'
+                //insert % sign at next segment
+                currentSegmentIndex++ //moves to next segment
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = '%'
+            }
+        }// 
+        else
+        if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
+            console.log('AT AFTERADDED%, GOT TO SEGMENT HAS OPEN BRACKT')
+            //if has open bracket at start of segment, means user 
+            //typed it in, e.g 5 x (20 ,  we respect the ( bracket and add 'is'
+            //at after the bracket. we move the 20 to next segment and add 'is' to 
+            //current segment, so 5 x (20 becomes  5 x (is 20 after added ..., ie we add the 'is' to
+            //current segment andn move number forward one segment. this way, no matter how many
+            //open brackets there are in current segment, they are preserved as is.
+            //. e.g 5 x (((20 , we create a 
+            //new segment after current segment, move the 20 to it, and then append
+            //'is' to current segment, preservng how many open brackets there are as is
+            //. we then insert 'after added' at the segment after that, and a '%' in 
+            //segment after that.
+            //so e.g 2 x (((20 becomes    2 x (((is 20 after added ...%
+            
+
+            //firt need to extract number from the current segment, which may have
+            //e.g (((20
+             
+            let tempStr = segmentsArray[currentSegmentIndex].stringValue
+            //find index of first numeral then slice it from there to eostring
+            let indexOfFirstNumeral = tempStr.search(/[0-9]/)
+            console.log('AT AFTERADDED%, INDEX OF FIRSTNUMERAL IS ' + indexOfFirstNumeral)
+
+            //now slice from index to eostring
+            let numberToMove = tempStr.slice(indexOfFirstNumeral)//1st numeral to eostring
+            let portionToKeep = tempStr.slice(0,indexOfFirstNumeral)//exclusive of first numeral 
+
+            //update current segment with open brackets but without the numerals
+            segmentsArray[currentSegmentIndex].stringValue = portionToKeep
+            //then add 'from' to current segmnt
+            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + 'is'
+
+            //now create new segment and move sliced numeral to there
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = numberToMove
+
+            //create new segment and insert 'after added'
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = 'after added'
+            //insert % sign at next segment
+            currentSegmentIndex++ //moves to next segment
+            segmentsArray[currentSegmentIndex] = {}//new object
+            segmentsArray[currentSegmentIndex].stringValue = '%'
+            
+        }
+        else 
+        if(currentSegmentHasACloseBracketFlag) {//has a close bracket.
+            console.log('AT AFTERADDED%, GOT TO SEGMENT HAS CLOSE BRACKT')
+            //if has a close bracket, means user just entered a bracketed caluculation,
+            //e.g (5 x 20)  so we look for the start of the unit, ie the
+            //start of the (5 x 20) portion, and add a '(is' to it, move the 20 to next
+            //segment, and add 'after added' to segment after that, and % in segment after that.
+            //becomes (is(5 x 20) after added ...%
+
+            //find the segment with the open bracket for the unit
+            //e.g 23 x 35 x (((35 x 7) + 25)  means segmennt 8, if counting from l to r
+            let indexOfSegmentWithFirstOpenBracket = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfSegment
+            //find the char index of the opening bracket within the segment 8 
+            //which has 3 open brackets
+            let indexOfOpenBracketWithinSegment = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfOpenBracketWithinSegmentString
+            
+            //need to insert the word 'from' after the open bracket found
+            //need the segment index and open bracket index of that segment
+            let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
+            let strPortion1 = tempStr.slice(0,indexOfOpenBracketWithinSegment)//exclusive of end index char
+            let strPortion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defaults to eostring
+            //put the 2 portions back together, with '(is' in the middle
+            tempStr = strPortion1 + '(is' + strPortion2
+            //copy back to real segement string value
+            segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
+            
+            //now create object at next segment and add 'after added' to it
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {}//create
+            segmentsArray[currentSegmentIndex].stringValue = 'after added'
+            //insert % sign at next segment
+            currentSegmentIndex++ //moves to next segment
+            segmentsArray[currentSegmentIndex] = {}//new object
+            segmentsArray[currentSegmentIndex].stringValue = '%'
+        }
+    }//else is a number segment
+    
+      
+    //collate stirng from all segments, to return 
+    collatedString = collateStringsIntoOneString(segmentsArray)
+    console.log('COLLATED STRING IS: ', collatedString)
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+    
+}//method  after added %
+
+
+
+
+
+
+
+
+
+
+
+const processInputForAfterDeductedPercentKey = (newKeyInput) => {
+ 
+    //logic is same as 'after added %' key, 
+    //eg if unit is 37 becomes 'is 37 after deducted  %'
+    //if is  (32 x 57) becomes '(is (32 x 57) after deducted %
+    //if is  (57  becomes '(is 57 after deducted %
+    
+
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT AFTERDEDUCTED% INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
+
+    let currentSegmentHasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT AFTERDEDUCTED% INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
+
+    let currentSegmentHasACloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT AFTERDEDUCTED% INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
+    
+    let currentSegmentHasNoOpenOrCloseBracketFlag = ! /(\(|\))/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT AFTERDEDUCTED% INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
+    
+    let currentSegmentHasPriorArithOperator = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
+    console.log('AT AFTERDEDUCTED% INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
+    
+
+
+
+
+
+    //first make sure that there has been no previous percentage related
+    //operator in the whole calculatoion
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
+
+    if(wholeCalculationHasAPercentOperatorFlag) {
+        //has prior percentage operator, so no action,
+        //ignore input, return as is.
+
+        //collate stirng from all segments, to return as is
+        let collatedString = collateStringsIntoOneString(segmentsArray)
+        console.log('COLLATED STRING IS: ', collatedString)
+        return objectToReturn = {
+            screenMainTextLine1: collatedString,
+            screenMainTextLine2: 'answer',
+            screenMainTextLine3: ''
+        }
+    }
+
+
+
+
+    //if gets to here then has no previous percent operator in the line
+ 
+
+
+
+    //if current segment is NOT a number , ignore user key input
+    if( ! currentSegmentIsANumberFlag ){ //not a number segment
+        //ignore
+    }
+    else {//is a number segment, so proceed
+        if(currentSegmentHasNoOpenOrCloseBracketFlag) {
+            if( ! currentSegmentHasPriorArithOperator) {//no prior arith operator.
+                console.log('AT AFTERDEDUCTED%, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
+                //no priior arith operator, no closing or open bracket, 
+                //e.g 37 on its own, becomes 'is 37 after deducted ...'
+                // so we  just proceed to insert 'is' infront of this segment
+                //and 'after deducted' at the next segment, leaving current segment alone,
+                //and we add the % sign in segment after that.
+                
+
+                //first create an empty object and add to front of current segment element
+                segmentsArray.splice(currentSegmentIndex,0,{}) //insert empty object
+                console.log('AFTER SPLICE NEW OBJJECT INFRONT OF CURRENT OBJ, SEGMENTSARRAY IS ', segmentsArray)
+                //at insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                segmentsArray[currentSegmentIndex].stringValue = 'is'
+
+                //move pointer to next segment, create new object and insert 'after deducted', 
+                //need to skip 2 times, because when insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                currentSegmentIndex++//move to original segment eg 37
+                currentSegmentIndex++ //moves to next segment which is empty
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = 'after deducted'
+                //insert % sign at next segment
+                currentSegmentIndex++ //moves to next segment
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = '%'
+            }
+            else {//has prior arith operator.
+                console.log('AT AFTERDEDUCTED%, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
+                //e.g 5 x 20, so we put open bracket and 'is' in front of 20, 
+                //and 'after deducted' in next segment, and  '%' in segment after that,
+                //becomes 5 x (is 20 after deducted %
+
+                //first create an empty object and add to front of current segment element
+                segmentsArray.splice(currentSegmentIndex,0,{}) //insert empty object
+                console.log('AFTER SPLICE NEW OBJJECT INFRONT OF CURRENT OBJ, SEGMENTSARRAY IS ', segmentsArray)
+                //at insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                segmentsArray[currentSegmentIndex].stringValue = '(is'//insert 'from' with open bracket in front
+
+                //move pointer to next segment, create new object and insert 'to', 
+                //need to skip 2 times, because when insert new object, it moves current segment 1 space up
+                //so now, currnt segment is actually pointing at empty new object
+                currentSegmentIndex++//move to original segment eg 37
+                currentSegmentIndex++ //moves to next segment
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = 'after deducted'
+                //insert % sign at next segment
+                currentSegmentIndex++ //moves to next segment
+                segmentsArray[currentSegmentIndex] = {}//new object
+                segmentsArray[currentSegmentIndex].stringValue = '%'
+            }
+        }// 
+        else
+        if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
+            console.log('AT AFTERDEDUCTED%, GOT TO SEGMENT HAS OPEN BRACKT')
+            //if has open bracket at start of segment, means user 
+            //typed it in, e.g 5 x (20 ,  we respect the ( bracket and add 'is'
+            //at after the bracket. we move the 20 to next segment and add 'is' to 
+            //current segment, so 5 x (20 becomes  5 x (is 20 after deducted ..., ie we add the 'is' to
+            //current segment andn move number forward one segment. this way, no matter how many
+            //open brackets there are in current segment, they are preserved as is.
+            //. e.g 5 x (((20 , we create a 
+            //new segment after current segment, move the 20 to it, and then append
+            //'is' to current segment, preservng how many open brackets there are as is
+            //. we then insert 'after deducted' at the segment after that, and a '%' in 
+            //segment after that.
+            //so e.g 2 x (((20 becomes    2 x (((is 20 after deducted ...%
+            
+
+            //firt need to extract number from the current segment, which may have
+            //e.g (((20
+             
+            let tempStr = segmentsArray[currentSegmentIndex].stringValue
+            //find index of first numeral then slice it from there to eostring
+            let indexOfFirstNumeral = tempStr.search(/[0-9]/)
+            console.log('AT AFTERDEDUCTED%, INDEX OF FIRSTNUMERAL IS ' + indexOfFirstNumeral)
+
+            //now slice from index to eostring
+            let numberToMove = tempStr.slice(indexOfFirstNumeral)//1st numeral to eostring
+            let portionToKeep = tempStr.slice(0,indexOfFirstNumeral)//exclusive of first numeral 
+
+            //update current segment with open brackets but without the numerals
+            segmentsArray[currentSegmentIndex].stringValue = portionToKeep
+            //then add 'from' to current segmnt
+            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + 'is'
+
+            //now create new segment and move sliced numeral to there
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = numberToMove
+
+            //create new segment and insert 'after deducted'
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = 'after deducted'
+            //insert % sign at next segment
+            currentSegmentIndex++ //moves to next segment
+            segmentsArray[currentSegmentIndex] = {}//new object
+            segmentsArray[currentSegmentIndex].stringValue = '%'
+            
+        }
+        else 
+        if(currentSegmentHasACloseBracketFlag) {//has a close bracket.
+            console.log('AT AFTERDEDUCTED%, GOT TO SEGMENT HAS CLOSE BRACKT')
+            //if has a close bracket, means user just entered a bracketed caluculation,
+            //e.g (5 x 20)  so we look for the start of the unit, ie the
+            //start of the (5 x 20) portion, and add a '(is' to it, move the 20 to next
+            //segment, and add 'after deducted' to segment after that, and % in segment after that.
+            //becomes (is(5 x 20) after deducted ...%
+
+            //find the segment with the open bracket for the unit
+            //e.g 23 x 35 x (((35 x 7) + 25)  means segmennt 8, if counting from l to r
+            let indexOfSegmentWithFirstOpenBracket = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfSegment
+            //find the char index of the opening bracket within the segment 8 
+            //which has 3 open brackets
+            let indexOfOpenBracketWithinSegment = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfOpenBracketWithinSegmentString
+            
+            //need to insert the word 'from' after the open bracket found
+            //need the segment index and open bracket index of that segment
+            let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
+            let strPortion1 = tempStr.slice(0,indexOfOpenBracketWithinSegment)//exclusive of end index char
+            let strPortion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defaults to eostring
+            //put the 2 portions back together, with '(is' in the middle
+            tempStr = strPortion1 + '(is' + strPortion2
+            //copy back to real segement string value
+            segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
+            
+            //now create object at next segment and add 'after deducted' to it
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {}//create
+            segmentsArray[currentSegmentIndex].stringValue = 'after deducted'
+            //insert % sign at next segment
+            currentSegmentIndex++ //moves to next segment
+            segmentsArray[currentSegmentIndex] = {}//new object
+            segmentsArray[currentSegmentIndex].stringValue = '%'
+        }
+    }//else is a number segment
+    
+      
+    //collate stirng from all segments, to return 
+    collatedString = collateStringsIntoOneString(segmentsArray)
+    console.log('COLLATED STRING IS: ', collatedString)
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+    
+}//method  after deducted %
+
+
+
+
+
+
+
+
+
+
+
+
+
+const processInputForIfPercentIsKey = (newkeyinput) => {
+ 
+    //format: if 37% is 500 then 128% is 1950
+    //logic is similar to  %change key, insert the 'if' before
+    //the start of the current unit, 
+    //eg if unit is 37 becomes 'if 37% is 500 ...'
+    //if is  (32 x 57) becomes '(if (32 x 57)% is 500...
+    //if is  (57  becomes '(if 57% is 500 then ...
+    //then the 'then' part kicks in, the 'then' 
+    //button appears to take the 'then' part of this
+    //2 part action.
+
+ 
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT IF%IS INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
+
+    let currentSegmentHasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT IF%IS INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
+
+    let currentSegmentHasACloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT IF%IS INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
+    
+    let currentSegmentHasNoOpenOrCloseBracketFlag = ! /(\(|\))/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT IF%IS INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
+    
+    let currentSegmentHasPriorArithOperator = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
+    console.log('AT IF%IS INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
+    
+
+
+
+
+
+    //first make sure that there has been no previous percentage related
+    //operator in the whole calculatoion
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
 
     if(wholeCalculationHasAPercentOperatorFlag) {
         //has prior percentage operator, so no action,
@@ -1694,62 +2116,75 @@ const processInputForAfterAddedPercentKey = (newKeyInput) => {
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
             if( ! currentSegmentHasPriorArithOperator) {//no prior arith operator.
-                console.log('AT %CHANGE, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
+                console.log('AT IF%IS, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
                 //no priior arith operator, no closing or open bracket, 
-                //e.g 37 on its own, becomes 'from 37 to ...'
-                // so we  just proceed to insert 'from' infront of this segment
-                //and 'to' at the next segment, leaving current segment alone
-                
+                //e.g 37 on its own, becomes 'if 37% is 500'
+                // so we  just proceed to insert 'if' in front of this segment,
+                //move the number ie 37 to next segment and add % sign to same segment,
+                //then create and add 'is' to next segment
+                 
 
                 //first create an empty object and add to front of current segment element
-                segmentsArray.splice(currentSegmentIndex,0,{}) //insert empty object
+                segmentsArray.splice(currentSegmentIndex,0,{}) //insert new empty object
                 console.log('AFTER SPLICE NEW OBJJECT INFRONT OF CURRENT OBJ, SEGMENTSARRAY IS ', segmentsArray)
                 //at insert new object, it moves current segment 1 space up
                 //so now, currnt segment is actually pointing at empty new object
-                segmentsArray[currentSegmentIndex].stringValue = 'from'
+                segmentsArray[currentSegmentIndex].stringValue = 'if'
 
-                //move pointer to next segment, create new object and insert 'to', 
-                //need to skip 2 times, because when insert new object, it moves current segment 1 space up
-                //so now, currnt segment is actually pointing at empty new object
-                currentSegmentIndex++//move to original segment eg 37
-                currentSegmentIndex++ //moves to next segment
+                //now move to the segment with the numerls and add the % sign
+                //. this segment haas been pushed up 1 spot when we create the new
+                //segment element
+                currentSegmentIndex++//move up 1 spot to numerals segment
+                segmentsArray[currentSegmentIndex].stringValue += '%' //append the % sign
+
+                //move pointer to next segment, create new object and insert 'is', 
+                currentSegmentIndex++//move past original segment of 37
                 segmentsArray[currentSegmentIndex] = {}//new object
-                segmentsArray[currentSegmentIndex].stringValue = 'to'
+                segmentsArray[currentSegmentIndex].stringValue = 'is'
+
+
             }
             else {//has prior arith operator.
-                console.log('AT %CHANGE, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
-                //e.g 5 x 20, so we put open bracket and 'from' in front of 20, 
-                //becomes 5 x (from 20 to ...
+                console.log('AT IF%IS, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
+                //e.g 5 x 20, so we put open bracket and 'if' in front of 20, 
+                //becomes 5 x (if 20% is 550 ...
 
                 //first create an empty object and add to front of current segment element
                 segmentsArray.splice(currentSegmentIndex,0,{}) //insert empty object
                 console.log('AFTER SPLICE NEW OBJJECT INFRONT OF CURRENT OBJ, SEGMENTSARRAY IS ', segmentsArray)
                 //at insert new object, it moves current segment 1 space up
                 //so now, currnt segment is actually pointing at empty new object
-                segmentsArray[currentSegmentIndex].stringValue = '(from'//insert 'from' with open bracket in front
+                segmentsArray[currentSegmentIndex].stringValue = '(if'//insert 'if' with open bracket in front
 
-                //move pointer to next segment, create new object and insert 'to', 
-                //need to skip 2 times, because when insert new object, it moves current segment 1 space up
-                //so now, currnt segment is actually pointing at empty new object
-                currentSegmentIndex++//move to original segment eg 37
-                currentSegmentIndex++ //moves to next segment
+                //segment with number is now at currentsegment+1 because it was pushed up 1 spot
+                //by newly created segment
+            
+                //move pointer to next segment, which now holds the numerals, 
+                //then add % sign to end of numerals 
+                currentSegmentIndex++
+                segmentsArray[currentSegmentIndex].stringValue += '%'
+
+                //move pointer to next segment, create new object and insert 'is', 
+                //so now would have e.g 2 x (if 5% is ...
+                currentSegmentIndex++//move to next segment
                 segmentsArray[currentSegmentIndex] = {}//new object
-                segmentsArray[currentSegmentIndex].stringValue = 'to'
+                segmentsArray[currentSegmentIndex].stringValue = 'is'
+                
             }
         }// 
         else
         if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
-            console.log('AT %CHANGE, GOT TO SEGMENT HAS OPEN BRACKT')
+            console.log('AT IF%IS, GOT TO SEGMENT HAS OPEN BRACKT')
             //if has open bracket at start of segment, means user 
-            //typed it in, e.g 5 x (20 ,  we respect the ( bracket and add 'from'
-            //at after the bracket. we move the 20 to next segment and add 'from' to 
-            //current segment, so 5 x (20 becomes  5 x (from 20 to ..., ie we add the 'from' to
+            //typed it in, e.g 5 x (20 ,  we respect the ( bracket and insert 'if'
+            //at after the bracket. so we move the 20 to next segment and add 'if' to 
+            //current segment, so 5 x (20 becomes  5 x (if 20 is % ..., ie we add the 'if' to
             //current segment andn move number forward one segment. this way, no matter how many
             //open brackets there are in current segment, they are preserved as is.
             //. e.g 5 x (((20 , we create a 
             //new segment after current segment, move the 20 to it, and then append
-            //'from' to current segment, preservng how many open brackets there are as is
-            //so e.g 2 x (((20 becomes    2 x (((from 20 to ...
+            //'if' to current segment, preservng how many open brackets there are as is
+            //so e.g 2 x (((20 becomes    2 x (((if 20 is % ...
             
 
             //firt need to extract number from the current segment, which may have
@@ -1758,57 +2193,61 @@ const processInputForAfterAddedPercentKey = (newKeyInput) => {
             let tempStr = segmentsArray[currentSegmentIndex].stringValue
             //find index of first numeral then slice it from there to eostring
             let indexOfFirstNumeral = tempStr.search(/[0-9]/)
-            console.log('AT %CHANGE, INDEX OF FIRSTNUMERAL IS ' + indexOfFirstNumeral)
+            console.log('AT IF%IS, INDEX OF FIRSTNUMERAL IS ' + indexOfFirstNumeral)
 
             //now slice from index to eostring
             let numberToMove = tempStr.slice(indexOfFirstNumeral)
-            let portionToKeep = tempStr.slice(0,indexOfFirstNumeral)//exclusive of last char
-
-            //update current segment with open brackets but without the numerals
+            //slice the poriton to keep, which is before the numrals
+            let portionToKeep = tempStr.slice(0,indexOfFirstNumeral)//exclusive of first numeral
+            //update current segment with the portion to keep, ie the open brackets
             segmentsArray[currentSegmentIndex].stringValue = portionToKeep
-            //then add 'from' to current segmnt
-            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + 'from'
+            //then append 'is' to the poriton t keep, at current segmnt
+            segmentsArray[currentSegmentIndex].stringValue += 'if'
 
             //now create new segment and move sliced numeral to there
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {} //create
             segmentsArray[currentSegmentIndex].stringValue = numberToMove
+            //add % sign to the numerals
+            segmentsArray[currentSegmentIndex].stringValue += '%'
 
-            //create new segment and insert 'to'
+            //create new segment and insert 'is'
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {} //create
-            segmentsArray[currentSegmentIndex].stringValue = 'to'
+            segmentsArray[currentSegmentIndex].stringValue = 'is'
             
         }
         else 
         if(currentSegmentHasACloseBracketFlag) {//has a close bracket.
-            console.log('AT %CHANGE, GOT TO SEGMENT HAS CLOSE BRACKT')
+            console.log('AT IF%IS, GOT TO SEGMENT HAS CLOSE BRACKT')
             //if has a close bracket, means user just entered a bracketed caluculation,
             //e.g (5 x 20)  so we look for the start of the unit, ie the
-            //start of the (5 x 20) portion, and add a '(from' to it,
-            //becomes (from(5 x 20) to ...
+            //start of the (5 x 20) portion, and add a '(if' to it,
+            //becomes (if(5 x 20)% is  ...
 
-            //find the segment with the open bracket for the unit
+            //find the segment with the first open bracket for the unit
             //e.g 23 x 35 x (((35 x 7) + 25)  means segmennt 8, if counting from l to r
             let indexOfSegmentWithFirstOpenBracket = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfSegment
             //find the char index of the opening bracket within the segment 8 
             //which has 3 open brackets
             let indexOfOpenBracketWithinSegment = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfOpenBracketWithinSegmentString
             
-            //need to insert the word 'from' after the open bracket found
+            //need to insert the word '(if' before the open bracket found
             //need the segment index and open bracket index of that segment
             let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
             let strPortion1 = tempStr.slice(0,indexOfOpenBracketWithinSegment)//exclusive of end index char
             let strPortion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defaults to eostring
-            //put the 2 portions back together, with '(from' in the middle
-            tempStr = strPortion1 + '(from' + strPortion2
+            //put the 2 portions back together, with '(if' in the middle, before first open bracket of unit
+            tempStr = strPortion1 + '(if' + strPortion2
             //copy back to real segement string value
             segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
+            //add % sign to current segment with closing bracket
+            segmentsArray[currentSegmentIndex].stringValue += '%'
             
-            //now create object at next segment and add 'to' to it
+            //now create object at next segment and add 'is' to it
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {}//create
-            segmentsArray[currentSegmentIndex].stringValue = 'to'
+            segmentsArray[currentSegmentIndex].stringValue = 'is'
         }
     }//else is a number segment
     
@@ -1822,7 +2261,7 @@ const processInputForAfterAddedPercentKey = (newKeyInput) => {
         screenMainTextLine3: ''
     }
     
-}//method  after added %
+}//method  if % is key 
 
 
 
@@ -1831,6 +2270,45 @@ const processInputForAfterAddedPercentKey = (newKeyInput) => {
 
 
 
+const processInputForThenKey = (newkeyinput) => {
+
+
+    //when this key is pressed, line is in format of:
+    //if 25% is 258 
+    //so move to next segment and add 'then', becomes
+    //'if 25% iss 258 then'
+
+
+    //move to next segment and insert 'then'
+    currentSegmentIndex++
+    segmentsArray[currentSegmentIndex] = {}//create 
+    segmentsArray[currentSegmentIndex].stringValue = 'then'
+
+    //move to next segment and add the "%" sign
+    currentSegmentIndex++
+    segmentsArray[currentSegmentIndex] = {}//create 
+    segmentsArray[currentSegmentIndex].stringValue = '%'
+
+    //move to next segment and add 'would be'
+    currentSegmentIndex++
+    segmentsArray[currentSegmentIndex] = {}//create 
+    segmentsArray[currentSegmentIndex].stringValue = 'would be'
+
+    //move pointer back to point to the '%' sign segment
+    currentSegmentIndex--
+
+    
+
+    //collate stirng from all segments, to return 
+    collatedString = collateStringsIntoOneString(segmentsArray)
+    console.log('COLLATED STRING IS: ', collatedString)
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+
+}
 
 
 
@@ -1979,12 +2457,5 @@ const collateStringsIntoOneString = (arr) => {//arr is array of objects
     return collatedString
 }
 
-
-
-
-
-
-
-export const f = () => {
-
-}
+ 
+ 

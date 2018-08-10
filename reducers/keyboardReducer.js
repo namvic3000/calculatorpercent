@@ -1,9 +1,9 @@
-import {UPDATE_CURRENT_OPERAND_NUMBER} from '../actions/keyboardActions'
+import {UPDATE_IF_PERCENT_IS_BUTTON_STATUS} from '../actions/keyboardActions'
 
 
 
 let initialState = {
-    currentOperandNumber: 1
+    ifPercentIsButtonIsPressed: false
 }
 
 
@@ -14,10 +14,10 @@ const keyboardReducer = (state = initialState, action) => {
     console.log('got to KEYBOARDREDUCER, action.payload is ', action.payload)
     
     switch(action.type) {
-        case UPDATE_CURRENT_OPERAND_NUMBER: 
+        case UPDATE_IF_PERCENT_IS_BUTTON_STATUS: 
             return {
                 ...state,
-                currentOperandNumber: action.payload.operandNumber
+                ifPercentIsButtonIsPressed: action.payload.status
             }
             break
         
