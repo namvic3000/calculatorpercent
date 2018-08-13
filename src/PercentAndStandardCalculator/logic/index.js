@@ -188,10 +188,10 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
     console.log('GOT TO POINT1000')
-    calculateResultOfWholeCalculation()
+    let result = calculateResultOfWholeCalculation()
     return {
         screenMainTextLine1: '1000 point',
-        screenMainTextLine2: 'to to test 100 point',
+        screenMainTextLine2: '=' + result,
         screenMainTextLine3: 'to to test 100 point'
     }
 
@@ -382,36 +382,23 @@ const processInputFor0To9Keys = (newKeyInput) => {
     let isEmptySegmentFlag = segmentsArray[currentSegmentIndex].stringValue.length <= 0
     console.log('AT PROCESS 0-9, ISEMPTYSEGMENT FLAG IS ' + isEmptySegmentFlag)
     
-    let hasOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT PROCESS 0-9, HAS OPENBRACKET FLAG IS ' + hasOpenBracketFlag)
+    let currentSegmentHasOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS 0-9, HAS OPENBRACKET FLAG IS ' + currentSegmentHasOpenBracketFlag)
     
-    let hasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT PROCESS 0-9, HAS CLOSE BRACKET FLAG IS ' + hasCloseBracketFlag)
+    let currentSegmentHasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS 0-9, HAS CLOSE BRACKET FLAG IS ' + currentSegmentHasCloseBracketFlag)
     
-    let hasCloseSquareBracketFlag = /\]/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT PROCESS 0-9, HAS CLOSE ] BRACKET FLAG IS ' + hasCloseSquareBracketFlag)
+    let currentSegmentHasCloseSquareBracketFlag = /\]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT PROCESS 0-9, HAS CLOSE ] BRACKET FLAG IS ' + currentSegmentHasCloseSquareBracketFlag)
     
-    // let hasOpenSquareBracketFlag = /\[/.test(segmentsArray[currentSegmentIndex].stringValue)
-    // console.log('AT PROCESS 0-9, HAS OPEN [ BRACKET FLAG IS ' + hasOpenSquareBracketFlag)
+    let hasPriorOpenSquareBracketFlag = /\[/.test(collateStringsIntoOneString(segmentsArray))
+    console.log('AT PROCESS 0-9, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
+    
+    // let hasPriorOpenSquareBracketFlag = /\[/.test(segmentsArray[currentSegmentIndex].stringValue)
+    // console.log('AT PROCESS 0-9, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
     
     let hasPercentSignFlag = /\%/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT PROCESS 0-9, HASPERCENTSIGN FLAG IS ' + hasPercentSignFlag)
-
-
-
-
-
-    // //if in middle of percentof calcualtion, e.g 
-    // //3 x 20% of ..inputhere,  or (3 x 2)% of ..inputhere,  or 3x [(5 x 7)% of .inputhere..
-    // if(currentCalculationType === 'percentof') {
-    //     //
-    // }//percentof
-
-
-
-
-
-
 
 
 
@@ -424,23 +411,12 @@ const processInputFor0To9Keys = (newKeyInput) => {
     }
 
 
-
-
-
-
-
-
-
     //if segment is a number
     if(currentSegmentIsANumberFlag) {
         console.log('AT PROCESS0-9KEYS, GOT TO CURENTSEGMENTIS A NUMBER')
 
-
-
-
-
         //if has closing bracket, insert number before that closing bracket
-        if(hasCloseBracketFlag) {
+        if(currentSegmentHasCloseBracketFlag) {
             //if already has closing bracket, e.g 55) can only
             //enter  more ) if still not closed, 
             //but can not enter more numbers after close bracket input.
@@ -453,32 +429,50 @@ const processInputFor0To9Keys = (newKeyInput) => {
             // //copy back to real string
             // segmentsArray[currentSegmentIndex].stringValue = tempStr
         }
-        else
-            if(hasPercentSignFlag) {
+        else 
+            if(currentSegmentHasCloseSquareBracketFlag) {
                 //if has percent sign, add input before the percent sign
-                 // //get the string, minus the last char whichis the ) bracket
-                 
-                let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last char
-                //append key value and reinsert the )
-                tempStr = tempStr + newKeyInput + '%'
-                //copy back to real string
-                segmentsArray[currentSegmentIndex].stringValue = tempStr
+                 // //get the string, minus the last char whichis the  bracket
+                if(hasPercentSignFlag) {
+                    //e.g 2 x [23 add 23%] into 2 x [23 add 235%], need to remove both %] chars
+                    //add in new numeral, and add back in '%]' chars
+                    let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-2)//everything except the '%]' 2 chars
+                    //append key value and reinsert the )
+                    tempStr = tempStr + newKeyInput + '%]'
+                    //copy back to real string
+                    segmentsArray[currentSegmentIndex].stringValue = tempStr
+                }
+                else {//no % sign, just ] bracket only, 1 char
+                    let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last char
+                    //append key value and reinsert the )
+                    tempStr = tempStr + newKeyInput + ']'
+                    //copy back to real string
+                    segmentsArray[currentSegmentIndex].stringValue = tempStr
+                }
             
             }
-            else if(hasCloseSquareBracketFlag) {
-                //if has percent sign, add input before the percent sign
-                 // //get the string, minus the last char whichis the ) bracket
-                 
-                let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last char
-                //append key value and reinsert the )
-                tempStr = tempStr + newKeyInput + ']'
-                //copy back to real string
-                segmentsArray[currentSegmentIndex].stringValue = tempStr
-            
-            }
-            else {//either has open bracket, or no brackets, append the key value string
-                segmentsArray[currentSegmentIndex].stringValue += newKeyInput
-            }
+            else
+                if(hasPriorOpenSquareBracketFlag && (!currentSegmentHasCloseSquareBracketFlag) && hasPercentSignFlag){
+                    //add number before the % sign
+                    tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last % char
+                    //append key value and reinsert the )
+                    tempStr = tempStr + newKeyInput + '%'
+                    //copy back to real string
+                    segmentsArray[currentSegmentIndex].stringValue = tempStr
+                }
+                else
+                    if((!hasPriorOpenSquareBracketFlag) && (!currentSegmentHasCloseSquareBracketFlag)&&(hasPercentSignFlag)) {
+                        //if has no open and close square bracket, and has % sign, then insert before the %sign
+                        //add number before the % sign
+                        tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last % char
+                        //append key value and reinsert the )
+                        tempStr = tempStr + newKeyInput + '%'
+                        //copy back to real string
+                        segmentsArray[currentSegmentIndex].stringValue = tempStr
+                    }
+                    else {//no square brackt, either has open bracket, or no brackets, append the numaeral key value string
+                        segmentsArray[currentSegmentIndex].stringValue += newKeyInput
+                    }
 
     }
     else {//curr segent is ann operator
@@ -493,47 +487,45 @@ const processInputFor0To9Keys = (newKeyInput) => {
 
     //if has no open or close bracket, and has '[' bracket, 
     //then add a ] bracket at the end
-    // if (currentCalculationType === 'percentof') {
-        console.log('GOT TO PERCENTOF CALCTYPE')
-        let thisSegmentHasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT INSIDE %OF CALC, HAS CLOSE BRACKET FLAG IS ' + thisSegmentHasCloseBracketFlag)
+    console.log('GOT TO PERCENTOF CALCTYPE')
+    let thisSegmentHasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT INSIDE %OF CALC, HAS CLOSE BRACKET FLAG IS ' + thisSegmentHasCloseBracketFlag)
+    
+    // let thisSegmentHasOpenBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    // console.log('AT INSIDE %OF CALC, HAS OPEN BRACKET FLAG IS ' + thisSegmentHasOpenBracketFlag)
         
-        let thisSegmentHasOpenBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT INSIDE %OF CALC, HAS OPEN BRACKET FLAG IS ' + thisSegmentHasOpenBracketFlag)
-         
-        let hasPriorOpenSquareBracketFlag = /\[/.test(collateStringsIntoOneString(segmentsArray))
-        console.log('AT INSIDE %OF CALC, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
-        
-        let alreadyHasPriorCloseSquareBracketFlag = /\]/.test(collateStringsIntoOneString(segmentsArray))
-        console.log('AT INSIDE %OF CALC, HAS CLOSE ] BRACKET FLAG IS ' + alreadyHasPriorCloseSquareBracketFlag)
-        
-        
-        if( hasPriorOpenSquareBracketFlag && (! alreadyHasPriorCloseSquareBracketFlag)) {
-            console.log('GOT TO PERCENTOF CALCTYPE, HAS  PRIIOR OPEN [ BRACKET')
-            //if nett value is 0, in cases of 23 x ([(20 x 5)% of inputhere]
-            //we can insert the ] bracket after the number if () nettvalue is 0. 
-            //dont  insert if nettvalue is 0, e.g 23 x ([(20 x 5)% of (57   ie 2nd operand is
-            //incomplete, therefore nettvalue of () is not 0.
-            let tempStr = collateStringsIntoOneString(segmentsArray)
-            let indexOfOpenSquareBracket = tempStr.search(/\[/)
-            if(indexOfOpenSquareBracket === -1) indexOfOpenSquareBracket = 0
-            let nettValueOfParenthesis = getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
-            console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
-            if(nettValueOfParenthesis === 0) {
-                //if not already added on previous inputs, then add the ] close square bracket
-                //so it is e.g 23 x ([(25 x 5)% of 35]
-                //add square bracket at the end if not already present
-                let strLen = segmentsArray[currentSegmentIndex].stringValue.length
-                let lastChar = segmentsArray[currentSegmentIndex].stringValue[strLen -1]
-                console.log('LAST CHAR IN SEGMENT IS ' + lastChar)
-                if(lastChar !== ']') {
-                    segmentsArray[currentSegmentIndex].stringValue += ']'
-                }
+    // let hasPriorOpenSquareBracketFlag = /\[/.test(collateStringsIntoOneString(segmentsArray))
+    // console.log('AT INSIDE %OF CALC, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
+    
+    let alreadyHasPriorCloseSquareBracketFlag = /\]/.test(collateStringsIntoOneString(segmentsArray))
+    console.log('AT INSIDE %OF CALC, HAS CLOSE ] BRACKET FLAG IS ' + alreadyHasPriorCloseSquareBracketFlag)
+    
+    
+    if( hasPriorOpenSquareBracketFlag && (! alreadyHasPriorCloseSquareBracketFlag)) {
+        console.log('GOT TO PERCENTOF CALCTYPE, HAS  PRIIOR OPEN [ BRACKET')
+        //if nett value is 0, in cases of 23 x ([(20 x 5)% of inputhere]
+        //we can insert the ] bracket after the number if () nettvalue is 0. 
+        //dont  insert if nettvalue is 0, e.g 23 x ([(20 x 5)% of (57   ie 2nd operand is
+        //incomplete, therefore nettvalue of () is not 0.
+        let tempStr = collateStringsIntoOneString(segmentsArray)
+        let indexOfOpenSquareBracket = tempStr.search(/\[/)
+        if(indexOfOpenSquareBracket === -1) indexOfOpenSquareBracket = 0
+        let nettValueOfParenthesis = getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
+        console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
+        if(nettValueOfParenthesis === 0) {
+            //if not already added on previous inputs, then add the ] close square bracket
+            //so it is e.g 23 x ([(25 x 5)% of 35]
+            //add square bracket at the end if not already present
+            let strLen = segmentsArray[currentSegmentIndex].stringValue.length
+            let lastChar = segmentsArray[currentSegmentIndex].stringValue[strLen -1]
+            console.log('LAST CHAR IN SEGMENT IS ' + lastChar)
+            if(lastChar !== ']') {
+                segmentsArray[currentSegmentIndex].stringValue += ']'
             }
-    
-        }//if has prior open [ bracket
-    
-    // }//if percentof
+        }
+
+    }//if has prior open [ bracket
+
     
     //collate stirng from all segments, to return     
     let collatedString = collateStringsIntoOneString(segmentsArray)
@@ -740,6 +732,10 @@ const processInputForOpenBracketKey = (newKeyInput) => {
     let currentSegmentIsAnArithOrPercentOperatorFlag = /(\+|-|x|÷|of|add|deduct|to|is|then|deducted|added)/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
     console.log('AT PROCESS BRACKET OPEN, CURENTSEGENT IS A OPERATOR FLAG IS ' + currentSegmentIsAnArithOrPercentOperatorFlag)
     
+    let currentSegmentHasPercentSignFlag = /\%/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
+
+
     let currentSegmentAlreadyHasOpenBracket = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
     
     let isEmptySegmentFlag = segmentsArray[currentSegmentIndex].stringValue.length <= 0
@@ -768,32 +764,52 @@ const processInputForOpenBracketKey = (newKeyInput) => {
     }
 
 
-    //if it already has an ( then it is ok to add more ) to same segmnt
-    if(currentSegmentAlreadyHasOpenBracket) {
-        //just add another bracket, dont add at next segment but
-        //add at this current segment, so this segment may have many
-        //open brackets
+    //if current segment is a number, cant add anymore open brackets after number is present
+    if(currentSegmentIsANumberFlag) {
+        //return data as is, unchanged
 
-        //if less than 2 open brackets then allow to insert more
-        if(numberOfTotalOpenBracketsOutstandingInWholeArray > -2) {
-            segmentsArray[currentSegmentIndex].stringValue += '('
+        //collate stirng from all segments, to return 
+        collatedString = collateStringsIntoOneString(segmentsArray)
+
+        return objectToReturn = {
+            screenMainTextLine1: collatedString,
+            screenMainTextLine2: 'answer',
+            screenMainTextLine3: ''
         }
     }
-    else// only add ( to next segment if currentn segment is an operator
-        if(currentSegmentIsAnArithOrPercentOperatorFlag) {
-            //ok, move to next segment then add open bracket
-            //NOTE: an open bracket is included in operator search,
-            //so if already has a open bracket or more, ok to add on.
-            currentSegmentIndex++
-            segmentsArray[currentSegmentIndex] = {}//create new element
-            segmentsArray[currentSegmentIndex].stringValue = '('
+
+
+    //if current segment is an operator, move to next segment and add a open bracket (
+    if(currentSegmentIsAnArithOrPercentOperatorFlag) {
+        //move to next segment then add open bracket
+        //NOTE: an open bracket is included in operator search,
+        //so if already has a open bracket or more, ok to add on.
+        currentSegmentIndex++
+        segmentsArray[currentSegmentIndex] = {}//create new element
+        segmentsArray[currentSegmentIndex].stringValue = '('
+    }
+    else 
+        if(currentSegmentAlreadyHasOpenBracket) {
+            //just add another bracket, dont add at next segment but
+            //add at this current segment, so this segment may have many
+            //open brackets
+
+            //if less than 2 open brackets then allow to insert more
+            if(numberOfTotalOpenBracketsOutstandingInWholeArray > -2) {
+                segmentsArray[currentSegmentIndex].stringValue += '('
+            }
         }
-        else { // is not an operator, is a number
-            //if is ignored, cant put bracket if already number inn segmnt
-        }
+        else 
+            if(currentSegmentHasPercentSignFlag) {//empty % sign, cant be a numbered % sign, ie % , cant be 5%
+                //e.g 23 add (25% x 5) when should be 23 add (25 x 5)%, so we remove
+                //remove the % sign before we add the ( before the number 25
+
+                //add the ( open bracket, now is (%
+                segmentsArray[currentSegmentIndex].stringValue = '(' + segmentsArray[currentSegmentIndex].stringValue 
+                //now remove the % sign at the end, becomes (
+                segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
+            }
  
-
-
 
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
@@ -840,25 +856,16 @@ const processInputForCloseBracketKey = (newKeyInput) => {
     console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT HAS PRIOR [ SQUARE BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
 
     //first scan array and determine nett value of brackets
-    let collatedString = collateStringsIntoOneString(segmentsArray)
-    let tempArr = collatedString.match(/\(/g) || []//if not found
-    let numberOfOpenBrackets = tempArr.length
-    // let numberOfOpenBrackets = (collatedString.match(/\(/g))
-    
-    
-    // let numberOfCloseBrackets = collatedString.match(/\)/g).length
-    tempArr = collatedString.match(/\)/g) || []  
-    numberOfCloseBrackets = tempArr.length
-    
-    let nettValue = numberOfCloseBrackets - numberOfOpenBrackets
-
+    let nettValue = getParenthesesNetValueFromString(collateStringsIntoOneString(segmentsArray))
     console.log('AT PROCESS BRACKET CLOSE, NETTVALUE OF BRACKETS IS  ' + nettValue)
      
+    let hasPriorPercentCalculationWithPercentSignInOperand2 = /add|deduct|added|deducted|then/.test(collateStringsIntoOneString(segmentsArray))
 
-    //if segment has a number, no open brackets, and -1 or less nett bracket,
+    //if segment has a number,segment has no open brackets, and -1 or less nett bracket,
     //then ok to proceed and add close bracket
     if(currentSegmentIsANumberFlag && (! hasAnOpenBracketFlag) && (nettValue <= -1)) {
         segmentsArray[currentSegmentIndex].stringValue += ')'
+        
     }
 
 
@@ -882,11 +889,25 @@ const processInputForCloseBracketKey = (newKeyInput) => {
         if(nettValueOfParenthesis === 0) {//all open bracketss within open square bracket are now closed
             //now add the ] closing square bracket if not already exists
             if( ! /\]/.test(collateStringsIntoOneString(segmentsArray))) {//if not exist
-                segmentsArray[currentSegmentIndex].stringValue += ']'
+                //if is a 'add' or 'dedduct' or 'if' or 'added' or 'deducted' then add a '%]'
+                if(/add|deduct|added|deducted|is/.test(collateStringsIntoOneString(segmentsArray))) {
+                    segmentsArray[currentSegmentIndex].stringValue += '%]'
+                }
+                else {//no % sign in ooperand2, ie %of, outof, %change, if%is
+                    segmentsArray[currentSegmentIndex].stringValue += ']'
+                }
             }
         }
     }
-
+    else {//if no prior square braket, and is a percent calcultion, and nett parenthesis is 0, then add % sign
+        
+        //if gets here, means no prior square bracket, if is a percent calc, then it is a simpleone
+        //without square brackets, ie without arith operators existing
+        if(hasPriorPercentCalculationWithPercentSignInOperand2 && (getParenthesesNetValueFromString(collateStringsIntoOneString(segmentsArray))===0)) {
+            //add the % sign , bracket close added with nett value of 0
+            segmentsArray[currentSegmentIndex].stringValue += '%'
+        }
+    }
 
 
 
@@ -1122,142 +1143,7 @@ const processInputForPercentOfKey = (newKeyInput) => {
 
 
 
-
-const PREVprocessInputForOutOfKey = (newKeyInput) => {
  
-    //logic is similar to %of key.
-    //1. number by it self, no  prior arith operators, e.g
-    // 35 out ouf 37, no need for inserting open bracket
-    //2. number has priior arith operator, need to  insert bracket
-    //so 35 x 37 becomes 35 x (37 out of...
-    //3. has an open bracket e.g (35 , no need for inserting
-    //bracket
-    //4. has close bracket e.g (35 x37) becomes ((35 x 37) out of ..
-
-
-
-    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT OUTOF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
-
-    let currentSegmentHasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT OUTOF INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
-
-    let currentSegmentHasACloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT OUTOF INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
-    
-    let currentSegmentHasNoOpenOrCloseBracketFlag = ! /(\(|\))/.test(segmentsArray[currentSegmentIndex].stringValue)
-    console.log('AT OUTOF INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
-    
-    let currentSegmentHasPriorArithOperator = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
-    console.log('AT OUTOF INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
-    
-
-
-
-
-
-
-    //first make sure that there has been no previous percentage related
-    //operator in the whole calculatoion
-    let collatedString = collateStringsIntoOneString(segmentsArray)
-    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
-
-    if(wholeCalculationHasAPercentOperatorFlag) {
-        //has prior percentage operator, so no action,
-        //ignore input, return as is.
-
-        //collate stirng from all segments, to return 
-        let collatedString = collateStringsIntoOneString(segmentsArray)
-        console.log('COLLATED STRING IS: ', collatedString)
-        return objectToReturn = {
-            screenMainTextLine1: collatedString,
-            screenMainTextLine2: 'answer',
-            screenMainTextLine3: ''
-        }
-    }
-
-
-
-
-    //if gets to here then has no previous percent operator in the line
- 
-
-
-
-
-
-    //if current segment is not a number one, ignore user key input
-    if( ! currentSegmentIsANumberFlag ){ //not a number segment
-        //ignore
-    }
-    else {//is a number segment, so proceed
-        if(currentSegmentHasNoOpenOrCloseBracketFlag) {
-            if( ! currentSegmentHasPriorArithOperator) {//no prior arith operator.
-                console.log('AT OUTOF, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
-                //no priior arith operator, no closing or open bracket,
-                // so we  just proceed to add 'out of' portion. e.g 37 out of 38
-                
-                //add 'out of' into next segment
-                currentSegmentIndex++
-                segmentsArray[currentSegmentIndex] = {} //create
-                segmentsArray[currentSegmentIndex].stringValue = 'out of'
-            }
-            else {//has prior arith operator.
-                console.log('AT OUTOF, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
-                //e.g 5 x 20, so we put open brack in front of 20, 
-                //becomes 5 x (20 out of ...
-    
-                //put ( in front of current segment
-                segmentsArray[currentSegmentIndex].stringValue = '(' + segmentsArray[currentSegmentIndex].stringValue
-                //add 'out of' into next segment
-                currentSegmentIndex++
-                segmentsArray[currentSegmentIndex] = {} //create
-                segmentsArray[currentSegmentIndex].stringValue = 'out of'
-            }
-        }//if no open or close bracket
-        else
-        if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
-            console.log('AT OUTOF, GOT TO SEGMENT HAS OPEN BRACKT')
-            //if has open bracket at start of segment, means user 
-            //typed it in, e.g 5 x (20 , we dont put any brackets in,
-            //just proceed with the out of portion, becomes 5 x (20 out of ...
-            
-            //add 'out of' into next segment
-            currentSegmentIndex++
-            segmentsArray[currentSegmentIndex] = {} //create
-            segmentsArray[currentSegmentIndex].stringValue = 'out of'
-        }
-        else 
-        if(currentSegmentHasACloseBracketFlag) {//has a close bracket.
-            console.log('AT OUTOF, GOT TO SEGMENT HAS CLOSE BRACKT')
-            //if has a close bracket, means user just entered a bracketed caluculation,
-            //e.g (5 x 20)  so we look for the start of the unit, ie the
-            //start of the (5 x 20) portion, and add a open bracket to it,
-            //becomes ((5 x 20) out of ...
-
-            let indexOfSegmentWithFirstOpenBracket = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfSegment
-            //insert a ( at the start of the found segment with first open bracket
-            segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = '(' + segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
-            
-            //add 'out of' into next segment
-            currentSegmentIndex++
-            segmentsArray[currentSegmentIndex] = {} //create
-            segmentsArray[currentSegmentIndex].stringValue = 'out of'
-        }
-    }//else is a number segment
-    
-      
-    //collate stirng from all segments, to return 
-    collatedString = collateStringsIntoOneString(segmentsArray)
-    console.log('COLLATED STRING IS: ', collatedString)
-    return objectToReturn = {
-        screenMainTextLine1: collatedString,
-        screenMainTextLine2: 'answer',
-        screenMainTextLine3: ''
-    }
-    
-}
-
 
 
 const processInputForOutOfKey = (newkeyinput) => {
@@ -1432,12 +1318,10 @@ const processInputForOutOfKey = (newkeyinput) => {
 
             }
             
-            //add the % sign at end of this segmnt and 'of' in the next segment
-            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
-            //add 'of' into next segment
+            //add 'out of' into next segment
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {} //create
-            segmentsArray[currentSegmentIndex].stringValue = 'of'
+            segmentsArray[currentSegmentIndex].stringValue = 'out of'
     
 
         }
@@ -1460,7 +1344,7 @@ const processInputForOutOfKey = (newkeyinput) => {
 
 
 
-const processInputForAddPercentKey = (newKeyInput) => {
+const oldprocessInputForAddPercentKey = (newKeyInput) => {
  
     //logic is similar to %of and outof keys.
     //1. number by it self, no  prior arith operators, e.g
@@ -1618,6 +1502,220 @@ const processInputForAddPercentKey = (newKeyInput) => {
 
 
 
+
+
+
+
+
+const processInputForAddPercentKey = (newkeyinput) => {
+
+    //to get valid '% of' input, current segment must be a
+    //number, number with open bracket, or numbr with close bracket at end.
+    //e.g   367% of,   or (5 x 63)% of .. , or (55% of ..
+    //so 
+    //1. must be a number with no open or close bracket, e.g 150 x 367% of .. , 
+    //.In this case we put an open bracket in, segment becomes 150 x (367% of ...)
+    //2. number  e.g 20 with open bracket, e.g 150 x (20% of .. ,means user already inserted 
+    //open bracket in front of the 20, we dont need to put in another open bracket.
+    //3. number e.g 20 with closing bracket e.g (150 x 20)% of ..., means
+    //we go back to before (150 portion and add open bracket in, becomes
+    //((150 x 20)% of ...
+
+    //summary: so current segment must have a 0-9 number in it,
+    //1. if current segment has no open or close bracket in it, 
+    //and there is prior arith operator e.g 5 x 20%, we put
+    //an open bracket in front of the 20, becomes 5 x (20% of ...
+    //If there is no prior arith operator, e.g just 20 then we
+    //dont put a bracket in frontn of 20, so becomes 20% of ...
+    //2. if current segment has a closing bracket at end of it, e.g (5 x 20)%,
+    //ie closeing bracket after 20, we go back to in front of the unit,
+    //unit is the (5 x 20) portion, and insert an open bracket in front of it
+    //, becomes ((5 x 20)% of ...
+    //3. if current segmnt as an open bracket in front of it, e.g 5 x (20% of ...
+    //open bracket in front of the 20, we dont put any brackets in, we just add
+    //the '% of ' portion as per normal
+
+
+
+    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
+
+    let currentSegmentHasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT %OF INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
+
+    let currentSegmentHasACloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT %OF INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
+    
+    let currentSegmentHasNoOpenOrCloseBracketFlag = ! /(\(|\))/.test(segmentsArray[currentSegmentIndex].stringValue)
+    console.log('AT %OF INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
+    
+    let currentSegmentHasPriorArithOperator = /(\+|-|x|÷)/.test(collateStringsIntoOneString(segmentsArray))
+    console.log('AT %OF INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
+    
+
+
+
+
+    //first make sure that there has been no previous percentage related
+    //operator in the whole calculatoion
+    let collatedString = collateStringsIntoOneString(segmentsArray)
+    let wholeCalculationHasAPercentOperatorFlag = /(of|add|deduct|to|is|then|deducted|added)/.test(collatedString)//returns a boolean
+
+    if(wholeCalculationHasAPercentOperatorFlag) {
+        //has prior percentage operator, so no action,
+        //ignore input, return as is.
+
+        //collate stirng from all segments, to return 
+        let collatedString = collateStringsIntoOneString(segmentsArray)
+        console.log('COLLATED STRING IS: ', collatedString)
+        return objectToReturn = {
+            screenMainTextLine1: collatedString,
+            screenMainTextLine2: 'answer',
+            screenMainTextLine3: ''
+        }
+    }
+
+
+
+    
+    //if gets to here then has no previous percent operator in the line
+ 
+    //if current segment is not a number one, ignore user key input
+    if( ! currentSegmentIsANumberFlag ){ //not a number segment
+        //ignore
+    }
+    else {//is a number segment, so proceed
+        if(currentSegmentHasNoOpenOrCloseBracketFlag) {
+            if( ! currentSegmentHasPriorArithOperator) {//no prior arith operator.
+                //25 x ((23 + 10% ... becomes 25 x ((23 + [10% of ...
+                //or 25 becomes 25% of ...
+                console.log('AT %OF, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
+                //no priior arith operator, no closing or open bracket,
+                // so we  just proceed to add '% of' portion
+                
+                //add 'outof' into next segment
+                currentSegmentIndex++
+                segmentsArray[currentSegmentIndex] = {} //create
+                segmentsArray[currentSegmentIndex].stringValue = 'add'
+                //add % sign to next segmet
+                currentSegmentIndex++
+                segmentsArray[currentSegmentIndex] = {} //create
+                segmentsArray[currentSegmentIndex].stringValue = '%'
+            }
+            else {//has prior arith operator.
+                console.log('AT %OF, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
+                //e.g 5 x 20, so we put open brack in front of 20, 
+                //becomes 5 x (20% of ...
+    
+                //put ( in front of current segment
+                segmentsArray[currentSegmentIndex].stringValue = '[' + segmentsArray[currentSegmentIndex].stringValue
+                //add 'out of' into next segment
+                currentSegmentIndex++
+                segmentsArray[currentSegmentIndex] = {} //create
+                segmentsArray[currentSegmentIndex].stringValue = 'add'
+                //add % sign in next segment
+                currentSegmentIndex++
+                segmentsArray[currentSegmentIndex] = {} //create
+                segmentsArray[currentSegmentIndex].stringValue = '%'
+            }
+        }//if no open or close bracket
+
+        else
+        if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
+            //if has an open bracket e.g (45 then becomes ([45
+            console.log('AT %OF, GOT TO SEGMENT HAS OPEN BRACKT')
+            //if has open bracket at start of segment, means user 
+            //typed it in, e.g 5 x (20 , or ((20% of ...
+            //if it is 5 x (20 , ie has prior arith operator, then we insert
+            //a square bracket) 
+            //. if it has no priior operator e.g ((20% of ... then we dont insert
+            //the square bracket.
+            
+            // if(currentSegmentHasPriorArithOperator) {
+                //has prior arth operator, so we insert a square bracket 
+                //in front of the number e.g 23 x (45 out of, becomes 23 x ([45 out of ..
+
+                //get index of first numeral in segment, note: no g flag
+                let tempStr = segmentsArray[currentSegmentIndex].stringValue
+                let indexOfFirstNumeral = tempStr.search(/[0-9]/)
+                //need to slice and recombine, to insert the square bracket
+                let portion1 = tempStr.slice(0, indexOfFirstNumeral)
+                let portion2 = tempStr.slice(indexOfFirstNumeral)//defaults to eostring, ie lenght-1
+                tempStr = portion1 + '[' + portion2//insert
+                //copy back to real string
+                segmentsArray[currentSegmentIndex].stringValue = tempStr
+            // }
+            // else {//has no prior operator
+            //     //igonore, dont insert square bracket
+            // }
+
+            //add 'out of' into next segment
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = 'add'
+            //add % in next segment
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = '%'
+        }
+        else 
+        if(currentSegmentHasACloseBracketFlag) {//has a close bracket.
+            console.log('AT %OF, GOT TO SEGMENT HAS CLOSE BRACKT')
+            //if has a close bracket, means user just entered a bracketed caluculation,
+            //e.g (5 x 20)% of ... or 25 x (30 + 20)% of ...
+            //if it is (5 x 20)%, ie no prior arith outside of unit, 
+            //then no need to insert square bracket, no action.
+            //if there is prior arith operator outside of unit, e.g
+            // 25 x (20 + 30)% ... the 25 x is outside of the unit.
+            //so we put the square bracket at the begining of the unit,
+            //beecomes 25 x [(20 + 30)% ... 
+            //if it is 25 x ((20 + 30)%, becomes 25 x ([(20 + 30)%
+
+ 
+
+            let indexOfSegmentWithFirstOpenBracket = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfSegment
+            let indexOfOpenBracketWithinSegment = findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit(segmentsArray).indexOfOpenBracketWithinSegmentString
+            
+            //if prior arith operator exists, then add '[' before the open
+            //bracket of the unit
+            if( currentSegmentHasPriorArithOperator) {
+                //add the '[' before unit's open bracket e.g 25 x ((23 + 10) ... 
+                //becomes 25 x ([(23 + 10) ...
+                let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
+                let portion1 = tempStr.slice(0, indexOfOpenBracketWithinSegment)//exclusive of open bracket
+                let portion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defualt end is length -1 
+                tempStr = portion1 + '[' + portion2
+                //copy back to real string
+                segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
+
+
+            }
+            
+            //add 'add' into next segment
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {} //create
+            segmentsArray[currentSegmentIndex].stringValue = 'add'
+             //add % in next segment
+             currentSegmentIndex++
+             segmentsArray[currentSegmentIndex] = {} //create
+             segmentsArray[currentSegmentIndex].stringValue = '%'
+
+        }
+    }//else is a number segment
+    
+      
+    //collate stirng from all segments, to return 
+    collatedString = collateStringsIntoOneString(segmentsArray)
+    console.log('COLLATED STRING IS: ', collatedString)
+    return objectToReturn = {
+        screenMainTextLine1: collatedString,
+        screenMainTextLine2: 'answer',
+        screenMainTextLine3: ''
+    }
+    
+}
+
+ 
 
 
 
@@ -2847,6 +2945,9 @@ const collateStringsIntoOneString = (arr) => {//arr is array of objects
     return collatedString
 }
 
+
+
+
  
 
 const getParenthesesNetValueFromString = (passedInString) => {
@@ -2877,22 +2978,119 @@ const getParenthesesNetValueFromString = (passedInString) => {
 
 
 
+
+
 const calculateResultOfWholeCalculation = () => {
+
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
+    let wholeString = collateStringsIntoOneString(segmentsArray)
+
+    let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted|if)/.test(wholeString)
+    console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
+    
+    let stringHasOpenSquareBracketFlag = /\[/.test(wholeString)
+    console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)
+    
+    let stringHasCloseSquareBracketFlag = /\]/.test(wholeString)
+    console.log('STRING HAS CLOSE SQUARE BRACKET ] FLAG IS : ' + stringHasCloseSquareBracketFlag)
+    
+
     //if parenthesis open and close dont equal, means calculation incomplete
-    if(getParenthesesNetValueFromString(collateStringsIntoOneString(segmentsArray)) !== 0) {
+    if(getParenthesesNetValueFromString(wholeString) !== 0) {
         console.log('AT CALCULATERESULT, BRACKETS INCOMPLETE')
         return "incomplete"
     }
 
 
-    //first calculate contents of all parenthesis () pairs
-    //e.g  (2 + 3) x 2 + ((3 + 22) x 30) x [(22 x 3)% of (25 + 25)] + 5 + ((35 + 2) ÷ 3
-    let charIndex = 0
-    let tempStr = collateStringsIntoOneString(segmentsArray)
+    //if string has open square bracket [ but not close ssquare bracket ], means incomplete
+    if(stringHasOpenSquareBracketFlag && (! stringHasCloseSquareBracketFlag)) {
+        console.log('AT CALCULATERESULT, SQUARE BRACKETS INCOMPLETE')
+        return "incomplete"
+    }
+    
+
+    //if string has percent calculation, process thaat first
+
+    //if has percent calculation in it, 
+    if(stringHasPercentCalculationFlag) {
+
+        let resultOfPercentCalculation = ""//default
+        //if has ssquare brackets, remove the square brackekts and reduce any parenthesis
+        //in it e.g [(22 x 5)% of ((20 + 5) x 5)] becomes 110% of 125, then pass to 
+        //calculate percentage method
+        if(stringHasOpenSquareBracketFlag && stringHasCloseSquareBracketFlag) {
+            //get index of the open square bracket in the string
+            let indexOfOpenSquareBracket = wholeString.search(/\[/)
+            //get index of the close square bracket
+            let indexOfCloseSquareBracket = wholeString.search(/\]/)
+
+            //get content of square brackets, exclude the square brackets themselves
+            let contentOfSquareBrackets = wholeString.slice(indexOfOpenSquareBracket+1, indexOfCloseSquareBracket)
+            console.log('CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
+            //now reduce any parenthesis content to single values e.g ((23 + 5) x 2) becomes 56
+            contentOfSquareBrackets = reduceBracketsPairContentsIntoSingleValues(contentOfSquareBrackets)
+            console.log('****AFTER REDUCED PARENTHESIS, CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
+            //now calculate the percentage calculation and get a single number result
+            contentOfSquareBrackets = calculateResultOfPercentCalculation(contentOfSquareBrackets)
+            //now replace the pair of square brackets and its content with a singl value
+            let portion1 = wholeString.slice(0, indexOfOpenSquareBracket)//excludes the [ bracket
+            let portion2 = wholeString.slice(indexOfCloseSquareBracket+1)//excludes the ] bracket
+            //copy backk to real string with new single value in place of square brackets
+            wholeString = portion1 + contentOfSquareBrackets + portion2
+            console.log('*** AFTER REDUCING PERCENT CALCULATION TO SINGLE VLUE, WHOLESTRING IS '+ wholeString)
+        }
+        else {//no square brackets, ie only percent calculation is on the string, no arith operators outside of square brackets
+            //only percent calc exists, no operator outside of square breackets
+
+            //calculate the percetn calculation
+            wholeString =  calculateResultOfPercentCalculation(wholeString)
+        }
+    }//if has percent calc
+
+
+    //when gets here, string still has alll the round brackets, except content of square brackets
+    //ie percentage, is replace by a single value, so now stirng is eg 23 x ((2 + 3) x 7) x 777 
+    ///777 is result of % calculation ie square bracket content
+    //now calculate the value of the whole string by passing it to eval()
+
+    //need to replace 'x' with '*' and '÷' with '/' for js to evaluate string
+     //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
+     wholeString = wholeString.replace(/x/g, '*')
+     wholeString = wholeString.replace(/÷/g, '/')
+     console.log('AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
+  
+    let resultToReturn = eval(wholeString)
+
+    console.log('*** RESULT OF WHOLE STRING, AFTER EVAL() IS ' + resultToReturn)
+
+    return resultToReturn
+
+}
+
+
+
+
+
+
+
+
+
+
+
+const reduceBracketsPairContentsIntoSingleValues = (passedInString) => {
+
+    //reduces pair bracket content into single value, 
+    //e.g ((20+ 3) x 5) becomes (23 x 5) first pass, (115) second pass, 115 third pass
+    //. so ((20 + 3) x 5)% of ((110 + 200) x 2) becomes 115% of 420
+    //works for both arith and percetn expressions, no difference.
+
+
+    let tempStr = passedInString
+
 
     while(/\(/.test(tempStr)) {
+
         //do while there is still '(' existing
         let nettValue = +1//so when finds first open paren, === 0
         // let charIndex = 0
@@ -2931,8 +3129,96 @@ const calculateResultOfWholeCalculation = () => {
         tempStr = updatedStr
         
         
-        }//while
+    }//while
+
+
+    //return updated string with pair brackets replace by single value
+    return tempStr
+
+}
 
 
 
+
+const calculateResultOfPercentCalculation = (passedInString) => {
+
+    console.log('STRING PASSED INTO CALCULATE PERCENTAGE IS ' + passedInString)
+
+
+    let currentCalculationType;
+    let resultToReturn = ""//default
+
+    //get the 2 operands, 3 operands if 'if%is' calculation type
+    //passed in string in syntax of eg. 23% of 50, there are on () brackets in the string,
+    //they have been removed prior to callng this method
+
+    //find operand 1
+    let startIndexOfOperand1 = passedInString.search(/[0-9]/)
+    //now cut from start index to eostring
+    let tempStr = passedInString.slice(startIndexOfOperand1)
+    //end of operand1 is the first space, counting from the first numeral of operand1
+    let endIndexOfOperand1 = tempStr.search(/ |\%/)
+    let operand1ValueString = tempStr.slice(0, endIndexOfOperand1)
+    console.log('*** ##OPERAND1 STRING EXTRACTED IS ' + operand1ValueString)
+   
+    //find operand 2
+    tempStr = tempStr.slice(endIndexOfOperand1+1)//remove opeerand1 from string
+    let startIndexOfOperand2 = tempStr.search(/[0-9]/) 
+    tempStr = tempStr.slice(startIndexOfOperand2)
+    console.log('AT EXTRACTION OF OPERAND2, TEMPSTR IS:' + tempStr)
+    //if there is a space or % after opereand2, e.g if operand3 exists, then eooperand2 is 
+    //0-indexofendoperand2
+    let endIndexOfOperand2;
+
+    //string is now eg either 175   no space after, or 175% nospaceafter, of 175 then ... if operand3 exists
+    if(/ |\%/.test(tempStr)) {
+        console.log('FOUND A SPACE OR % SIGN AFTER OPERAND2')
+        endIndexOfOperand2 = tempStr.search(/( |\%)/)//$ means to the eoline
+    }
+    else {//no % or space, just endof line, so we add an extra char to cover the last char of opeand2
+        console.log('NO SPACE OR % FOUND AFTER OPEREND2')
+        endIndexOfOperand2 = tempStr.length
+    }
+
+
+    console.log('INDEX OF EOOPEAND2 IS '+endIndexOfOperand2)
+    let operand2ValueString = tempStr.slice(0, endIndexOfOperand2)
+    console.log('*** ##OPERAND2 STRING EXTRACTED IS ' + operand2ValueString)
+
+    
+    // //find operand 3, only for if%is calculation type
+    // tempStr = tempStr.slice(endIndexOfOperand2+1) || ""//remove opeerand1 from string
+    // let startIndexOfOperand3 = tempStr.search(/[0-9]/)
+    // tempStr = tempStr.slice(startIndexOfOperand3) || ""
+    // let endIndexOfOperand3 = tempStr.search(/ |\%/)
+    // let operand3ValueString = tempStr.slice(0, endIndexOfOperand3) || ""
+    // console.log('*** ##OPERAND3 STRING EXTRACTED IS ' + operand3ValueString)
+
+      
+
+
+
+
+    if(/%/.test(passedInString) && (/of/i.test(passedInString))) {
+        //% of calculation type
+        result = (Number(operand1ValueString)/100) * Number(operand2ValueString) 
+    }
+    else
+    if(/out/i.test(passedInString) && (/of/i.test(passedInString))) {
+        //out of , calculation type
+        result = (Number(operand1ValueString)/Number(operand2ValueString)) * 100
+    }
+    else
+    if(/add/i.test(passedInString)) {
+        //add % , calculation type
+        result = Number(operand1ValueString) + ( (Number(operand2ValueString)/100) * Number(operand1ValueString) )
+    }
+    else
+    if(/deduct/i.test(passedInString)) {
+        //add % , calculation type
+        result = Number(operand1ValueString) - ( (Number(operand2ValueString)/100) * Number(operand1ValueString) )
+    }
+
+
+    return JSON.stringify(result)
 }
