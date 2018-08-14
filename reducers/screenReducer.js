@@ -2,7 +2,8 @@ import { UPDATE_CONTENT_OF_SCREEN_MAIN_TEXTLINE1 } from "../actions/screenAction
 import * as Logic from '../src/PercentAndStandardCalculator/logic'
 
 let initialState = {
-    screenMainTextLine1Content: ""
+    screenMainTextLine1Content: "",
+    screenAnswerLineContent: ""
 }
 
 
@@ -20,13 +21,14 @@ const screenReducer = (state = initialState, action) => {
 
             // let prevContent = state.screenMainTextLine1Content
 
-            updatedContent = resultObject.screenMainTextLine1
-             
+            // let updatedLine1Content = resultObject.screenMainTextLine1
+            // let answer = resultObject.answerLine
              
             
             return {
                 ...state,
-                screenMainTextLine1Content: updatedContent
+                screenMainTextLine1Content: resultObject.screenMainTextLine1,
+                screenAnswerLineContent: resultObject.answerLine
             }
             break
         default: return state

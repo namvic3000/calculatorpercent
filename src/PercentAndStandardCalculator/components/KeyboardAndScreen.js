@@ -54,7 +54,7 @@ class Keyboard extends React.Component {
 
         this.standardButtonWidth = Dimensions.get('window').width/5
 
-        this.fontSizeOfStandardButton = this.standardButtonWidth/2.5
+        this.fontSizeOfStandardButton = this.standardButtonWidth/2.8
 
         this.fontSizeOfScreenMainLine1 = Dimensions.get('window').width/11.5
         
@@ -87,12 +87,12 @@ class Keyboard extends React.Component {
                 lineHeight: this.fontSizeOfScreenMainLine1 + (this.fontSizeOfScreenMainLine1/12),
                 color: "black",
                 backgroundColor: "white",
-                textAlign: "right",
+                textAlign: "left",
                 // height: "25%",
               },
             allMemoriesContainer: {
                 flexDirection: "row",
-                flex: 0.5,
+                flex: 0.3,
             },
             memory1Container: {
                 flex: 1,
@@ -120,7 +120,7 @@ class Keyboard extends React.Component {
             },
             memoryText: {
                 alignItems: "center",
-                fontSize: this.fontSizeOfStandardButton*0.67,
+                fontSize: this.fontSizeOfStandardButton*0.6,
                 color: "blue",
             },
             standardButtonRowContainer: {
@@ -166,18 +166,18 @@ class Keyboard extends React.Component {
                 height: "100%",
             },
             percentButtonText:{
-                fontSize: this.fontSizeOfStandardButton*0.65,
+                fontSize: this.fontSizeOfStandardButton*0.7,
                 color: "white",
             },
             afterPercentAddedButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.65,
-                lineHeight: this.fontSizeOfStandardButton*0.65,
+                fontSize: this.fontSizeOfStandardButton*0.7,
+                lineHeight: this.fontSizeOfStandardButton*0.7,
                 color: "white",
             },
             afterPercentDeductedButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.65,
+                fontSize: this.fontSizeOfStandardButton*0.7,
                 color: "white",
-                lineHeight: this.fontSizeOfStandardButton*0.65,
+                lineHeight: this.fontSizeOfStandardButton*0.7,
             },
             buttonSmallRowContainer: {
                 flexDirection: "row",
@@ -192,8 +192,8 @@ class Keyboard extends React.Component {
                 height: "100%",
             },
             buttonSmallText:{
-                fontSize: this.fontSizeOfStandardButton*0.6,
-                // lineHeight: this.fontSizeOfStandardButton*0.8,
+                fontSize: this.fontSizeOfStandardButton*0.63,
+                lineHeight: this.fontSizeOfStandardButton*0.72,
                 color: "darkblue"
             },
             
@@ -208,6 +208,8 @@ class Keyboard extends React.Component {
                     <Text style={styles.line3CalculatorInput}>{this.state.line1CalculatorInput}</Text>
                     <Text style={styles.line4CalculatorInput}>{this.state.line1CalculatorInput}</Text> */}
                     <Text style={styles.screenMainTextLine1}>{this.props.screenMainTextLine1Content}</Text>
+                    <Text style={styles.screenMainTextLine1}>{this.props.screenAnswerLineContent}</Text>
+
                 </View>
 
                 <View style={styles.allMemoriesContainer}>
@@ -239,8 +241,8 @@ class Keyboard extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("if % is")}>
-                        <Text style={styles.percentButtonText}>if % is</Text>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("out of")}>
+                        <Text style={styles.percentButtonText}>out of</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after added %")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>added</Text></View>
@@ -248,8 +250,8 @@ class Keyboard extends React.Component {
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("after deducted %")}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("out of")}>
-                        <Text style={styles.percentButtonText}>out of</Text>
+                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("if % is")}>
+                        <Text style={styles.percentButtonText}>if % is</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -370,7 +372,8 @@ class Keyboard extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    screenMainTextLine1Content: state.screenStatus.screenMainTextLine1Content
+    screenMainTextLine1Content: state.screenStatus.screenMainTextLine1Content,
+    screenAnswerLineContent: state.screenStatus.screenAnswerLineContent
 }) 
 
 
