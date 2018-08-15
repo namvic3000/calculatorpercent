@@ -608,6 +608,22 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
     let nettOpenParenthesisValue = getParenthesesNetValueFromString(collateStringsIntoOneString(segmentsArray))
     console.log('AT 4ARITHKEYS, NETT OPEN BRACKETS VALUE IS ' + nettOpenParenthesisValue)
     //if current segment is a number,  can proceed
+
+
+    //special if%is case, if there is just 'if' without 'then', then at operand2, no
+    //arith operators allowed so just return
+    if( (/if/i.test(collateStringsIntoOneString(segmentsArray))) && ( ! /then/i.test(collateStringsIntoOneString(segmentsArray))) ) {
+        //just return as is, no action
+         //collate stirng from all segments, to return 
+        let collatedString = collateStringsIntoOneString(segmentsArray)
+        return objectToReturn = {
+            screenMainTextLine1: collatedString,
+            screenMainTextLine2: 'answer',
+            screenMainTextLine3: ''
+        }
+    }
+
+
     if(currentSegmentIsANumberFlag) {
         console.log('AT PROCESS4ARITHS, CURENTSEGMENT IS A NUMBER')
         //for cases where the first expression is a complete percentage calucaltion,
