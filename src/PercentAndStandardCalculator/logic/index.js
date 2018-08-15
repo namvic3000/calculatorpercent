@@ -33,6 +33,11 @@ export const updateScreenWithNewInput = (newKeyInput) => {
     console.log('***AT START OF LOGIC, UPDATE WITH NEW INPUT, INDEXPOINTER IS ' + currentSegmentIndex)
     console.log('***AT START OF LOGIC, UPDATE WITH NEW INPUT, KEY PASSED IN IS  ' + newKeyInput)
 
+
+    if( ! /([0-9]|\.)/.test(newKeyInput)) {
+        cleanUpAllTrailingDeciPoints()
+   }
+
         
     let objectToReturn = {}
 
@@ -583,6 +588,8 @@ const processInputFor0To9Keys = (newKeyInput) => {
 
 processInputFor4ArithmeticKeys = (newKeyInput) => {
 
+
+
     console.log('GOT TO PROCESS 4ARITH KEYS')
 
 
@@ -730,14 +737,20 @@ const processInputForDeciPointKey = (newKeyInput) => {
                 //or 3 becomes 3. 
 
                 //find index of last numeral and insert the decipoint right after it
-                let numberLength = (currentSegmentString.match(/[0-9]/) || []).length //starts from 0
+
+                //find length of returned array, to find out number of numerals existing
+                let numberLength = (currentSegmentString.match(/[0-9]/g) || []).length //starts from 0, 
+                //remembr to put in the G flag, else would return first match only
+                
+                //get index of first number
                 let indexOfFirstNumeral = currentSegmentString.search(/[0-9]/)
+                //deduce index of last numeral
                 let indexOfLastNumeral = indexOfFirstNumeral + (numberLength - 1)
+                //insert the decipoint
                 let portion1 = currentSegmentString.slice(0, indexOfLastNumeral + 1)//+1 to include last numeral
-                let portion2 = currentSegmentString.slice(indexOfLastNumeral + 1)//to eostirng
-                let tempStr = portion1 + '.' + portion2
+                let portion2 = currentSegmentString.slice(indexOfLastNumeral + 1)//to eo stirng
                 //copy back to real string
-                segmentsArray[currentSegmentIndex].stringValue = tempStr
+                segmentsArray[currentSegmentIndex].stringValue = portion1 + '.' + portion2
             }
                  
             // segmentsArray[currentSegmentIndex].stringValue += '.'                    
@@ -4052,3 +4065,43 @@ const calculateResultOfPercentCalculation = (passedInString) => {
 
     return JSON.stringify(result)
 }
+
+
+
+
+
+
+const cleanUpAllTrailingDeciPoints = () => {
+
+    //cleans up trailling decipoints for whole array of segments
+
+
+
+    segmentsArray.forEach( (segment, index) => {
+        //find index of decipoint if it exists in the segment
+        let indexOfDeciPoint = segment.stringValue.search(/\./)
+        console.log('********** SEGMENT NUMBER:' + index + ' INDEXOFDECIPOINT IS:'+indexOfDeciPoint)
+        
+        if( indexOfDeciPoint >=0) {//it exists
+            '*** AT DECIPOIINT DOES EXIST'
+            //see if next char after decipoint is a numeral
+            if( ! /[0-9]/.test(segment.stringValue[indexOfDeciPoint+1]) ) {//not a numeral
+                //char after deci is not a numeral, so remove the decipoint
+                let portion1 = segment.stringValue.slice(0, indexOfDeciPoint) || ""//exlude the decipoint
+                let portion2 = segment.stringValue.slice(indexOfDeciPoint+1) || ""//exclude the decipoint
+                console.log('***** THERE IS A TRAILING DECIPOINT')
+                console.log('PORTION1 IS:' + portion1)
+                console.log('PORTION2 IS:' + portion2)
+                
+                //copy back to real string
+                segment.stringValue = portion1 + portion2//will change real array, since it is passed by reference
+                //pass by reference, so is same as segmentsArray[index]= portion1 + portion2
+            }
+            else {
+                console.log('***NO TRAILING DECIPOINT FOR THIS SEGMENT')
+            }
+
+        }
+    })
+
+}//mthod
