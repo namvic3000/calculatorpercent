@@ -36,8 +36,8 @@ class Keyboard extends React.Component {
         // }
 
 
-        let tempTextLineArr = this.props.screenMainTextLine1Content.split(' ')
-        if(tempTextLineArr[tempTextLineArr.length-1] === 'is' || tempTextLineArr[tempTextLineArr.length-2] === 'is' || tempTextLineArr[tempTextLineArr.length-3]==='is'){
+        let tempTextLine = this.props.screenMainTextLine1Content//.split(' ')
+        if(/if/i.test(tempTextLine) && (! /then/.test(tempTextLine))){
             console.log('*****SHOW THENN BUTTON NOW***')
             this.setState({showThenButtonFlag: true})
         }

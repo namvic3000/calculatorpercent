@@ -471,6 +471,21 @@ const processInputFor0To9Keys = (newKeyInput) => {
                         segmentsArray[currentSegmentIndex].stringValue = tempStr
                     }
                     else {//no square brackt, either has open bracket, or no brackets, append the numaeral key value string
+                        //need to prevent cases of 0005 (0005 etc... so look at last numeral,
+                        //if it is a 0 without a decipoint, 0. is ok, 0 will be replaced if it is the
+                        //first numeral
+
+                        //if current segment has 1 numeral, and it is a 0, and no dedipoint, then remove it before
+                        //adding this numeral input
+                        let currentSegmentString = segmentsArray[currentSegmentIndex].stringValue
+                        if( ((currentSegmentString.match(/[0-9]/) || []).length ===1) //len of 1 numeral
+                                && ( currentSegmentString[currentSegmentString.search(/[0-9]/)] === '0')//first numeral is a '0'
+                                && ( ! /\./.test(segmentsArray[currentSegmentIndex].stringValue)) ) {//no decipoint present
+                            //remove the leading 0, no decipoint present
+                            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
+                        }
+
+                        //add the input 
                         segmentsArray[currentSegmentIndex].stringValue += newKeyInput
                     }
 
@@ -889,16 +904,28 @@ const processInputForCloseBracketKey = (newKeyInput) => {
         tempStr = tempStr.slice(indexOfOpenSquareBracket)//get the portion from [ only
         let nettValueOfParenthesis = getParenthesesNetValueFromString(tempStr)
         console.log('******AT HASOPENSQUAREBRACKET, PARENTHESIS NET VALUE IS ' + nettValueOfParenthesis)
+        
         if(nettValueOfParenthesis === 0) {//all open bracketss within open square bracket are now closed
             //now add the ] closing square bracket if not already exists
             if( ! /\]/.test(collateStringsIntoOneString(segmentsArray))) {//if not exist
-                //if is a 'add' or 'dedduct' or 'if' or 'added' or 'deducted' then add a '%]'
-                if(/add|deduct|added|deducted|if|then/.test(collateStringsIntoOneString(segmentsArray))) {
-                    segmentsArray[currentSegmentIndex].stringValue += '%]'
+                let hasIfWord = /if/i.test(collateStringsIntoOneString(segmentsArray))
+                let hasThenWord = /then/i.test(collateStringsIntoOneString(segmentsArray))
+                if(hasIfWord && (! hasThenWord)) {
+                    //e.g  '2 x [if (2 x 3)% is (5x6)' , dont add anything, only midway
+
                 }
-                else {//no % sign in ooperand2, ie %of, outof, %change, if%is
-                    segmentsArray[currentSegmentIndex].stringValue += ']'
-                }
+                else 
+                    if(hasThenWord) {
+                        segmentsArray[currentSegmentIndex].stringValue += '%]'
+                    }
+                    else
+                        //if is a 'add' or 'dedduct' or 'if' or 'added' or 'deducted' then add a '%]'
+                        if(/add|deduct|added|deducted/.test(collateStringsIntoOneString(segmentsArray))) {
+                            segmentsArray[currentSegmentIndex].stringValue += '%]'
+                        }
+                        else { //must be: %of, outof, %change, no need for % sign
+                            segmentsArray[currentSegmentIndex].stringValue += ']'
+                        }
             }
         }
     }
@@ -911,12 +938,14 @@ const processInputForCloseBracketKey = (newKeyInput) => {
             console.log('GOT TO ADDING PERCENT SIGN FOR NEEDING PERCENT SIGN')
             //add the % sign , bracket close added with nett value of 0
             //add if not already exist
-            if( ! hasPriorPercentSign ) {//if not already exist
-                segmentsArray[currentSegmentIndex].stringValue += '%'
-            }
+            
             if( /then/.test(collateStringsIntoOneString(segmentsArray)) 
                 && collateStringsIntoOneString(segmentsArray).match(/\%/).length<2) {//if not already exist
                     segmentsArray[currentSegmentIndex].stringValue += '%'
+            }
+            else 
+            if( ! hasPriorPercentSign ) {//if not already exist
+                segmentsArray[currentSegmentIndex].stringValue += '%'
             }
         }
     }
@@ -3350,9 +3379,9 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
                 //no priior arith operator, no closing or open bracket,
                 // so we  just proceed to add '% of' portion
                 
-                //insert 'from ' before current number, and 'to' in the next segment
+                //add the % sign at end of this segmnt and 'of' in the next segment
                 segmentsArray[currentSegmentIndex].stringValue = 'if ' + segmentsArray[currentSegmentIndex].stringValue + '%'
-                //add 'after added' into next segment
+                //add 'of' into next segment
                 currentSegmentIndex++
                 segmentsArray[currentSegmentIndex] = {} //create
                 segmentsArray[currentSegmentIndex].stringValue = 'is'
@@ -3363,13 +3392,15 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
                 //becomes 5 x (20% of ...
     
                 //put ( in front of current segment
-                segmentsArray[currentSegmentIndex].stringValue = '[' + 'if ' + segmentsArray[currentSegmentIndex].stringValue+ '%'
+                segmentsArray[currentSegmentIndex].stringValue = '[if ' + segmentsArray[currentSegmentIndex].stringValue
                 //add the % sign at end of this segmnt and 'of' in the next segment
+                segmentsArray[currentSegmentIndex].stringValue += '%'
+                //add 'of' into next segment
                 currentSegmentIndex++
                 segmentsArray[currentSegmentIndex] = {} //create
                 segmentsArray[currentSegmentIndex].stringValue = 'is'
             }
-        }//no open or close bracket
+        }//if no open or close bracket
 
         else
         if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
@@ -3391,7 +3422,7 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
                 //need to slice and recombine, to insert the square bracket
                 let portion1 = tempStr.slice(0, indexOfFirstNumeral)
                 let portion2 = tempStr.slice(indexOfFirstNumeral)//defaults to eostring, ie lenght-1
-                tempStr = portion1 + '[' + 'if ' + portion2 + '%'//insert
+                tempStr = portion1 + '[if ' + portion2//insert
                 //copy back to real string
                 segmentsArray[currentSegmentIndex].stringValue = tempStr
             // }
@@ -3399,7 +3430,9 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
             //     //igonore, dont insert square bracket
             // }
 
-            //add 'to' into next segment
+            //add the % sign at end of this segmnt and 'of' in the next segment
+            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
+            //add 'of' into next segment
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {} //create
             segmentsArray[currentSegmentIndex].stringValue = 'is'
@@ -3430,15 +3463,21 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
                 let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
                 let portion1 = tempStr.slice(0, indexOfOpenBracketWithinSegment)//exclusive of open bracket
                 let portion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defualt end is length -1 
-                tempStr = portion1 + '[' + 'if ' + portion2 + '%'
+                tempStr = portion1 + '[if ' + portion2
                 //copy back to real string
                 segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
+
+
             }
             
+            //add the % sign at end of this segmnt and 'of' in the next segment
+            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
             //add 'of' into next segment
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {} //create
             segmentsArray[currentSegmentIndex].stringValue = 'is'
+    
+
         }
     }//else is a number segment
     
@@ -3451,6 +3490,7 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
         screenMainTextLine2: 'answer',
         screenMainTextLine3: ''
     }
+    
     
 }
 
@@ -3479,12 +3519,12 @@ const processInputForThenKey = (newkeyinput) => {
     segmentsArray[currentSegmentIndex].stringValue = '%'
 
     //move to next segment and add 'would be'
-    currentSegmentIndex++
-    segmentsArray[currentSegmentIndex] = {}//create 
-    segmentsArray[currentSegmentIndex].stringValue = 'would be'
+    // currentSegmentIndex++
+    // segmentsArray[currentSegmentIndex] = {}//create 
+    // segmentsArray[currentSegmentIndex].stringValue = 'would be'
 
-    //move pointer back to point to the '%' sign segment
-    currentSegmentIndex--
+    // //move pointer back to point to the '%' sign segment
+    // currentSegmentIndex--
 
     
 
