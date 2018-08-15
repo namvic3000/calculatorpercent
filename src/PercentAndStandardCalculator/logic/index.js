@@ -524,22 +524,41 @@ const processInputFor0To9Keys = (newKeyInput) => {
         //incomplete, therefore nettvalue of () is not 0.
         let tempStr = collateStringsIntoOneString(segmentsArray)
         let indexOfOpenSquareBracket = tempStr.search(/\[/)
-        if(indexOfOpenSquareBracket === -1) indexOfOpenSquareBracket = 0
+        if(indexOfOpenSquareBracket === -1) {
+            indexOfOpenSquareBracket = 0
+        }
         let nettValueOfParenthesis = getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
         console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
         if(nettValueOfParenthesis === 0) {
-            //if not already added on previous inputs, then add the ] close square bracket
-            //so it is e.g 23 x ([(25 x 5)% of 35]
-            //add square bracket at the end if not already present
-            let strLen = segmentsArray[currentSegmentIndex].stringValue.length
-            let lastChar = segmentsArray[currentSegmentIndex].stringValue[strLen -1]
-            console.log('LAST CHAR IN SEGMENT IS ' + lastChar)
-            if(lastChar !== ']') {
-                segmentsArray[currentSegmentIndex].stringValue += ']'
+
+            //for if%is calcultion, dont add the ] at the 2nd operand, coa it has 3 operands, 
+            //unlike other percnt calcultions
+            if(/if/.test(collateStringsIntoOneString(segmentsArray))
+                && ( ! /then/.test(collateStringsIntoOneString(segmentsArray)))){
+                    //if there is 'if' but no 'then' then we are at the 2nd operand
+                    //of if%is calculation, e.g 'if 5% is 5777' , no operadn3 yet, 
+                    //so dont add the close sqaure bracket. complete calculation is e.g if 5% is 50 then 20%
+
+                    //do nothig, no addig of the close square bracket which is for othr
+                    //percentage calculations which has opeand2 as the last operand. this
+                    //if%is has 3 oeprands, so we dont close it with square braccket yet.
+                }
+            else {
+                //for every other percennt calculaltoin , 
+                //if not already added on previous inputs, then add the ] close square bracket
+                //so it is e.g 23 x ([(25 x 5)% of 35]
+                //add square bracket at the end if not already present
+                let strLen = segmentsArray[currentSegmentIndex].stringValue.length
+                let lastChar = segmentsArray[currentSegmentIndex].stringValue[strLen -1]
+                console.log('LAST CHAR IN SEGMENT IS ' + lastChar)
+                if(lastChar !== ']') {
+                    segmentsArray[currentSegmentIndex].stringValue += ']'
+                }
             }
+
         }
 
-    }//if has prior open [ bracket
+    }//if has prior open [ square bracket
 
     
     //collate stirng from all segments, to return     
