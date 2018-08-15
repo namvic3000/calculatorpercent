@@ -709,23 +709,48 @@ const processInputForNegSignKey = (newKeyInput) => {
 const processInputForDeciPointKey = (newKeyInput) => {
 
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-    
+    let currentSegmentString = segmentsArray[currentSegmentIndex].stringValue
+
     //note: current segment is never empty, except when whole array
     //is empty at start or after CA, so no need to check that condition
 
     //if currentsegment is a number then add . if not existed alreay
     if(currentSegmentIsANumberFlag) {
-        if(segmentsArray[currentSegmentIndex].stringValue)
         //add only if not already exists
-        if( ! /[.]/.test(segmentsArray[currentSegmentIndex].stringValue)) { //if not already on this number
+        if( ! /[.]/.test(currentSegmentString)) { //if not already on this number
             //decipoint not yet exist, add it
-            segmentsArray[currentSegmentIndex].stringValue += '.'                    
+
+            //if string has a ')' closing bracket, locked, then cant add a decipoint to a bracket
+            //becuase closing brackets means number is locked, cant alter it.
+            if(/\)/.test(currentSegmentString)) {
+                //ignore, no action
+            }
+            else {//may have naked number e.g 35 or has ']' eg '35]' or '35%]'
+                //append decpoint to last numeral, e.g 3%] becomes 3.%] or 3% becomes 3.%
+                //or 3 becomes 3. 
+
+                //find index of last numeral and insert the decipoint right after it
+                let numberLength = (currentSegmentString.match(/[0-9]/) || []).length //starts from 0
+                let indexOfFirstNumeral = currentSegmentString.search(/[0-9]/)
+                let indexOfLastNumeral = indexOfFirstNumeral + (numberLength - 1)
+                let portion1 = currentSegmentString.slice(0, indexOfLastNumeral + 1)//+1 to include last numeral
+                let portion2 = currentSegmentString.slice(indexOfLastNumeral + 1)//to eostirng
+                let tempStr = portion1 + '.' + portion2
+                //copy back to real string
+                segmentsArray[currentSegmentIndex].stringValue = tempStr
+            }
+                 
+            // segmentsArray[currentSegmentIndex].stringValue += '.'                    
         }
         else {
             //decipoint already exists, igonore decipoint key input
         }
     }
-    else {//curr segment is an operator
+    else //if is just a % sign, and user presses . decipoint, then becomes 0.%
+        if(currentSegmentString.length === 1 && /\%/.test(currentSegmentString)) {// only 1 char, and it is a %sign
+        segmentsArray[currentSegmentIndex].stringValue = '0.%'            
+        }
+    else {//curr segment is an operator or empty
         //move to next segment and add 0.
         currentSegmentIndex++
         segmentsArray[currentSegmentIndex] = {}//create
