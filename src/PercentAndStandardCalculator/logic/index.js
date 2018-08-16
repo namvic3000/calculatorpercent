@@ -1,28 +1,40 @@
-// import store from '../../../store'
-// import React from 'react'
-
-// import {connect} from 'react-redux'
-
-
 //GLOBAL VARS FOR THIS FILE
+
+//data structure: 
+// segmentsArray = [
+//     { stringValue: String},
+//     { stringValue: String},
+//     { stringValue: String},
+//     etc...
+// ]
+// 
+// timeMachineArrayOfSegmentsArraySnapShots = [
+//     { segmentsArray: [...segmentsArray] },
+//     { segmentsArray: [...segmentsArray] },
+//     { segmentsArray: [i.e {},{},] },
+//     etc...
+// ]
+
+
+let segmentsArray = []///stores each segment of the mainscreenline1 string for 1 whole calculation.
 let currentSegmentIndex = 0//initially points to 1st segment
-let segmentsArray = []///stores each segment of the mainscreenline1 string
-let currentCalculationType = "arithmetic"//arithmetic, percentof, outof, addpercent,
-//deductpercent, percentchange, ifpercentis, afteraddedpercent, afterdeductedpercent,
+
+let timeMachineArrayOfSegmentsArraySnapShots = [] //contains many segmentsArray's, each segmemtnsArray is
+//a snapshot after each key  is pressed. for the backspace key so user can go back to prev steps.
 
 
+//segmentsArray is :
 //e.g 88.2 x 55% of 250 + 100
 //segmentsArray element[0] is 88.2
-//segment element[1] is x
-//segment element[2] is 55
-//segment element[3] is % of
-//segment element[4] is 250
-//segment element[5] is +
-//segment element[6] is 100
+//segmentsArray[1] is x
+//segmentsArray[2] is 55
+//segmentsArray[3] is % of
+//segmentsArray[4] is 250
+//segmentsArray[5] is +
+//segmentsArray[6] is 100
 
 // //each element is an object {
     //stringValue:
-    //numericalValue:
 // }
 
 
@@ -64,13 +76,7 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
     //check if ca button is pressed, if so clearall
     if(newKeyInput === 'ca') {//clearall button
-        currentSegmentIndex = 0 //reset
-        segmentsArray = []//clear the array
-        return objectToReturn = {
-            screenMainTextLine1: "",
-            screenMainTextLine2: "",
-            screenMainTextLine3: "Ready"
-        }
+        return clearAllReadyForNextCalculation()//returns the object returned
     }
 
 
@@ -190,6 +196,14 @@ export const updateScreenWithNewInput = (newKeyInput) => {
     }
  
 
+    //if key is backspace
+    if(newKeyInput === '«') {//backspace button
+        objectToReturn = processInputForBackSpaceKey(newKeyInput)
+        return objectToReturn
+    }//if <-
+    
+ 
+
 
 
     console.log('GOT TO POINT1000')
@@ -200,16 +214,9 @@ export const updateScreenWithNewInput = (newKeyInput) => {
         screenMainTextLine3: 'to to test 100 point'
     }
 
+//###################################
 
 
-
-    //if button is backspace
-    if(newKeyInput === '<-') {//backspace button
-        objectToReturn = processInputForBackSpaceKey(newKeyInput)
-        return objectToReturn
-    }//if <-
-    
- 
 
     //first detect if current segment is a number or not
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
@@ -299,9 +306,9 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
 
-}//method
+}//method updateScreen
 
-
+//##########
 
 
 
@@ -315,7 +322,8 @@ const processInputWhenEmptyScreenMainTextLines = (newKeyInput) => {
     console.log('**GOT TO INSIDE EMPTY SEGMENTSARRAY')
 
 
-    
+    let allowToTakeSnapShotOfState = true
+
     let objectToReturn = {}
 
     // detect if newkeyinput is a number
@@ -335,6 +343,7 @@ const processInputWhenEmptyScreenMainTextLines = (newKeyInput) => {
         if (newKeyInput === '.') {//if decipoint when empty, add preceding 0
             segmentsArray[0] = {}//create empty object
             segmentsArray[0].stringValue = '0.'
+            
             objectToReturn =  {
                 screenMainTextLine1: segmentsArray[0].stringValue,
                 screenMainTextLine2: "line2",//calculateResult(segmentsArray[0].stringValue),
@@ -357,8 +366,15 @@ const processInputWhenEmptyScreenMainTextLines = (newKeyInput) => {
                     screenMainTextLine2: "",
                     screenMainTextLine3: "Ready"//ready msg when both lines empty
                 }
-    }
+                //dont take a snapshot, just
+                allowToTakeSnapShotOfState = false 
+            }
 
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
     return objectToReturn
 
 }//method, empty screen
@@ -374,10 +390,12 @@ const processInputWhenEmptyScreenMainTextLines = (newKeyInput) => {
 
 
 const processInputFor0To9Keys = (newKeyInput) => {
-
-    console.log('GOT TO PROCESS 0-9 KEYS')
+    console.log('###GOT TO PROCESS 0-9 KEYS###')
 
     let objectToReturn = {}
+
+    let allowToTakeSnapShotOfState = true
+
 
     //first detect if current segment is a number or not
     //include % and ) as a number for this key input
@@ -433,6 +451,10 @@ const processInputFor0To9Keys = (newKeyInput) => {
             // tempStr = tempStr + newKeyInput + ')'
             // //copy back to real string
             // segmentsArray[currentSegmentIndex].stringValue = tempStr
+
+            //dont save to timemachine
+            allowToTakeSnapShotOfState = false
+
         }
         else 
             if(currentSegmentHasCloseSquareBracketFlag) {
@@ -547,6 +569,7 @@ const processInputFor0To9Keys = (newKeyInput) => {
                     //do nothig, no addig of the close square bracket which is for othr
                     //percentage calculations which has opeand2 as the last operand. this
                     //if%is has 3 oeprands, so we dont close it with square braccket yet.
+
                 }
             else {
                 //for every other percennt calculaltoin , 
@@ -565,6 +588,10 @@ const processInputFor0To9Keys = (newKeyInput) => {
 
     }//if has prior open [ square bracket
 
+    //save to timemachine
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
     
     //collate stirng from all segments, to return     
     let collatedString = collateStringsIntoOneString(segmentsArray)
@@ -594,6 +621,9 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
 
 
     let objectToReturn = {}
+
+    let allowToTakeSnapShotOfState = true
+
 
     //first detect if current segment is a number or not
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
@@ -654,14 +684,18 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
         segmentsArray[currentSegmentIndex] = {} //create new element
         //put the operator in the new element
         segmentsArray[currentSegmentIndex].stringValue = newKeyInput
-        // //move pointer to next element, ready for number input, create it also
-        // currentSegmentIndex++
-        // segmentsArray[currentSegmentIndex] = {}//create new array element for next number
-        // segmentsArray[currentSegmentIndex].stringValue = ""//to remove 'undefined' as stirng value
     }
     else {//current seg is not a number, is an operator
         //ignore
         console.log('AT PROCESS4ARITHS, ANOTHER OPERATOR PRESSED, IGINORED')
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false 
+    }
+
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
     }
 
     //collate stirng from all segments, to return 
@@ -684,6 +718,8 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
 const processInputForNegSignKey = (newKeyInput) => {
 
     console.log('GOT TO PROCESS OPERATOR -SIGN')
+
+    let allowToTakeSnapShotOfState = true 
 
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
         
@@ -723,11 +759,17 @@ const processInputForNegSignKey = (newKeyInput) => {
     }
     else {
         //is ann operator, ignore
+        //dont take a snapshot
+        allowToTakeSnapShotOfState = false
     }
 
 
 
 
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+    
     //collate stirng from all segments, to return 
     let collatedString = collateStringsIntoOneString(segmentsArray)
 
@@ -737,7 +779,7 @@ const processInputForNegSignKey = (newKeyInput) => {
         screenMainTextLine3: ''
     }
 
-}
+}//method, -sign key
 
 
 
@@ -749,8 +791,11 @@ const processInputForNegSignKey = (newKeyInput) => {
 
 const processInputForDeciPointKey = (newKeyInput) => {
 
+    
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     let currentSegmentString = segmentsArray[currentSegmentIndex].stringValue
+    
+    let allowToTakeSnapShotOfState = true
 
     //note: current segment is never empty, except when whole array
     //is empty at start or after CA, so no need to check that condition
@@ -765,6 +810,8 @@ const processInputForDeciPointKey = (newKeyInput) => {
             //becuase closing brackets means number is locked, cant alter it.
             if(/\)/.test(currentSegmentString)) {
                 //ignore, no action
+                //dont take snapshot
+                allowToTakeSnapShotOfState = false 
             }
             else {//may have naked number e.g 35 or has ']' eg '35]' or '35%]'
                 //append decpoint to last numeral, e.g 3%] becomes 3.%] or 3% becomes 3.%
@@ -787,21 +834,29 @@ const processInputForDeciPointKey = (newKeyInput) => {
                 segmentsArray[currentSegmentIndex].stringValue = portion1 + '.' + portion2
             }
                  
-            // segmentsArray[currentSegmentIndex].stringValue += '.'                    
         }
         else {
             //decipoint already exists, igonore decipoint key input
+            //dont take snapshot
+            allowToTakeSnapShotOfState = false
         }
     }
     else //if is just a % sign, and user presses . decipoint, then becomes 0.%
         if(currentSegmentString.length === 1 && /\%/.test(currentSegmentString)) {// only 1 char, and it is a %sign
-        segmentsArray[currentSegmentIndex].stringValue = '0.%'            
+            segmentsArray[currentSegmentIndex].stringValue = '0.%'   
         }
-    else {//curr segment is an operator or empty
-        //move to next segment and add 0.
-        currentSegmentIndex++
-        segmentsArray[currentSegmentIndex] = {}//create
-        segmentsArray[currentSegmentIndex].stringValue = '0.'
+        else {//curr segment is an operator or empty
+            //move to next segment and add 0.
+            currentSegmentIndex++
+            segmentsArray[currentSegmentIndex] = {}//create
+            segmentsArray[currentSegmentIndex].stringValue = '0.'
+        }
+
+
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
     }
 
     //collate stirng from all segments, to return 
@@ -828,6 +883,9 @@ const processInputForOpenBracketKey = (newKeyInput) => {
     console.log('GOT TO PROCESS BRACKET OPEN KEY')
 
     let objectToReturn = {}
+
+    let allowToTakeSnapShotOfState = true 
+
 
     ///can only enter a open bracket if current segment is 
     //empty then ok to add openbracket, or is arithmetic of percent operator,
@@ -882,6 +940,8 @@ const processInputForOpenBracketKey = (newKeyInput) => {
             screenMainTextLine2: 'answer',
             screenMainTextLine3: ''
         }
+
+        //dont take snapshot
     }
 
 
@@ -917,6 +977,10 @@ const processInputForOpenBracketKey = (newKeyInput) => {
             }
  
 
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
 
@@ -943,6 +1007,8 @@ const processInputForCloseBracketKey = (newKeyInput) => {
     console.log('GOT TO PROCESS BRACKET CLOSE KEY')
 
     let objectToReturn = {}
+
+    let allowToTakeSnapShotOfState = true 
 
     ///can only enter a close bracket if current segment is a number,
     //and nett bracket count is -1 or less
@@ -1003,7 +1069,8 @@ const processInputForCloseBracketKey = (newKeyInput) => {
                 let hasThenWord = /then/i.test(collateStringsIntoOneString(segmentsArray))
                 if(hasIfWord && (! hasThenWord)) {
                     //e.g  '2 x [if (2 x 3)% is (5x6)' , dont add anything, only midway
-
+                    //dont take snpshot
+                    allowToTakeSnapShotOfState = false
                 }
                 else 
                     if(hasThenWord) {
@@ -1041,6 +1108,12 @@ const processInputForCloseBracketKey = (newKeyInput) => {
         }
     }
 
+
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
 
 
     //collate stirng from all segments, to return 
@@ -1092,8 +1165,8 @@ const processInputForPercentOfKey = (newKeyInput) => {
     //open bracket in front of the 20, we dont put any brackets in, we just add
     //the '% of ' portion as per normal
 
-    currentCalculationType = 'percentof'//set for global usage
 
+    let allowToTakeSnapShotOfState = true 
 
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
@@ -1141,6 +1214,8 @@ const processInputForPercentOfKey = (newKeyInput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -1253,6 +1328,12 @@ const processInputForPercentOfKey = (newKeyInput) => {
         }
     }//else is a number segment
     
+
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
       
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
@@ -1300,6 +1381,8 @@ const processInputForOutOfKey = (newkeyinput) => {
 
 
 
+    let allowToTakeSnapShotOfState = true 
+
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
@@ -1346,6 +1429,8 @@ const processInputForOutOfKey = (newkeyinput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont rtake snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -1452,6 +1537,13 @@ const processInputForOutOfKey = (newkeyinput) => {
     }//else is a number segment
     
       
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+
+
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
     console.log('COLLATED STRING IS: ', collatedString)
@@ -1496,6 +1588,7 @@ const processInputForAddPercentKey = (newkeyinput) => {
     //the '% of ' portion as per normal
 
 
+    let allowToTakeSnapShotOfState = true 
 
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
@@ -1543,6 +1636,8 @@ const processInputForAddPercentKey = (newkeyinput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -1664,6 +1759,11 @@ const processInputForAddPercentKey = (newkeyinput) => {
     }//else is a number segment
     
       
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+    
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
     console.log('COLLATED STRING IS: ', collatedString)
@@ -1709,6 +1809,8 @@ const processInputForDeductPercentKey = (newkeyinput) => {
 
 
 
+    let allowToTakeSnapShotOfState = true
+
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
@@ -1755,6 +1857,8 @@ const processInputForDeductPercentKey = (newkeyinput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -1875,6 +1979,11 @@ const processInputForDeductPercentKey = (newkeyinput) => {
         }
     }//else is a number segment
     
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
       
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
@@ -1922,6 +2031,8 @@ const processInputForPercentChangeKey = (newKeyInput) => {
 
 
 
+    let allowToTakeSnapShotOfState = true 
+
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
@@ -1968,6 +2079,8 @@ const processInputForPercentChangeKey = (newKeyInput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -2074,6 +2187,11 @@ const processInputForPercentChangeKey = (newKeyInput) => {
         }
     }//else is a number segment
     
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
       
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
@@ -2125,6 +2243,8 @@ const processInputForAfterAddedPercentKey = (newkeyinput) => {
 
 
 
+    let allowToTakeSnapShotOfState = true
+
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
@@ -2171,6 +2291,8 @@ const processInputForAfterAddedPercentKey = (newkeyinput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -2294,6 +2416,12 @@ const processInputForAfterAddedPercentKey = (newkeyinput) => {
     }//else is a number segment
     
       
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
     console.log('COLLATED STRING IS: ', collatedString)
@@ -2342,6 +2470,7 @@ const processInputForAfterDeductedPercentKey = (newkeyinput) => {
     //the '% of ' portion as per normal
 
 
+    let allowToTakeSnapShotOfState = true 
 
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
@@ -2389,6 +2518,8 @@ const processInputForAfterDeductedPercentKey = (newkeyinput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -2512,6 +2643,12 @@ const processInputForAfterDeductedPercentKey = (newkeyinput) => {
     }//else is a number segment
     
       
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
     console.log('COLLATED STRING IS: ', collatedString)
@@ -2561,6 +2698,8 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
 
 
 
+    let allowToTakeSnapShotOfState = true
+
     let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
     console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
@@ -2607,6 +2746,8 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
     //if current segment is not a number one, ignore user key input
     if( ! currentSegmentIsANumberFlag ){ //not a number segment
         //ignore
+        //dont take snapshot
+        allowToTakeSnapShotOfState = false
     }
     else {//is a number segment, so proceed
         if(currentSegmentHasNoOpenOrCloseBracketFlag) {
@@ -2720,6 +2861,12 @@ const processInputForIfPercentIsKey = (newkeyinput) => {
     }//else is a number segment
     
       
+
+
+    if(allowToTakeSnapShotOfState) {
+        takeASnapShotOfCurrentCalculationState()
+    }
+
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
     console.log('COLLATED STRING IS: ', collatedString)
@@ -2766,6 +2913,8 @@ const processInputForThenKey = (newkeyinput) => {
 
     
 
+    takeASnapShotOfCurrentCalculationState()
+
     //collate stirng from all segments, to return 
     collatedString = collateStringsIntoOneString(segmentsArray)
     console.log('COLLATED STRING IS: ', collatedString)
@@ -2777,6 +2926,104 @@ const processInputForThenKey = (newkeyinput) => {
 
 }
 
+
+
+
+
+
+
+
+
+const processInputForBackSpaceKey = (newKeyInput) => {
+
+    let objectToReturn = {}
+ 
+    //if there is only 1 snapshot left in the timemachine array, means at last char
+    //so do a clearall and return, treat it as a clearall
+    if(timeMachineArrayOfSegmentsArraySnapShots.length <=1) {
+        return clearAllReadyForNextCalculation()
+    }
+
+
+    //if gets here, measns there are at least 2 snapshots
+
+
+    //copy snapshot of previous state into segments array
+
+    timeMachineArrayOfSegmentsArraySnapShots.pop()//remove current snapshot
+    console.log('**AT BACKSPACE KEY: AFTER POPPING LAST SNAPSHOT, THE TIMEMACHINEARRAY IS ',timeMachineArrayOfSegmentsArraySnapShots)
+    let indexOfLastSnapShot = timeMachineArrayOfSegmentsArraySnapShots.length -1
+    console.log('**AT BACKSPACE KEY: INDEXOFLASTSNAPSHOT IS:',indexOfLastSnapShot)
+    
+    segmentsArray = JSON.parse(JSON.stringify(timeMachineArrayOfSegmentsArraySnapShots[indexOfLastSnapShot].segmentsArraySnapShot))
+    console.log('**AT BACKSPACE KEY: AFTER COPYING FROM SNAPSHOT, THE SEGMENTS ARRAY IS ',segmentsArray)
+
+    //set the index of current segmentsarray to the last segment in that array
+    currentSegmentIndex = segmentsArray.length - 1
+
+     //collate stirng from all segments, to return 
+     collatedString = collateStringsIntoOneString(segmentsArray)
+     console.log('COLLATED STRING IS: ', collatedString)
+     return objectToReturn = {
+         screenMainTextLine1: collatedString,
+         screenMainTextLine2: 'answer',
+         screenMainTextLine3: ''
+     }
+ 
+
+}//method backspace key
+
+
+
+
+
+
+
+
+
+const collateStringsIntoOneString = (arr) => {//arr is array of objects
+
+    //TO DLETE
+    console.log('SEGMENTS ARRAY IS ', arr)
+    //colate all the string values of all the segments together to send to 
+    //calculate method
+    let collatedString = "";
+
+    arr.forEach((obj, index) => {
+        collatedString = collatedString + obj.stringValue + ' '
+    })
+
+    return collatedString
+}
+
+
+
+
+ 
+
+const getParenthesesNetValueFromString = (passedInString) => {
+
+    console.log('AT GETPARENTHESIS NETTVALUE, PASSED IN STRING IS '  + passedInString)
+
+    let nettValue = 0
+    for( let i = passedInString.length-1; i>=0; i--) {
+        if(passedInString[i] === '(') {
+            nettValue--
+            console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
+        }
+        if(passedInString[i] === ')') {
+            nettValue++
+            console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
+             
+        }
+        
+
+
+    }
+
+    return nettValue
+}
+ 
 
 
 
@@ -2834,118 +3081,6 @@ const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (arr) => 
 
 }//mthod findindexofsegment
 
-
-
-
-
-
-
-
-
-const processInputForBackSpaceKey = (newKeyInput) => {
-
-    let objectToReturn = {}
-
-    //if 1st segment and last char in segment, do a CA
-    if(currentSegmentIndex === 0) {
-        if(segmentsArray[currentSegmentIndex].stringValue.length<=1) {
-            //treats as if its a CA
-            currentSegmentIndex = 0 //reset
-            segmentsArray = []//clear the array
-            return objectToReturn = {
-                screenMainTextLine1: "",
-                screenMainTextLine2: "",
-                screenMainTextLine3: "Ready"
-            }
-        }
-        else {//llength is more than 1
-            //remove last char
-            //slice(startindex, endindex): (0,-1)means substring from 0 to lastchar-1
-            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
-            let collatedString = collateStringsIntoOneString(segmentsArray)
-            return objectToReturn = {
-                screenMainTextLine1: collatedString,
-                screenMainTextLine2: "anser",
-                screenMainTextLine3: ""
-            }
-        }
-    }
-    else {//currnt segment is not the first segment, element
-        //if is last char in segment, pop the segment off the array
-        if(segmentsArray[currentSegmentIndex].stringValue.length<=1) {//last char
-            segmentsArray.pop()//remove from array
-            currentSegmentIndex--//move index back
-            let collatedString = collateStringsIntoOneString(segmentsArray)
-            return objectToReturn = {
-                screenMainTextLine1: collatedString,
-                screenMainTextLine2: "anser",
-                screenMainTextLine3: ""
-            }
-        }
-        else {//not last char of segment
-            //take the last char off
-            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
-            let collatedString = collateStringsIntoOneString(segmentsArray)
-            return objectToReturn = {
-                screenMainTextLine1: collatedString,
-                screenMainTextLine2: "anser",
-                screenMainTextLine3: ""
-            }
-        }
-    }
-}//methiod backspace key
-
-
-
-
-
-
-
-
-
-const collateStringsIntoOneString = (arr) => {//arr is array of objects
-
-    //TO DLETE
-    console.log('SEGMENTS ARRAY IS ', arr)
-    //colate all the string values of all the segments together to send to 
-    //calculate method
-    let collatedString = "";
-
-    arr.forEach((obj, index) => {
-        collatedString = collatedString + obj.stringValue + ' '
-    })
-
-    return collatedString
-}
-
-
-
-
- 
-
-const getParenthesesNetValueFromString = (passedInString) => {
-
-    console.log('AT GETPARENTHESIS NETTVALUE, PASSED IN STRING IS '  + passedInString)
-
-    let nettValue = 0
-    for( let i = passedInString.length-1; i>=0; i--) {
-        if(passedInString[i] === '(') {
-            nettValue--
-            console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
-        }
-        if(passedInString[i] === ')') {
-            nettValue++
-            console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
-             
-        }
-        
-
-
-    }
-
-    return nettValue
-}
- 
 
 
 
@@ -3286,3 +3421,29 @@ const cleanUpAllTrailingDeciPoints = () => {
     })
 
 }//mthod
+
+
+
+
+
+const takeASnapShotOfCurrentCalculationState = () => {
+    let currentIndex = timeMachineArrayOfSegmentsArraySnapShots.length - 1
+    currentIndex++//advance to  next element
+    timeMachineArrayOfSegmentsArraySnapShots[currentIndex] = {} //create
+    timeMachineArrayOfSegmentsArraySnapShots[currentIndex].segmentsArraySnapShot = JSON.parse(JSON.stringify(segmentsArray))
+    console.log('###### TIMEMACHINEARRAYOFSEGMENTSARRAY IS:',timeMachineArrayOfSegmentsArraySnapShots)
+}
+
+
+
+
+const clearAllReadyForNextCalculation  = () => {
+    currentSegmentIndex = 0 //reset
+    segmentsArray = []//clear the array
+    timeMachineArrayOfSegmentsArraySnapShots = [] //clear the timemachine ready for next calculation
+        return objectToReturn = {
+            screenMainTextLine1: "",
+            screenMainTextLine2: "",
+            screenMainTextLine3: "Ready"
+        }
+}

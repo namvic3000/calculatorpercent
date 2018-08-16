@@ -118,9 +118,13 @@ class Keyboard extends React.Component {
                 borderWidth: 0,
                 borderColor: "black"
             },
-            memoryText: {
+            memoryButtonText: {
+                fontSize: this.fontSizeOfStandardButton*0.75,
+                color: "white",
+            },
+            memoryContentText: {
                 alignItems: "center",
-                fontSize: this.fontSizeOfStandardButton*0.6,
+                fontSize: this.fontSizeOfStandardButton*0.62,
                 color: "blue",
             },
             standardButtonRowContainer: {
@@ -134,13 +138,38 @@ class Keyboard extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'blue',
-                backgroundColor: "gray",//"rgb(250,250,255)",
+                backgroundColor: "darkblue",//"rgb(250,250,255)",
                 borderWidth: 0,
                 height: "100%",
             },
             calcButtonText: {
                 fontSize: this.fontSizeOfStandardButton,
                 color: "white",
+            },
+            calcButtonTextForCA: {
+                fontSize: this.fontSizeOfStandardButton*0.85,
+                color: "white",
+            },
+            calcButtonTextForBackArrow: {
+                fontSize: this.fontSizeOfStandardButton*1.2,
+                color: "white",
+            },
+            calcButtonTextForCurrency: {
+                fontSize: this.fontSizeOfStandardButton*0.95,
+                color: "white",
+            },
+            calcButtonTextArithOperators: {
+                fontSize: this.fontSizeOfStandardButton*1.1,
+                color: "white",
+            },
+            calcButtonTextSubtractOperator: {
+                fontSize: this.fontSizeOfStandardButton*1.3,
+                color: "white",
+            },
+            calcButtonTextMultiplyOperator: {
+                fontSize: this.fontSizeOfStandardButton*1.1,
+                color: "white",
+                bottom: 2.5
             },
             percentButtonsRowContainer: {
                 flexDirection: "row",
@@ -215,10 +244,10 @@ class Keyboard extends React.Component {
                 <View style={styles.allMemoriesContainer}>
                     <View style={styles.memory1Container}>
                         {/* <Text style={styles.memTitle}>Mem1</Text> */}
-                        <Text style={styles.memoryText}> 222278.7777</Text>
+                        <Text style={styles.memoryContentText}> 222278.7777</Text>
                     </View>
                     <View style={styles.memory2Container}>
-                        <Text style={styles.memoryText}> 77778888.8888</Text>
+                        <Text style={styles.memoryContentText}> 77778888.8888</Text>
                     </View>
                 </View>
 
@@ -230,13 +259,13 @@ class Keyboard extends React.Component {
                         <Text style={styles.percentButtonText}>)</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("m+")}>
-                        <Text style={styles.percentButtonText}>M+</Text>
+                        <Text style={styles.memoryButtonText}>M+</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("mc")}>
-                        <Text style={styles.percentButtonText}>MC</Text>
+                        <Text style={styles.memoryButtonText}>MC</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> this.handleCalcButtonClicked("mr")}>
-                        <Text style={styles.percentButtonText}>MR</Text>
+                        <Text style={styles.memoryButtonText}>MR</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -282,10 +311,10 @@ class Keyboard extends React.Component {
                             <Text style={styles.calcButtonText}>9</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("÷")}>
-                            <Text style={styles.calcButtonText}>÷</Text>
+                            <Text style={styles.calcButtonTextArithOperators}>÷</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("<-")}>
-                            <Text style={styles.calcButtonText}>&lt;-</Text>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("«")}>
+                            <Text style={styles.calcButtonTextForBackArrow}>«</Text>
                         </TouchableOpacity>
                 </View>
 
@@ -300,10 +329,10 @@ class Keyboard extends React.Component {
                             <Text style={styles.calcButtonText}>6</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("x")}>
-                            <Text style={styles.calcButtonText}>x</Text>
+                            <Text style={styles.calcButtonTextMultiplyOperator}>x</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("ca")}>
-                            <Text style={styles.calcButtonText}>CA</Text>
+                            <Text style={styles.calcButtonTextForCA}>CA</Text>
                         </TouchableOpacity>
                 </View>
                     
@@ -317,11 +346,11 @@ class Keyboard extends React.Component {
                         <TouchableOpacity style={styles.standardButtonContainer} value={3} onPress={ () => this.handleCalcButtonClicked("3")}>
                             <Text style={styles.calcButtonText}>3</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => this.handleCalcButtonClicked("+")}>
-                            <Text style={styles.calcButtonText}>+</Text>
+                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("-")}>
+                            <Text style={styles.calcButtonTextSubtractOperator}>-</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => this.handleCalcButtonClicked("currency")}>
-                            <Text style={styles.calcButtonText}>$</Text>
+                            <Text style={styles.calcButtonTextForCurrency}>$</Text>
                         </TouchableOpacity>
                 </View>
                 
@@ -335,8 +364,8 @@ class Keyboard extends React.Component {
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked(".")}>
                             <Text style={styles.calcButtonText}>.</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("-")}>
-                            <Text style={styles.calcButtonText}>-</Text>
+                        <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => this.handleCalcButtonClicked("+")}>
+                            <Text style={styles.calcButtonTextArithOperators}>+</Text>
                         </TouchableOpacity>
                         {
                             this.state.showThenButtonFlag ? (
@@ -346,7 +375,7 @@ class Keyboard extends React.Component {
                             )
                             : (
                                 <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("=")}>
-                                    <Text style={styles.calcButtonText}>=</Text>
+                                    <Text style={styles.calcButtonTextForBackArrow}>=</Text>
                                 </TouchableOpacity>
                             )
                         }
