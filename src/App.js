@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 
-export default class App extends Component {//<Props> {
+class App extends Component {//<Props> {
  
  
   
@@ -32,3 +32,5 @@ export default class App extends Component {//<Props> {
   }
 }
 
+
+export default App

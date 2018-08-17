@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {StyleSheet,View, Text, } from 'react-native'
+import {StyleSheet,View, Text, Dimensions} from 'react-native'
 import { connect } from "react-redux";
-import helpers from './helpers'
+import * as helpers from '../helpers.js'
 
 
 
@@ -15,7 +15,11 @@ class Screen extends Component {
     let {segmentsArray, currentSegmentIndex} = this.props 
 
     let calculationTextLine = helpers.collateStringsIntoOneString(segmentsArray)
-
+    let liveAnswer = 'live anser here'//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
+    
+    
+    
+    
     ////////fontsize for mainline1
     let allowedLengthBeforeShrinking = 50
     let overflow = calculationTextLine.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
@@ -43,13 +47,13 @@ class Screen extends Component {
 
 
 
-    let Styles = StyleSheet.create({
+    let styles = StyleSheet.create({
       screen: {
-        flex: 2,
+        flex: 1,
         flexWrap: "wrap",
-        backgroundColor: "white",
+        backgroundColor: "yellow",
         width: "100%",
-        paddingLeft: this.calculatorScreenHeight/25,
+        paddingLeft: this.calculatorScreenHeight/25,//defined in <view></view>
         paddingRight: this.calculatorScreenHeight/27,
         paddingBottom: 0,//-this.calculatorScreenHeight/40,
         paddingTop: 0//this.calculatorScreenHeight/18,
@@ -87,8 +91,8 @@ class Screen extends Component {
    
     return(
       <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
-        <Text style={styles.screenMainTextLine1}>{this.props.screenMainTextLine1Content}</Text>
-        <Text style={styles.screenLiveAnswerLine}>{this.props.screenAnswerLineContent}</Text>
+        <Text style={styles.screenMainTextLine1}>{calculationTextLine}</Text>
+        <Text style={styles.screenLiveAnswerLine}>{liveAnswer}</Text>
       </View>
     )
   }

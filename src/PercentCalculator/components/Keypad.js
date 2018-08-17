@@ -1,91 +1,28 @@
 import React from 'react'
-import {Dimensions,onLayout,StyleSheet, Button, TouchableOpacity, View, Text} from 'react-native'
-import {updateContentOfScreenMainTextLine1} from '../../../actions/screenActions'
-import {connect} from 'react-redux'
-import {Platform, NativeModules} from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import ButtonStandard0To9 from './ButtonStandard0To9'
 
 
 
 
+class Keypad extends React.Component {
 
-class Keyboard extends React.Component {
- 
     state = {
-        showThenButtonFlag: false,
+        showThenButtonFlag: false 
     }
-
-
-    handleCalcButtonClicked = calcButtonStringValue => {
-  
-        // let currentContent = this.props.screenMainTextLine1Content
-        this.props.dispatch(updateContentOfScreenMainTextLine1(calcButtonStringValue))
-        
-
-
-        // this.setState( prevState => ({
-        //   ...prevState,
-        //   line1CalculatorInput: prevState.line1CalculatorInput + calcButtonStringValue
-        // }))
-
-        // alert('clicked')
-        // let value = ReactNativeComponentTree.getInstanceFromNode(e.currentTarget)._currentElement.props.cx
-        console.log('at handlecalbuttonclick, value is ', calcButtonStringValue)
-        // this.setState({line1CalculatorInput: calcButtonStringValue})
-      
-        // ////testing to delte
-        // if(calcButtonStringValue == 0) {
-        //     console.log('button 0 pressed')
-        //     this.props.dispatch(updateCurrentOperandNumber(2))
-        // }
-
-
-        let tempTextLine = this.props.screenMainTextLine1Content//.split(' ')
-        if(/if/i.test(tempTextLine) && (! /then/.test(tempTextLine))){
-            console.log('*****SHOW THENN BUTTON NOW***')
-            this.setState({showThenButtonFlag: true})
-        }
-        else {
-            this.setState({showThenButtonFlag: false})
-        }
-       
-
-    }
-    
 
     render() {
 
 
-        //get height of status bar for both platforms
-        // let STATUSBAR_HEIGHT;
+        let standardButtonWidth = Dimensions.get('window').width/5
 
-        // if(Platform.OS === "ios") {
-        //     STATUSBAR_HEIGHT = NativeModules.StatusBarManager.getHeight( height => height)
-        //     console.log('STATUS BAR HEIGHT IOS IS: ' + STATUSBAR_HEIGHT)
-        // }
-        // else {//android
-        //     STATUSBAR_HEIGHT = NativeModules.StatusBarManager.HEIGHT
-        //     console.log('STATUS BAR HEIGHT ANDROID IS: ' + STATUSBAR_HEIGHT)
-        // }
-
-        let STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : NativeModules.StatusBarManager.HEIGHT 
-
-
-
-        this.standardButtonWidth = Dimensions.get('window').width/5
-
-        this.fontSizeOfStandardButton = this.standardButtonWidth/2.8
+        let fontSizeOfStandardButton = standardButtonWidth/2.8
 
  
 
-        
         let styles = StyleSheet.create({
-            paddingToMoveBelowStatusBar: {
-                width: "100%",
-                height: STATUSBAR_HEIGHT + 2,
-                color: "transparent",
-                backgroundColor: "white"
-            },
-            container: {
+           
+            wholeKeypadContainer: {
                 // flex of 1 fills all space in parent container
                 flex: 1,
                 backgroundColor: "lightgray",
@@ -94,8 +31,8 @@ class Keyboard extends React.Component {
             },
             
             allMemoriesContainer: {
-                flexDirection: "row",
                 flex: 0.3,
+                flexDirection: "row",
             },
             memory1Container: {
                 flex: 1,
@@ -122,18 +59,18 @@ class Keyboard extends React.Component {
                 borderColor: "black"
             },
             memoryButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.75,
+                fontSize: fontSizeOfStandardButton*0.75,
                 color: "white",
             },
             memoryContentText: {
                 alignItems: "center",
-                fontSize: this.fontSizeOfStandardButton*0.62,
+                fontSize: fontSizeOfStandardButton*0.62,
                 color: "blue",
             },
             standardButtonRowContainer: {
                 // flex of 1 for each standard button row, results in equall height of row
                 flexDirection: "row",
-                flex: 1,
+                flex: 0.9,
             },
             standardButtonContainer: {
                 //container for each individual button
@@ -146,31 +83,31 @@ class Keyboard extends React.Component {
                 height: "100%",
             },
             calcButtonText: {
-                fontSize: this.fontSizeOfStandardButton,
+                fontSize: fontSizeOfStandardButton,
                 color: "white",
             },
             calcButtonTextForCA: {
-                fontSize: this.fontSizeOfStandardButton*0.85,
+                fontSize: fontSizeOfStandardButton*0.85,
                 color: "white",
             },
             calcButtonTextForBackArrow: {
-                fontSize: this.fontSizeOfStandardButton*1.2,
+                fontSize: fontSizeOfStandardButton*1.2,
                 color: "white",
             },
             calcButtonTextForCurrency: {
-                fontSize: this.fontSizeOfStandardButton*0.95,
+                fontSize: fontSizeOfStandardButton*0.95,
                 color: "white",
             },
             calcButtonTextArithOperators: {
-                fontSize: this.fontSizeOfStandardButton*1.1,
+                fontSize: fontSizeOfStandardButton*1.1,
                 color: "white",
             },
             calcButtonTextSubtractOperator: {
-                fontSize: this.fontSizeOfStandardButton*1.3,
+                fontSize: fontSizeOfStandardButton*1.3,
                 color: "white",
             },
             calcButtonTextMultiplyOperator: {
-                fontSize: this.fontSizeOfStandardButton*1.1,
+                fontSize: fontSizeOfStandardButton*1.1,
                 color: "white",
                 bottom: 2.5
             },
@@ -198,43 +135,25 @@ class Keyboard extends React.Component {
                 height: "100%",
             },
             percentButtonText:{
-                fontSize: this.fontSizeOfStandardButton*0.7,
+                fontSize: fontSizeOfStandardButton*0.7,
                 color: "white",
             },
             afterPercentAddedButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.7,
-                lineHeight: this.fontSizeOfStandardButton*0.7,
+                fontSize: fontSizeOfStandardButton*0.7,
+                lineHeight: fontSizeOfStandardButton*0.7,
                 color: "white",
             },
             afterPercentDeductedButtonText: {
-                fontSize: this.fontSizeOfStandardButton*0.7,
+                fontSize: fontSizeOfStandardButton*0.7,
                 color: "white",
-                lineHeight: this.fontSizeOfStandardButton*0.7,
+                lineHeight: fontSizeOfStandardButton*0.7,
             },
-            buttonSmallRowContainer: {
-                flexDirection: "row",
-                flex: 0.3,
-            },
-            buttonSmallContainer: {
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: "lightgray",
-                borderWidth: 0,
-                height: "100%",
-            },
-            buttonSmallText:{
-                fontSize: this.fontSizeOfStandardButton*0.63,
-                lineHeight: this.fontSizeOfStandardButton*0.72,
-                color: "darkblue"
-            },
-            
         })
 
 
+
         return(
-            <View style={styles.container}>
-                 
+            <View style={styles.wholeKeypadContainer}>
 
                 <View style={styles.allMemoriesContainer}>
                     <View style={styles.memory1Container}>
@@ -296,9 +215,11 @@ class Keyboard extends React.Component {
 
                 <View style={styles.standardButtonRowContainer}>
                 {/* doesnt work onLayout={e => this.standardButtonHeight = e.nativeEvent.layout.height} */}
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("7")}>
+                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("7")}>
                             <Text style={styles.calcButtonText}>7</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <ButtonStandard0To9 buttonValue="7" />
+                        
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("8")}>
                             <Text style={styles.calcButtonText}>8</Text>
                         </TouchableOpacity>
@@ -395,10 +316,7 @@ class Keyboard extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    screenMainTextLine1Content: state.screenStatus.screenMainTextLine1Content,
-    screenAnswerLineContent: state.screenStatus.screenAnswerLineContent
-}) 
 
 
-export default connect(mapStateToProps)(Keyboard)
+
+export default Keypad
