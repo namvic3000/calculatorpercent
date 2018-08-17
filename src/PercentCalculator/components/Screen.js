@@ -12,23 +12,27 @@ class Screen extends Component {
 
   render() {
 
-    let {segmentsArray, currentSegmentIndex} = this.props 
 
-    let calculationTextLine = helpers.collateStringsIntoOneString(segmentsArray)
-    let liveAnswer = 'live anser here'//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
+
+    // let {segmentsArray, currentSegmentIndex} = this.props 
+
+    // let calculationTextLine = helpers.collateStringsIntoOneString(segmentsArray)
+    // let liveAnswer = 'live anser here'//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
     
     
+    // console.log('AT SCREEN: SEGMENTS ARRAY IS:', segmentsArray)
+    // console.log('AT SCREEN: CALCULATOIN TEXTLINE IS:'+ calculationTextLine)
     
     
     ////////fontsize for mainline1
     let allowedLengthBeforeShrinking = 50
-    let overflow = calculationTextLine.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
+    let overflow = this.props.screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
         overflowFromInitialExpectedLength = 0
     }
 
     //large fontsize for initial x number of characters, before start shrinking
-    if(calculationTextLine <= allowedLengthBeforeShrinking) {
+    if(this.props.screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
         //length is within allowed initial length, gets large font
         fontSizeOfScreenMainLine1 = Dimensions.get('window').width/10
     }
@@ -88,11 +92,12 @@ class Screen extends Component {
         flexWrap: "wrap"
       },
     })
-   
+
+
     return(
       <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
-        <Text style={styles.screenMainTextLine1}>{calculationTextLine}</Text>
-        <Text style={styles.screenLiveAnswerLine}>{liveAnswer}</Text>
+        <Text style={styles.screenMainTextLine1}>{this.props.screenMainTextLine1}</Text>
+        <Text style={styles.screenLiveAnswerLine}>{this.props.screenLiveAnswerLine}</Text>
       </View>
     )
   }
@@ -102,6 +107,9 @@ class Screen extends Component {
 
 
 const mapStateToProps = (state) => ({
+  screenMainTextLine1: state.calculatorStateData.screenMainTextLine1,
+  screenLiveAnswerLine: state.calculatorStateData.screenLiveAnswerLine,
+  screenMidScreenMessage: state.calculatorStateData.screenMidScreenMessage,
   segmentsArray: state.calculatorStateData.segmentsArray,
   currentSegmentIndex: state.calculatorStateData.currentSegmentIndex
 })

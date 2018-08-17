@@ -3,7 +3,7 @@
 export const collateStringsIntoOneString = (arr) => {//arr is array of objects
 
     //TO DLETE
-    console.log('SEGMENTS ARRAY IS ', arr)
+    console.log('AT COLLATEINTOSTRING: SEGMENTS ARRAY IS ', arr)
     //colate all the string values of all the segments together to send to 
     //calculate method
     let collatedString = "";
@@ -11,6 +11,8 @@ export const collateStringsIntoOneString = (arr) => {//arr is array of objects
     arr.forEach((obj, index) => {
         collatedString = collatedString + obj.stringValue + ' '
     })
+
+    console.log('AT COLLATEINTOSTRING: STRING TO RETURN IS'+collatedString)
 
     return collatedString
 }
@@ -449,7 +451,7 @@ export const cleanUpAllTrailingDeciPoints = (segmentsArray) => {
 
 
 
-export const takeASnapShotOfCurrentCalculationState = (timeMachineArrayOfSegmentsArraySnapShots) => {
+export const takeASnapShotOfCurrentCalculationState = (segmentsArray, timeMachineArrayOfSegmentsArraySnapShots) => {
     let currentIndex = timeMachineArrayOfSegmentsArraySnapShots.length - 1
     currentIndex++//advance to  next element
     timeMachineArrayOfSegmentsArraySnapShots[currentIndex] = {} //create
@@ -486,19 +488,19 @@ export const checkNumberLengthOfUserInput = (passedInString) => {
     let overLimit = false
 
     //if no decipoints in string
-    if( ! /\./.test(segmentsArray[currentSegmentIndex].stringValue)) {//if no decipoint
+    if( ! /\./.test(passedInString)) {//if no decipoint
         //no decipoint , so max is 14 numerals, default is [] coz match will return null if not found
-        if( (segmentsArray[currentSegmentIndex].stringValue.match(/[0-9]/g) || []).length >13 ) {//number of numerals in segment is >13, means allow 14 numerals
+        if( (passedInString.match(/[0-9]/g) || []).length >13 ) {//number of numerals in segment is >13, means allow 14 numerals
             overLimit = true 
         }
     }
     else {//has a decipoint
         //max number of deciplaces is 4
         //get index of decipoint
-        let indexOfDeciPoint = segmentsArray[currentSegmentIndex].stringValue.search(/\./)//this returns first find
+        let indexOfDeciPoint = passedInString.search(/\./)//this returns first find
 
         //if portion after decipoint has more than 4 decipoints, ignore input and return as is
-        if( (segmentsArray[currentSegmentIndex].stringValue.slice(indexOfDeciPoint+1).match(/[0-9]/g) || []).length > 3) {//ie >3 means allow 4 deciplaces
+        if( (passedInString.slice(indexOfDeciPoint+1).match(/[0-9]/g) || []).length > 3) {//ie >3 means allow 4 deciplaces
             overLimit = true 
         }
     }

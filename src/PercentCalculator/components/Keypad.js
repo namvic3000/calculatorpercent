@@ -217,15 +217,17 @@ class Keypad extends React.Component {
                 {/* doesnt work onLayout={e => this.standardButtonHeight = e.nativeEvent.layout.height} */}
                         {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("7")}>
                             <Text style={styles.calcButtonText}>7</Text>
-                        </TouchableOpacity> */}
-                        <ButtonStandard0To9 buttonValue="7" />
-                        
+                        </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("8")}>
                             <Text style={styles.calcButtonText}>8</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("9")}>
                             <Text style={styles.calcButtonText}>9</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <ButtonStandard0To9 buttonValue="7" />
+                        <ButtonStandard0To9 buttonValue="8" />
+                        <ButtonStandard0To9 buttonValue="9" />
+                        
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("÷")}>
                             <Text style={styles.calcButtonTextArithOperators}>÷</Text>
                         </TouchableOpacity>
@@ -235,7 +237,7 @@ class Keypad extends React.Component {
                 </View>
 
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("4")}>
+                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("4")}>
                             <Text style={styles.calcButtonText}>4</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("5")}>
@@ -243,7 +245,11 @@ class Keypad extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("6")}>
                             <Text style={styles.calcButtonText}>6</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <ButtonStandard0To9 buttonValue="4" />
+                        <ButtonStandard0To9 buttonValue="5" />
+                        <ButtonStandard0To9 buttonValue="6" />
+                       
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("x")}>
                             <Text style={styles.calcButtonTextMultiplyOperator}>x</Text>
                         </TouchableOpacity>
@@ -253,7 +259,7 @@ class Keypad extends React.Component {
                 </View>
                     
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={ () => this.handleCalcButtonClicked("1")}>
+                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={ () => this.handleCalcButtonClicked("1")}>
                             <Text style={styles.calcButtonText} >1</Text> 
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} value={2} onPress={ () => this.handleCalcButtonClicked("2")}>
@@ -261,7 +267,11 @@ class Keypad extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.standardButtonContainer} value={3} onPress={ () => this.handleCalcButtonClicked("3")}>
                             <Text style={styles.calcButtonText}>3</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <ButtonStandard0To9 buttonValue="1" />
+                        <ButtonStandard0To9 buttonValue="2" />
+                        <ButtonStandard0To9 buttonValue="3" />
+                       
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> this.handleCalcButtonClicked("-")}>
                             <Text style={styles.calcButtonTextSubtractOperator}>-</Text>
                         </TouchableOpacity>
