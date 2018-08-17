@@ -1,12 +1,12 @@
 import {combineReducers} from 'redux'
 import keyboardReducer from './keyboardReducer';
-import screenReducer from './screenReducer';
+import calculatorDataReducer from './calculatorDataReducer';
 
 
 
 const rootReducer = combineReducers({
         keyBoardStatus: keyboardReducer,
-        screenStatus: screenReducer
+        calculatorStateData: calculatorDataReducer
 })
 
 

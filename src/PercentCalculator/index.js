@@ -1,20 +1,10 @@
 import React, {Component} from 'react'
 import {Platform, StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, onLayout} from 'react-native';
 import {connect} from 'react-redux'
-import KeyboardAndScreen from "./components/KeyboardAndScreen"
-// import Screen from "./components/Screen"
-// import {updateCurrentOperandNumber} from '../../actions/keyboardActions'
+import CalculatorWhole from "./components/CalculatorWhole"
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
-// type Props = {};
-
-class PercentAndStandardCalculator extends Component {
+class PercentCalculator extends Component {
  
   
   render() {
@@ -32,15 +22,8 @@ class PercentAndStandardCalculator extends Component {
       pageContainer: {
         flex: 1,
         width: "100%",
-        // justifyContent: 'center',
-        // alignItems: 'center',
         backgroundColor: 'black',
       },
-      // screenContainer: {
-      //     flex: 1,
-      //     backgroundColor: "green",
-      //     width: "100%"
-      // },
       keyboardAndScreenContainer: {
           flex: 1,
           backgroundColor: "blue",
@@ -49,21 +32,13 @@ class PercentAndStandardCalculator extends Component {
     })
     
 
-
-
-
-
-
+ 
 
     return (
       <View style={styles.pageContainer}>
         
-        {/* <View style={styles.screenContainer}>
-            <Screen/>
-        </View> */}
-        
         <View style={styles.keyboardAndScreenContainer}>
-            <KeyboardAndScreen/>
+            <CalculatorWhole/>
         </View>
       
       </View>
@@ -75,4 +50,4 @@ class PercentAndStandardCalculator extends Component {
 
 
 
-export default PercentAndStandardCalculator
+export default PercentCalculator
