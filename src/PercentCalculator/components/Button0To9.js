@@ -5,7 +5,7 @@ import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 
 
-class ButtonStandard0To9 extends React.Component {
+class Button0To9 extends React.Component {
 
     constructor() {
         super()
@@ -17,6 +17,7 @@ class ButtonStandard0To9 extends React.Component {
         
         console.log('AT BUTTON0-9: BUTTON PRESSED IS:' + buttonValue)
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
+        
         let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
         console.log('AT BUTTON0-9: EMPTYSCREENFLAG IS :' + emptyScreenMainLineFlag)
         console.log('AT BUTTON0-9: SEGMENTS ARRY, INDEX, AND TIMEMACHINEARRAY GOT ARE:',segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots)
@@ -277,12 +278,6 @@ class ButtonStandard0To9 extends React.Component {
             currentSegmentIndex, 
             timeMachineArrayOfSegmentsArraySnapShots
         ))
-        
-        // return objectToReturn = {
-        //     screenMainTextLine1: collatedString,
-        //     screenMainTextLine2: 'answer',
-        //     screenMainTextLine3: ''
-        // }
 
     }//handleclick
 
@@ -321,11 +316,9 @@ class ButtonStandard0To9 extends React.Component {
 
 
         return(
-            <View>
-                <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked(this.props.buttonValue)}}>
-                    <Text style={styles.calcButtonText}>{this.props.buttonValue}</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked(this.props.buttonValue)}}>
+                <Text style={styles.calcButtonText}>{this.props.buttonValue}</Text>
+            </TouchableOpacity>
         )
     }
 
@@ -343,4 +336,4 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps)(ButtonStandard0To9)
+export default connect(mapStateToProps)(Button0To9)

@@ -110,7 +110,7 @@ export const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (a
 
 
 export const calculateResultOfWholeCalculation = (passedInString) => {
-
+    return 100
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
     // let wholeString = collateStringsIntoOneString(segmentsArray)
