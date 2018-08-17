@@ -40,7 +40,7 @@ export default class App extends Component {//<Props> {
       
         <Provider store={store}>
           <View style={styles.container}>
-              <StatusBar hidden={true}/>
+              <StatusBar hidden={false}/>
               <PercentAndStandardCalculator />
           </View>
        </Provider>

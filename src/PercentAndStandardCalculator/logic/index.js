@@ -207,7 +207,7 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
 
     console.log('GOT TO POINT1000')
-    let result = calculateResultOfWholeCalculation()
+    let result = calculateResultOfWholeCalculation(collateStringsIntoOneString(segmentsArray))
     return {
         screenMainTextLine1: collateStringsIntoOneString(segmentsArray),
         answerLine: '= ' + result,
@@ -397,6 +397,7 @@ const processInputFor0To9Keys = (newKeyInput) => {
     let allowToTakeSnapShotOfState = true
 
 
+
     //first detect if current segment is a number or not
     //include % and ) as a number for this key input
     let currentSegmentIsANumberFlag = /([0-9]|%|\)|\()/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
@@ -437,6 +438,21 @@ const processInputFor0To9Keys = (newKeyInput) => {
     //if segment is a number
     if(currentSegmentIsANumberFlag) {
         console.log('AT PROCESS0-9KEYS, GOT TO CURENTSEGMENTIS A NUMBER')
+
+        //check for input lengh
+        let overLimit = checkNumberLengthOfUserInput(segmentsArray[currentSegmentIndex].stringValue)
+        if(overLimit) {
+            //return as is, no change, ignnore user input
+            //collate stirng from all segments, to return     
+            let collatedString = collateStringsIntoOneString(segmentsArray)
+            return objectToReturn = {
+                screenMainTextLine1: collatedString,
+                screenMainTextLine2: 'answer',
+                screenMainTextLine3: ''
+            }
+        }
+
+
 
         //if has closing bracket, insert number before that closing bracket
         if(currentSegmentHasCloseBracketFlag) {
@@ -3088,11 +3104,12 @@ const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (arr) => 
 
 
 
-const calculateResultOfWholeCalculation = () => {
+const calculateResultOfWholeCalculation = (passedInString) => {
 
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
-    let wholeString = collateStringsIntoOneString(segmentsArray)
+    // let wholeString = collateStringsIntoOneString(segmentsArray)
+    let wholeString = passedInString
 
     let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted|if)/.test(wholeString)
     console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
@@ -3446,4 +3463,43 @@ const clearAllReadyForNextCalculation  = () => {
             screenMainTextLine2: "",
             screenMainTextLine3: "Ready"
         }
+}
+
+
+
+
+
+const checkNumberLengthOfUserInput = (passedInString) => {
+
+    //checks if numeral count before or after decipoint is over the limit
+
+
+    /////limit length of number being entered//////
+    //if no decipoints, max lenght is 14
+    //if has decipoint, max deciplaces is 4
+
+    let overLimit = false
+
+    //if no decipoints in string
+    if( ! /\./.test(segmentsArray[currentSegmentIndex].stringValue)) {//if no decipoint
+        //no decipoint , so max is 14 numerals, default is [] coz match will return null if not found
+        if( (segmentsArray[currentSegmentIndex].stringValue.match(/[0-9]/g) || []).length >13 ) {//number of numerals in segment is >13, means allow 14 numerals
+            overLimit = true 
+        }
+    }
+    else {//has a decipoint
+        //max number of deciplaces is 4
+        //get index of decipoint
+        let indexOfDeciPoint = segmentsArray[currentSegmentIndex].stringValue.search(/\./)//this returns first find
+
+        //if portion after decipoint has more than 4 decipoints, ignore input and return as is
+        if( (segmentsArray[currentSegmentIndex].stringValue.slice(indexOfDeciPoint+1).match(/[0-9]/g) || []).length > 3) {//ie >3 means allow 4 deciplaces
+            overLimit = true 
+        }
+    }
+
+
+    //if gets here, then string len is less than limit
+    return overLimit
+
 }
