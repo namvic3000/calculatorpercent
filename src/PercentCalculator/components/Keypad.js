@@ -9,6 +9,7 @@ import ButtonDeciPoint from './ButtonDeciPoint';
 import ButtonOpenBracket from './ButtonOpenBracket';
 import ButtonCloseBracket from './ButtonCloseBracket';
 import ButtonPercentOf from './ButtonPercentOf';
+import ButtonOutOf from './ButtonOutOf';
 
 
 
@@ -196,9 +197,11 @@ class Keypad extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("out of")}}>
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("out of")}}>
                         <Text style={styles.percentButtonText}>out of</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <ButtonOutOf />
+
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after added %")}}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>added</Text></View>
                     </TouchableOpacity>
