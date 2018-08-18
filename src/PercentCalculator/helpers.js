@@ -110,7 +110,6 @@ export const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (a
 
 
 export const calculateResultOfWholeCalculation = (passedInString) => {
-    return 100
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
     // let wholeString = collateStringsIntoOneString(segmentsArray)
@@ -127,7 +126,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
     
 
     //if parenthesis open and close dont equal, means calculation incomplete
-    if(getParenthesesNetValueFromString(wholeString) !== 0) {
+    if(getParenthesesNetValueFromString(wholeString) <= -1) {
         console.log('AT CALCULATERESULT, BRACKETS INCOMPLETE')
         return "incomplete"
     }
@@ -192,7 +191,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
      //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
      wholeString = wholeString.replace(/x/g, '*')
      wholeString = wholeString.replace(/÷/g, '/')
-     console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
+     console.log('****#### AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG TO CALCULATE IS ' + wholeString)
   
     let resultToReturn = eval(wholeString)
 

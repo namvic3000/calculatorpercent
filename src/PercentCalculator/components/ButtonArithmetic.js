@@ -22,6 +22,10 @@ class ButtonArithmetic extends React.Component {
         
         let emptyScreenMainLineFlag = (segmentsArray || "").length <= 0
 
+        let allowToTakeSnapShotOfState = true
+
+
+
         if(emptyScreenMainLineFlag) {//if empty array/screen, cant enter arith operators
             // console.log('ARITH BUTTON , CANT ENTER WHEN EMPTY')
             return //dont process below code
@@ -31,7 +35,6 @@ class ButtonArithmetic extends React.Component {
         // console.log('GOT TO PROCESS 4ARITH KEYS')
  
 
-        let allowToTakeSnapShotOfState = true
 
 
         //first detect if current segment is a number or not
@@ -49,23 +52,44 @@ class ButtonArithmetic extends React.Component {
         //if current segment is a number,  can proceed
 
 
-        //special if%is case, if there is just 'if' without 'then', then at operand2, no
-        //arith operators allowed so just return
-        if( (/if/i.test(helpers.collateStringsIntoOneString(segmentsArray))) && ( ! /then/i.test(helpers.collateStringsIntoOneString(segmentsArray))) ) {
-            //collate stirng from all segments, to return 
-            // let collatedString = helpers.collateStringsIntoOneString(segmentsArray)
-            // return objectToReturn = {
-            //     screenMainTextLine1: collatedString,
-            //     screenMainTextLine2: 'answer',
-            //     screenMainTextLine3: ''
-            // }
-            return
-        }
 
 
         if(currentSegmentIsANumberFlag) {
             // console.log('AT PROCESS4ARITHS, CURENTSEGMENT IS A NUMBER')
             
+
+
+            //special if%is case, if there is just 'if' without 'then', then at operand2,
+            //arith operators allowed only if there is an open bracket outstanding starting
+            //from the 'if' word
+            if( (/if/i.test(helpers.collateStringsIntoOneString(segmentsArray))) && ( ! /then/i.test(helpers.collateStringsIntoOneString(segmentsArray))) ) {
+                //only allow arith operator if current segment is a number and 
+                //nett bracket value , from the 'if ... onwards is -1 or less
+                //so e.g if 35% is 555    then we dont allow arith opertor since
+                //there is no nett -1 open bracket.  e.g if 35% is (55 x 55)   
+                //also cannot add arith operator, so ignore arith operators if input,
+                //because there is no nett open round bracket.   
+                //but e.g if 23% is (555    is ok to add the arith operator, becomes
+                // if 23% is (555 x 
+                let tempStr = helpers.collateStringsIntoOneString(segmentsArray)
+                //get index of the 'if'
+                let indexOfIfWord = tempStr.search(/if/)
+                tempStr = tempStr.slice(indexOfIfWord)
+                let nettValueOfRoundBrackets = helpers.getParenthesesNetValueFromString(tempStr)
+                
+                //if open brackets outstanding, then allow to add arith operator,
+                // if no active open bracket then dont allow additin of operator
+                if(nettValueOfRoundBrackets == 0) {//no active open bracket, ignore
+                    //ignore, dont allow addition of ooperator, is either single number,
+                    //or a closed pair of brackets
+                    return 
+                }
+
+
+                //ORIGINAL, COMMENTOUT return
+            }
+
+
             //for cases where the first expression is a complete percentage calucaltion,
             //then user presses arith key, e.g 12% of 35 then user presses arith key,
             //we must insert open and close [] square brackets to encapsulate the percentage

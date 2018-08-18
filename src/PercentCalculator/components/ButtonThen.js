@@ -40,6 +40,31 @@ class ButtonThen extends React.Component {
                 
         
 
+        //if there is just 'if' without 'then', then at operand2,
+        //if there is an open round brracket outstanding, then dont add 
+        //then, just ignore user input when they press on 'then'
+        //e.g if 3% is (23 x 5   and user presses 'then', ignore input as
+        //operand2 is not completed when there is an open bracket outstanding.
+        if( (/if/i.test(helpers.collateStringsIntoOneString(segmentsArray))) && ( ! /then/i.test(helpers.collateStringsIntoOneString(segmentsArray))) ) {
+            //only allow arith operator if current segment is a number and 
+            //nett bracket value , from the 'if ... onwards is -1 or less
+
+            let tempStr = helpers.collateStringsIntoOneString(segmentsArray)
+            //get index of the 'if'
+            let indexOfIfWord = tempStr.search(/if/)
+            tempStr = tempStr.slice(indexOfIfWord)
+            let nettValueOfRoundBrackets = helpers.getParenthesesNetValueFromString(tempStr)
+            
+            //if open brackets outstanding, ignore the 'then' button
+            if(nettValueOfRoundBrackets <= -1) {//active open bracket, 
+                //ignore, user input
+                return 
+            }
+        }
+
+
+
+
 
         //when this key is pressed, line is in format of:
         //if 25% is 258 

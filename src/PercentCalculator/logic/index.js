@@ -51,7 +51,7 @@ export const updateScreenWithNewInput = (newKeyInput) => {
 
     if( ! /([0-9]|\.)/.test(newKeyInput)) {
         cleanUpAllTrailingDeciPoints()
-   }
+    }
 
         
     let objectToReturn = {}
