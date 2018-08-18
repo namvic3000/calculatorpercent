@@ -28,7 +28,10 @@ class ButtonNegSign extends React.Component {
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
         
         let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
+        
+        let allowToTakeSnapShotOfState = true 
 
+        
         //ignnore if user presses -sign key when screen is empty
         if(emptyScreenMainLineFlag) {
             return //no action
@@ -42,7 +45,6 @@ class ButtonNegSign extends React.Component {
 
         console.log('GOT TO PROCESS OPERATOR -SIGN')
 
-        let allowToTakeSnapShotOfState = true 
     
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
             

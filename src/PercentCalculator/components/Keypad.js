@@ -6,6 +6,8 @@ import ButtonBackSpace from './ButtonBackSpace';
 import ButtonClearAll from './ButtonClearAll';
 import ButtonNegSign from './ButtonNegSign';
 import ButtonDeciPoint from './ButtonDeciPoint';
+import ButtonOpenBracket from './ButtonOpenBracket';
+import ButtonCloseBracket from './ButtonCloseBracket';
 
 
 
@@ -171,12 +173,16 @@ class Keypad extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("(")}}>
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("(")}}>
                         <Text style={styles.percentButtonText}>(</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked(")")}}>
+                    </TouchableOpacity> */}
+                    <ButtonOpenBracket />
+
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked(")")}}>
                         <Text style={styles.percentButtonText}>)</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <ButtonCloseBracket />
+                    
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("m+")}}>
                         <Text style={styles.memoryButtonText}>M+</Text>
                     </TouchableOpacity>

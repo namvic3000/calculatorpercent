@@ -29,6 +29,9 @@ class ButtonDeciPoint extends React.Component {
         
         let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
 
+        let allowToTakeSnapShotOfState = true
+        
+
         //ok if user presses  decipoint key when screen is empty
         if(emptyScreenMainLineFlag) {
             segmentsArray[0] = {}//create empty object
@@ -63,7 +66,6 @@ class ButtonDeciPoint extends React.Component {
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
         let currentSegmentString = segmentsArray[currentSegmentIndex].stringValue
         
-        let allowToTakeSnapShotOfState = true
 
         //note: current segment is never empty, except when whole array
         //is empty at start or after CA, so no need to check that condition

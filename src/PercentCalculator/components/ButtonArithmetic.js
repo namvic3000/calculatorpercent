@@ -29,9 +29,7 @@ class ButtonArithmetic extends React.Component {
 
 
         // console.log('GOT TO PROCESS 4ARITH KEYS')
-
-
-        let objectToReturn = {}
+ 
 
         let allowToTakeSnapShotOfState = true
 

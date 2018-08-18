@@ -25,6 +25,9 @@ class Button0To9 extends React.Component {
         // console.log('AT BUTTON0-9: EMPTYSCREENFLAG IS :' + emptyScreenMainLineFlag)
         // console.log('AT BUTTON0-9: SEGMENTS ARRY, INDEX, AND TIMEMACHINEARRAY GOT ARE:',segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots)
 
+        let allowToTakeSnapShotOfState = true
+
+        
         if(emptyScreenMainLineFlag) {
             segmentsArray[0] = {}//create empty object
             segmentsArray[0].stringValue = buttonValue
@@ -53,7 +56,6 @@ class Button0To9 extends React.Component {
 
 
 
-        let allowToTakeSnapShotOfState = true
 
 
         //first detect if current segment is a number or not
