@@ -11,6 +11,7 @@ import ButtonCloseBracket from './ButtonCloseBracket';
 import ButtonPercentOf from './ButtonPercentOf';
 import ButtonOutOf from './ButtonOutOf';
 import ButtonAddPercent from './ButtonAddPercent';
+import ButtonDeductPercent from './ButtonDeductPercent';
 
 
 
@@ -225,9 +226,11 @@ class Keypad extends React.Component {
                         <Text style={styles.percentButtonText}>add %</Text>
                     </TouchableOpacity> */}
                     <ButtonAddPercent />
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("deduct %")}}>
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("deduct %")}}>
                         <Text style={styles.percentButtonText}>deduct %</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <ButtonDeductPercent />
+                    
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("% change")}}>
                         <Text style={styles.percentButtonText}>% change</Text>
                     </TouchableOpacity>
