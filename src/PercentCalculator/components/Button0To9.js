@@ -221,7 +221,7 @@ class Button0To9 extends React.Component {
             if(indexOfOpenSquareBracket === -1) {
                 indexOfOpenSquareBracket = 0
             }
-            let nettValueOfParenthesis = getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
+            let nettValueOfParenthesis = helpers.getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
             // console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
             if(nettValueOfParenthesis === 0) {
 
