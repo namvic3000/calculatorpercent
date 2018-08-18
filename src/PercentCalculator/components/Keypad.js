@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-nati
 import Button0To9 from './Button0To9'
 import ButtonArithmetic from './ButtonArithmetic';
 import ButtonBackSpace from './ButtonBackSpace';
+import ButtonClearAll from './ButtonClearAll';
 
 
 
@@ -252,13 +253,14 @@ class Keypad extends React.Component {
                         {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("x")}}>
                             <Text style={styles.calcButtonTextMultiplyOperator}>x</Text>
                         </TouchableOpacity> */}
+                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("ca")}}>
+                            <Text style={styles.calcButtonTextForCA}>CA</Text>
+                        </TouchableOpacity> */}
                         <Button0To9 buttonValue="4" />
                         <Button0To9 buttonValue="5" />
                         <Button0To9 buttonValue="6" />
                         <ButtonArithmetic buttonValue="x" />
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("ca")}}>
-                            <Text style={styles.calcButtonTextForCA}>CA</Text>
-                        </TouchableOpacity>
+                        <ButtonClearAll />
                 </View>
                     
                 <View style={styles.standardButtonRowContainer}>
