@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from "react-redux";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import Button0To9 from './Button0To9'
 import ButtonArithmetic from './ButtonArithmetic';
@@ -15,6 +16,9 @@ import ButtonDeductPercent from './ButtonDeductPercent';
 import ButtonPercentChange from './ButtonPercentChange';
 import ButtonAfterAddedPercent from './ButtonAfterAddedPercent';
 import ButtonAfterDeductedPercent from './ButtonAfterDeductedPercent';
+import ButtonIfPercentIs from './ButtonIfPercentIs';
+import ButtonEquals from './ButtonEquals';
+import ButtonThen from './ButtonThen';
 
 
 
@@ -23,6 +27,22 @@ class Keypad extends React.Component {
 
     state = {
         showThenButtonFlag: false 
+    }
+
+    showThenButton = (booleanFlag) => {
+        this.setState({showThenButton: booleanFlag})
+    }
+
+
+
+    componentDidMount()  {
+
+        if(/if/.test(this.props.screenMainTextLine1)) {
+            this.showThenButton(true)
+        }
+        else {
+            this.showThenButton(false)
+        }
     }
 
     render() {
@@ -217,10 +237,11 @@ class Keypad extends React.Component {
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
                     </TouchableOpacity> */}
                     <ButtonAfterDeductedPercent />
-                    
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("if % is")}}>
+
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("if % is")}}>
                         <Text style={styles.percentButtonText}>if % is</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <ButtonIfPercentIs />
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
@@ -334,15 +355,17 @@ class Keypad extends React.Component {
 
 
                         {
-                            this.state.showThenButtonFlag ? (
-                                <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("then")}}>
-                                    <Text style={styles.calcButtonText}>then</Text>
-                                </TouchableOpacity>
+                            /if/.test(this.props.screenMainTextLine1)&& (!/then/.test(this.props.screenMainTextLine1)) ? (
+                                // <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("then")}}>
+                                //     <Text style={styles.calcButtonText}>then</Text>
+                                // </TouchableOpacity>
+                                <ButtonThen />
                             )
                             : (
-                                <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("=")}}>
-                                    <Text style={styles.calcButtonTextForBackArrow}>=</Text>
-                                </TouchableOpacity>
+                                // <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("=")}}>
+                                //     <Text style={styles.calcButtonTextForBackArrow}>=</Text>
+                                // </TouchableOpacity>
+                                <ButtonEquals />
                             )
                         }
                 </View>
@@ -367,6 +390,8 @@ class Keypad extends React.Component {
 }
 
 
+const mapStateToProps = (state) => ({
+    screenMainTextLine1: state.calculatorStateData.screenMainTextLine1
+})
 
-
-export default Keypad
+export default connect(mapStateToProps)(Keypad)
