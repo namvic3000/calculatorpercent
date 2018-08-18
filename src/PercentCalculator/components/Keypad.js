@@ -4,6 +4,7 @@ import Button0To9 from './Button0To9'
 import ButtonArithmetic from './ButtonArithmetic';
 import ButtonBackSpace from './ButtonBackSpace';
 import ButtonClearAll from './ButtonClearAll';
+import ButtonNegSign from './ButtonNegSign';
 
 
 
@@ -286,12 +287,13 @@ class Keypad extends React.Component {
                 </View>
                 
                 <View style={styles.standardButtonRowContainer}>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("+-")}}>
+                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("+-")}}>
                             <Text style={styles.calcButtonText}>+-</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("0")}}>
                             <Text style={styles.calcButtonText}>0</Text>
                         </TouchableOpacity> */}
+                        <ButtonNegSign />
                         <Button0To9 buttonValue="0" />
                        
                         <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked(".")}}>

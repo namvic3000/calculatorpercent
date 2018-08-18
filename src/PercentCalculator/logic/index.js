@@ -424,67 +424,6 @@ processInputFor4ArithmeticKeys = (newKeyInput) => {
 
 const processInputForNegSignKey = (newKeyInput) => {
 
-    console.log('GOT TO PROCESS OPERATOR -SIGN')
-
-    let allowToTakeSnapShotOfState = true 
-
-    let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-        
-    //if segment has a close round bracket , no more input, no changing -ssign also
-    if(/\)/.test(segmentsArray[currentSegmentIndex].stringValue)) {
-        //return as is, no bindActionCreators, segment has a ) close round bracket
-
-        //collate stirng from all segments, to return 
-        let collatedString = collateStringsIntoOneString(segmentsArray)
-
-        return objectToReturn = {
-            screenMainTextLine1: collatedString,
-            screenMainTextLine2: 'answer',
-            screenMainTextLine3: ''
-        }
-    }
-
-
-    //if segment is a number, ok, can toggle sign,
-    //if is ooperator, then ignore key input
-
-    //toggle the - sign
-    if(currentSegmentIsANumberFlag) {
-
-        //if has - sign, then remove it
-        if(/\-/.test(segmentsArray[currentSegmentIndex].stringValue)) {//-sign exists
-            //remove the - sign, in real string
-            segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(/\-/,'')
-        }
-        else {//no -sign present, add it
-            //need to find start index of numeral, coz could be ((5 , to become ((-5
-            let indexOfFirstNumeral = segmentsArray[currentSegmentIndex].stringValue.search(/[0-9]/)
-            let tempStr = segmentsArray[currentSegmentIndex].stringValue
-            segmentsArray[currentSegmentIndex].stringValue = tempStr.slice(0, indexOfFirstNumeral) 
-                + '-' + tempStr.slice(indexOfFirstNumeral)
-        }
-    }
-    else {
-        //is ann operator, ignore
-        //dont take a snapshot
-        allowToTakeSnapShotOfState = false
-    }
-
-
-
-
-    if(allowToTakeSnapShotOfState) {
-        takeASnapShotOfCurrentCalculationState()
-    }
-    
-    //collate stirng from all segments, to return 
-    let collatedString = collateStringsIntoOneString(segmentsArray)
-
-    return objectToReturn = {
-        screenMainTextLine1: collatedString,
-        screenMainTextLine2: 'answer',
-        screenMainTextLine3: ''
-    }
 
 }//method, -sign key
 
@@ -2674,8 +2613,8 @@ const processInputForBackSpaceKey = (newKeyInput) => {
      return objectToReturn = {
          screenMainTextLine1: collatedString,
          screenMainTextLine2: 'answer',
+        }
          screenMainTextLine3: ''
-     }
  
 
 }//method backspace key
