@@ -13,6 +13,8 @@ import ButtonOutOf from './ButtonOutOf';
 import ButtonAddPercent from './ButtonAddPercent';
 import ButtonDeductPercent from './ButtonDeductPercent';
 import ButtonPercentChange from './ButtonPercentChange';
+import ButtonAfterAddedPercent from './ButtonAfterAddedPercent';
+import ButtonAfterDeductedPercent from './ButtonAfterDeductedPercent';
 
 
 
@@ -205,14 +207,17 @@ class Keypad extends React.Component {
                     </TouchableOpacity> */}
                     <ButtonOutOf />
 
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after added %")}}>
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after added %")}}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>added</Text></View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <ButtonAfterAddedPercent />
                    
 
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after deducted %")}}>
+                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after deducted %")}}>
                         <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <ButtonAfterDeductedPercent />
+                    
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("if % is")}}>
                         <Text style={styles.percentButtonText}>if % is</Text>
                     </TouchableOpacity>
