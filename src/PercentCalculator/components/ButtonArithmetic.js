@@ -9,6 +9,9 @@ class ButtonArithmetic extends React.Component {
 
     constructor() {
         super()
+        //some how, if we leave this binding out, there will be an error: this.handleCalcButtonCliced 
+        //is not a function. shouldnt need this line but will error without it. we do 
+        //the constructor function just to do this. weird.
         this.handleCalcButtonClicked = this.handleCalcButtonClicked.bind(this)
     }
     
@@ -20,12 +23,12 @@ class ButtonArithmetic extends React.Component {
         let emptyScreenMainLineFlag = (segmentsArray || "").length <= 0
 
         if(emptyScreenMainLineFlag) {//if empty array/screen, cant enter arith operators
-            console.log('ARITH BUTTON , CANT ENTER WHEN EMPTY')
+            // console.log('ARITH BUTTON , CANT ENTER WHEN EMPTY')
             return //dont process below code
         }
 
 
-        console.log('GOT TO PROCESS 4ARITH KEYS')
+        // console.log('GOT TO PROCESS 4ARITH KEYS')
 
 
         let objectToReturn = {}
@@ -35,16 +38,16 @@ class ButtonArithmetic extends React.Component {
 
         //first detect if current segment is a number or not
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
-        console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
+        // console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
         
         let hasPriorPercentCalculation = /of|add|deduct|to|added|deducted|is|then/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT HAS PRIOR PERCENT CALC FLAG IS ' + hasPriorPercentCalculation)
+        // console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT HAS PRIOR PERCENT CALC FLAG IS ' + hasPriorPercentCalculation)
         
         let hasPriorOpenSquareBracket = /\[/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT HAS PRIOR OPEN SQUARE BRACKET FLAG IS ' + hasPriorOpenSquareBracket)
+        // console.log('AT PROCESS4ARITHKEYS, CURENTSEGENT HAS PRIOR OPEN SQUARE BRACKET FLAG IS ' + hasPriorOpenSquareBracket)
         
         let nettOpenParenthesisValue = helpers.getParenthesesNetValueFromString(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT 4ARITHKEYS, NETT OPEN BRACKETS VALUE IS ' + nettOpenParenthesisValue)
+        // console.log('AT 4ARITHKEYS, NETT OPEN BRACKETS VALUE IS ' + nettOpenParenthesisValue)
         //if current segment is a number,  can proceed
 
 
@@ -63,7 +66,8 @@ class ButtonArithmetic extends React.Component {
 
 
         if(currentSegmentIsANumberFlag) {
-            console.log('AT PROCESS4ARITHS, CURENTSEGMENT IS A NUMBER')
+            // console.log('AT PROCESS4ARITHS, CURENTSEGMENT IS A NUMBER')
+            
             //for cases where the first expression is a complete percentage calucaltion,
             //then user presses arith key, e.g 12% of 35 then user presses arith key,
             //we must insert open and close [] square brackets to encapsulate the percentage
@@ -95,7 +99,8 @@ class ButtonArithmetic extends React.Component {
         }
         else {//current seg is not a number, is an operator
             //ignore
-            console.log('AT PROCESS4ARITHS, ANOTHER OPERATOR PRESSED, IGINORED')
+            // console.log('AT PROCESS4ARITHS, ANOTHER OPERATOR PRESSED, IGINORED')
+            
             //dont take snapshot
             allowToTakeSnapShotOfState = false 
         }
@@ -108,20 +113,19 @@ class ButtonArithmetic extends React.Component {
             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
         }
         
-        //collate stirng from all segments, to return     
-        let collatedString = helpers.collateStringsIntoOneString(segmentsArray)
-        let liveAnswer = helpers.calculateResultOfWholeCalculation(collatedString) 
-        let midScreenMessage = ''
-        
-        this.props.dispatch(updateCalculatorData(
-            collatedString,
-            liveAnswer, 
-            midScreenMessage, 
-            segmentsArray, 
-            currentSegmentIndex, 
-            timeMachineArrayOfSegmentsArraySnapShots
-        ))
-    
+         //collate stirng from all segments and update state ie store   
+         let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
+         let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+         let screenMidScreenMessage = ''
+         
+         this.props.dispatch(updateCalculatorData(
+             screenMainTextLine1,
+             screenLiveAnswerLine,
+             screenMidScreenMessage,
+             segmentsArray, 
+             currentSegmentIndex, 
+             timeMachineArrayOfSegmentsArraySnapShots
+         ))
 
     }//handleclick
 
@@ -178,7 +182,7 @@ class ButtonArithmetic extends React.Component {
                 styleToApply = styles.calcButtonTextArithOperators
             }
 
-            console.log('ARITHBUTTON: BUTTON VALUE IS:'+ this.props.buttonValue)
+            // console.log('ARITHBUTTON: BUTTON VALUE IS:'+ this.props.buttonValue)
 
         return(
             <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked(this.props.buttonValue)}}>

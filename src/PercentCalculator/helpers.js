@@ -464,11 +464,12 @@ export const takeASnapShotOfCurrentCalculationState = (segmentsArray, timeMachin
 
 
 
-export const clearAllReadyForNextCalculation  = (obj) => {
+export const clearAllSoReadyForNextCalculation  = (segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots) => {
+    obj = {}//create
     obj.currentSegmentIndex = 0 //reset
     obj.segmentsArray = []//clear the array
     obj.timeMachineArrayOfSegmentsArraySnapShots = [] //clear the timemachine ready for next calculation
-        
+    obj.screenMidScreenMessage = 'Ready'
     return obj
 }
 

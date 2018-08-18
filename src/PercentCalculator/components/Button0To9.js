@@ -9,18 +9,21 @@ class Button0To9 extends React.Component {
 
     constructor() {
         super()
+        //some how, if we leave this binding out, there will be an error: this.handleCalcButtonCliced 
+        //is not a function. shouldnt need this line but will error without it. we do 
+        //the constructor function just to do this. weird.
         this.handleCalcButtonClicked = this.handleCalcButtonClicked.bind(this)
     }
     
     handleCalcButtonClicked = (buttonValue) => {
 
         
-        console.log('AT BUTTON0-9: BUTTON PRESSED IS:' + buttonValue)
+        // console.log('AT BUTTON0-9: BUTTON PRESSED IS:' + buttonValue)
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
         
         let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
-        console.log('AT BUTTON0-9: EMPTYSCREENFLAG IS :' + emptyScreenMainLineFlag)
-        console.log('AT BUTTON0-9: SEGMENTS ARRY, INDEX, AND TIMEMACHINEARRAY GOT ARE:',segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots)
+        // console.log('AT BUTTON0-9: EMPTYSCREENFLAG IS :' + emptyScreenMainLineFlag)
+        // console.log('AT BUTTON0-9: SEGMENTS ARRY, INDEX, AND TIMEMACHINEARRAY GOT ARE:',segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots)
 
         if(emptyScreenMainLineFlag) {
             segmentsArray[0] = {}//create empty object
@@ -29,15 +32,15 @@ class Button0To9 extends React.Component {
             //take a snapshot and return
             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
             
-             //collate stirng from all segments, to return     
-            let collatedString = helpers.collateStringsIntoOneString(segmentsArray)
-            let liveAnswer = helpers.calculateResultOfWholeCalculation(collatedString) 
-            let midScreenMessage = ''
+             //collate stirng from all segments     
+            let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
+            let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+            let screenMidScreenMessage = ''
             
             this.props.dispatch(updateCalculatorData(
-                collatedString,
-                liveAnswer, 
-                midScreenMessage, 
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
                 segmentsArray, 
                 currentSegmentIndex, 
                 timeMachineArrayOfSegmentsArraySnapShots
@@ -56,28 +59,28 @@ class Button0To9 extends React.Component {
         //first detect if current segment is a number or not
         //include % and ) as a number for this key input
         let currentSegmentIsANumberFlag = /([0-9]|%|\)|\()/.test(segmentsArray[currentSegmentIndex].stringValue)//returns a boolean
-        console.log('AT PROCESS 0-9, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
+        // console.log('AT PROCESS 0-9, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
         
         let isEmptySegmentFlag = segmentsArray[currentSegmentIndex].stringValue.length <= 0
-        console.log('AT PROCESS 0-9, ISEMPTYSEGMENT FLAG IS ' + isEmptySegmentFlag)
+        // console.log('AT PROCESS 0-9, ISEMPTYSEGMENT FLAG IS ' + isEmptySegmentFlag)
         
         let currentSegmentHasOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT PROCESS 0-9, HAS OPENBRACKET FLAG IS ' + currentSegmentHasOpenBracketFlag)
+        // console.log('AT PROCESS 0-9, HAS OPENBRACKET FLAG IS ' + currentSegmentHasOpenBracketFlag)
         
         let currentSegmentHasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT PROCESS 0-9, HAS CLOSE BRACKET FLAG IS ' + currentSegmentHasCloseBracketFlag)
+        // console.log('AT PROCESS 0-9, HAS CLOSE BRACKET FLAG IS ' + currentSegmentHasCloseBracketFlag)
         
         let currentSegmentHasCloseSquareBracketFlag = /\]/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT PROCESS 0-9, HAS CLOSE ] BRACKET FLAG IS ' + currentSegmentHasCloseSquareBracketFlag)
+        // console.log('AT PROCESS 0-9, HAS CLOSE ] BRACKET FLAG IS ' + currentSegmentHasCloseSquareBracketFlag)
         
         let hasPriorOpenSquareBracketFlag = /\[/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT PROCESS 0-9, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
+        // console.log('AT PROCESS 0-9, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
         
         // let hasPriorOpenSquareBracketFlag = /\[/.test(segmentsArray[currentSegmentIndex].stringValue)
         // console.log('AT PROCESS 0-9, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
         
         let hasPercentSignFlag = /\%/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT PROCESS 0-9, HASPERCENTSIGN FLAG IS ' + hasPercentSignFlag)
+        // console.log('AT PROCESS 0-9, HASPERCENTSIGN FLAG IS ' + hasPercentSignFlag)
 
 
 
@@ -92,19 +95,14 @@ class Button0To9 extends React.Component {
 
         //if segment is a number
         if(currentSegmentIsANumberFlag) {
-            console.log('AT PROCESS0-9KEYS, GOT TO CURENTSEGMENTIS A NUMBER')
+            // console.log('AT PROCESS0-9KEYS, GOT TO CURENTSEGMENTIS A NUMBER')
 
             //check for input lengh
             let overLimit = helpers.checkNumberLengthOfUserInput(segmentsArray[currentSegmentIndex].stringValue)
             if(overLimit) {
                 //return as is, no change, ignnore user input
                 //collate stirng from all segments, to return     
-                let collatedString = helpers.collateStringsIntoOneString(segmentsArray)
-                return objectToReturn = {
-                    screenMainTextLine1: collatedString,
-                    screenMainTextLine2: 'answer',
-                    screenMainTextLine3: ''
-                }
+                return
             }
 
 
@@ -200,9 +198,7 @@ class Button0To9 extends React.Component {
 
         //if has no open or close bracket, and has '[' bracket, 
         //then add a ] bracket at the end
-        console.log('GOT TO PERCENTOF CALCTYPE')
         let thisSegmentHasCloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT INSIDE %OF CALC, HAS CLOSE BRACKET FLAG IS ' + thisSegmentHasCloseBracketFlag)
         
         // let thisSegmentHasOpenBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
         // console.log('AT INSIDE %OF CALC, HAS OPEN BRACKET FLAG IS ' + thisSegmentHasOpenBracketFlag)
@@ -211,11 +207,9 @@ class Button0To9 extends React.Component {
         // console.log('AT INSIDE %OF CALC, HAS OPEN [ BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
         
         let alreadyHasPriorCloseSquareBracketFlag = /\]/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT INSIDE %OF CALC, HAS CLOSE ] BRACKET FLAG IS ' + alreadyHasPriorCloseSquareBracketFlag)
         
         
         if( hasPriorOpenSquareBracketFlag && (! alreadyHasPriorCloseSquareBracketFlag)) {
-            console.log('GOT TO PERCENTOF CALCTYPE, HAS  PRIIOR OPEN [ BRACKET')
             //if nett value is 0, in cases of 23 x ([(20 x 5)% of inputhere]
             //we can insert the ] bracket after the number if () nettvalue is 0. 
             //dont  insert if nettvalue is 0, e.g 23 x ([(20 x 5)% of (57   ie 2nd operand is
@@ -226,7 +220,7 @@ class Button0To9 extends React.Component {
                 indexOfOpenSquareBracket = 0
             }
             let nettValueOfParenthesis = getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
-            console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
+            // console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
             if(nettValueOfParenthesis === 0) {
 
                 //for if%is calcultion, dont add the ] at the 2nd operand, coa it has 3 operands, 
@@ -249,7 +243,7 @@ class Button0To9 extends React.Component {
                     //add square bracket at the end if not already present
                     let strLen = segmentsArray[currentSegmentIndex].stringValue.length
                     let lastChar = segmentsArray[currentSegmentIndex].stringValue[strLen -1]
-                    console.log('LAST CHAR IN SEGMENT IS ' + lastChar)
+                    // console.log('LAST CHAR IN SEGMENT IS ' + lastChar)
                     if(lastChar !== ']') {
                         segmentsArray[currentSegmentIndex].stringValue += ']'
                     }
@@ -265,19 +259,19 @@ class Button0To9 extends React.Component {
             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
         }
         
-        //collate stirng from all segments, to return     
-        let collatedString = helpers.collateStringsIntoOneString(segmentsArray)
-        let liveAnswer = helpers.calculateResultOfWholeCalculation(collatedString) 
-        let midScreenMessage = ''
-        
-        this.props.dispatch(updateCalculatorData(
-            collatedString,
-            liveAnswer, 
-            midScreenMessage, 
-            segmentsArray, 
-            currentSegmentIndex, 
-            timeMachineArrayOfSegmentsArraySnapShots
-        ))
+         //collate stirng from all segments and update store
+         let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
+         let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+         let screenMidScreenMessage = ''
+         
+         this.props.dispatch(updateCalculatorData(
+             screenMainTextLine1,
+             screenLiveAnswerLine,
+             screenMidScreenMessage,
+             segmentsArray, 
+             currentSegmentIndex, 
+             timeMachineArrayOfSegmentsArraySnapShots
+         ))
 
     }//handleclick
 
