@@ -26,8 +26,10 @@ class ButtonBackSpace extends React.Component {
         
         let emptyScreenMainLineFlag = (segmentsArray || "").length <= 0
 
+
+        
         if(emptyScreenMainLineFlag) {//if empty array/screen, no action
-            console.log('BACKSPACE BUTTON , IGNORE WHEN SEGMENTSARRAY IS EMPTY')
+            // console.log('BACKSPACE BUTTON , IGNORE WHEN SEGMENTSARRAY IS EMPTY')
             return //dont process below code
         }
 

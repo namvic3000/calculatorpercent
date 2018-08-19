@@ -13,41 +13,33 @@ class Screen extends Component {
   render() {
 
 
+    let fontSizeOfScreenMainLine1;//default
+    let {screenMainTextLine1, screenLiveAnswerLine} = this.props
 
-    // let {segmentsArray, currentSegmentIndex} = this.props 
 
-    // let calculationTextLine = helpers.collateStringsIntoOneString(segmentsArray)
-    // let liveAnswer = 'live anser here'//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
-    
-    
-    // console.log('AT SCREEN: SEGMENTS ARRAY IS:', segmentsArray)
-    // console.log('AT SCREEN: CALCULATOIN TEXTLINE IS:'+ calculationTextLine)
-    
-    
+
     ////////fontsize for mainline1
-    let allowedLengthBeforeShrinking = 50
-    let overflow = this.props.screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
+    let allowedLengthBeforeShrinking = 40
+    let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
         overflowFromInitialExpectedLength = 0
     }
 
+    console.log('AT SCREEN, SCREENMAINTEXTLINE1 IS: ', screenMainTextLine1)
+
     //large fontsize for initial x number of characters, before start shrinking
-    if(this.props.screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
+    if(screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
         //length is within allowed initial length, gets large font
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/10
+        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/11.5
     }
     else {//length is OVER allowed initial limit, now smaller font and start shrinking as length gets longer
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12 - ((overflow * 0.1))
+        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.05))
     }
     
-
-
-
-    ///////////fontsize for live answer line at bottom of screen
-    // allowedLengthOfLiveAnswerLineBeforeShrinking = 20
-    // let excess = this.props.screenAnswerLineContent.length - allowedLengthOfLiveAnswerLineBeforeShrinking
-    // this.fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/12 - ((overflow * 0.1))
-    this.fontSizeOfScreenLiveAnswerLine = 15//Dimensions.get('window').width/12 - ((overflow * 0.1))
+    allowedLengthOfLiveAnswerLineBeforeShrinking = 12
+    let excess = screenLiveAnswerLine.length - allowedLengthOfLiveAnswerLineBeforeShrinking
+    
+    fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((overflow * 0.1))
 
 
 
@@ -62,14 +54,14 @@ class Screen extends Component {
         paddingBottom: 0,//-this.calculatorScreenHeight/40,
         paddingTop: 0//this.calculatorScreenHeight/18,
       },
-      screenMainTextLine1: {
+      screenMainTextLine1Style: {
         display: "flex",
         // flexDirection: "row",
         flex:1, 
         width: "100%",
-        marginTop: this.fontSizeOfScreenMainLine1/6,
-        fontSize: this.fontSizeOfScreenMainLine1,//32,
-        lineHeight: this.fontSizeOfScreenMainLine1 + (this.fontSizeOfScreenMainLine1/12),
+        marginTop: fontSizeOfScreenMainLine1/6,
+        fontSize: fontSizeOfScreenMainLine1,//32,
+        lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/12),
         color: "black",
         backgroundColor: "white",
         textAlign: "left",
@@ -77,15 +69,15 @@ class Screen extends Component {
         
         // height: "25%",
       },
-      screenLiveAnswerLine: {
+      screenLiveAnswerLineStyle: {
         position: "absolute",
         display: "flex",
         height: "auto",
         width: "100%",
         bottom: 0,
-        marginTop: this.fontSizeOfScreenMainLine1/6,
-        fontSize: this.fontSizeOfScreenLiveAnswerLine,
-        lineHeight: this.fontSizeOfScreenMainLine1 + (this.fontSizeOfScreenMainLine1/12),
+        marginTop: fontSizeOfScreenMainLine1/6,
+        fontSize: fontSizeOfScreenLiveAnswerLine,
+        lineHeight: fontSizeOfScreenLiveAnswerLine,// + (fontSizeOfScreenLiveAnswerLine/12),
         color: "gray",
         backgroundColor: "lightyellow",
         textAlign: "center",
@@ -96,8 +88,8 @@ class Screen extends Component {
 
     return(
       <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
-        <Text style={styles.screenMainTextLine1}>{this.props.screenMainTextLine1}</Text>
-        <Text style={styles.screenLiveAnswerLine}>{this.props.screenLiveAnswerLine}</Text>
+        <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
+        <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
       </View>
     )
   }

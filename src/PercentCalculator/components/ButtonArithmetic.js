@@ -19,18 +19,21 @@ class ButtonArithmetic extends React.Component {
 
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
-        
-        let emptyScreenMainLineFlag = (segmentsArray || "").length <= 0
 
         let allowToTakeSnapShotOfState = true
 
+        let emptyScreenMainLine = (segmentsArray || []).length <= 0
 
 
-        if(emptyScreenMainLineFlag) {//if empty array/screen, cant enter arith operators
-            // console.log('ARITH BUTTON , CANT ENTER WHEN EMPTY')
-            return //dont process below code
+
+        
+        //ignore key if screen is empty, alert user to enter a number first
+        if(emptyScreenMainLine) {
+            // alert('Enter a Number First')
+            return//dont process below code
         }
 
+        
 
         // console.log('GOT TO PROCESS 4ARITH KEYS')
  

@@ -26,15 +26,17 @@ class ButtonThen extends React.Component {
 
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
-        
-        let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
 
         let allowToTakeSnapShotOfState = true
         
+        let emptyScreenMainLine = (segmentsArray || []).length <= 0
 
 
-        //ignore key if screen isempty
-        if(emptyScreenMainLineFlag) {
+
+        
+        //ignore key if screen is empty, alert user to enter a number first
+        if(emptyScreenMainLine) {
+            //impossible to get here
             return//dont process below code
         }
                 
@@ -58,6 +60,13 @@ class ButtonThen extends React.Component {
             //if open brackets outstanding, ignore the 'then' button
             if(nettValueOfRoundBrackets <= -1) {//active open bracket, 
                 //ignore, user input
+                return 
+            }
+
+            //also, if current segment is not a number, e.g 'if 25% is ' , ie incomplete
+            //  and user presses 'then', ie no operand2, ignore input
+            if( ! /[0-9]/.test( segmentsArray[currentSegmentIndex].stringValue) ) {
+                //if current segment is not a number, igonore input
                 return 
             }
         }
@@ -124,14 +133,13 @@ class ButtonThen extends React.Component {
                 flex: 1,//each button has equal width, because the flexdir is now 'row'
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'blue',
                 backgroundColor: "darkblue",//"rgb(250,250,255)",
                 borderWidth: 0,
                 height: "100%",
             },
             calcButtonText: {
                 fontSize: fontSizeOfStandardButton,
-                color: "white",
+                color: "orange",
             },
         })
 

@@ -26,20 +26,25 @@ class ButtonAddPercent extends React.Component {
 
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
-        
-        let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
 
         let allowToTakeSnapShotOfState = true
         
+        let emptyScreenMainLine = (segmentsArray || []).length <= 0
 
 
-        //ignore key if screen isempty
-        if(emptyScreenMainLineFlag) {
+
+        
+        //ignore key if screen is empty, alert user to enter a number first
+        if(emptyScreenMainLine) {
+            // alert('Enter a Number First')
             return//dont process below code
         }
                 
 
+
+
     
+        let answer = helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
             
 
         
@@ -57,7 +62,8 @@ class ButtonAddPercent extends React.Component {
         
         //collate stirng from all segments and update store
         let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
-        let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+                                    + '\n = ' + answer
+        let screenLiveAnswerLine = ""//helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
         let screenMidScreenMessage = ''
         
         this.props.dispatch(updateCalculatorData(

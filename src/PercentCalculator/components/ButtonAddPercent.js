@@ -27,14 +27,16 @@ class ButtonAddPercent extends React.Component {
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
         
-        let emptyScreenMainLineFlag = (segmentsArray || "").length<=0
-
         let allowToTakeSnapShotOfState = true
+        
+        let emptyScreenMainLine = (segmentsArray || []).length <= 0
+
         
 
 
-        //ignore key if screen isempty
-        if(emptyScreenMainLineFlag) {
+        //ignore key if screen is empty, alert user to enter a number first
+        if(emptyScreenMainLine) {
+            alert('Enter a Number First')
             return//dont process below code
         }
                 
