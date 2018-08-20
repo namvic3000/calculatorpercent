@@ -569,6 +569,13 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
 
 
 
+
+
+
+
+
+
+
 export const cleanUpAllTrailingDeciPoints = (segmentsArray) => {
 
     //cleans up trailling decipoints for whole array of segments
@@ -611,6 +618,9 @@ export const cleanUpAllTrailingDeciPoints = (segmentsArray) => {
 
 
 
+
+
+
 export const takeASnapShotOfCurrentCalculationState = (segmentsArray, timeMachineArrayOfSegmentsArraySnapShots) => {
     let currentIndex = timeMachineArrayOfSegmentsArraySnapShots.length - 1
     currentIndex++//advance to  next element
@@ -621,6 +631,10 @@ export const takeASnapShotOfCurrentCalculationState = (segmentsArray, timeMachin
 
     return timeMachineArrayOfSegmentsArraySnapShots
 }
+
+
+
+
 
 
 

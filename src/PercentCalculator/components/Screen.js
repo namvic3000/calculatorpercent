@@ -13,7 +13,7 @@ class Screen extends Component {
   render() {
 
 
-    let {segmentsArray, screenMainTextLine1, screenLiveAnswerLine} = this.props
+    let {segmentsArray, screenMainTextLine1, screenLiveAnswerLine, screenMidScreenMessage} = this.props
     
     
 
@@ -97,10 +97,26 @@ class Screen extends Component {
         fontSize: fontSizeOfScreenLiveAnswerLine,
         lineHeight: fontSizeOfScreenLiveAnswerLine,// + (fontSizeOfScreenLiveAnswerLine/12),
         color: "gray",
-        backgroundColor: "lightyellow",
+        backgroundColor: "transparent",
         textAlign: "center",
         flexWrap: "wrap"
       },
+      // midScreenMsgContainer: {
+
+      // }
+      midScreenMsg: {
+        height: "100%",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        textAlign: "center",
+        alignItems: "center",
+        lineHeight: this.calculatorScreenHeight,
+        width: "100%",
+        backgroundColor: "transparent",
+        color: "black",
+        fontSize: fontSizeOfScreenMainLine1
+      }
     })
 
 
@@ -108,6 +124,7 @@ class Screen extends Component {
       <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
         <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
+        <Text style={styles.midScreenMsg}>{screenMidScreenMessage}</Text>
       </View>
     )
   }

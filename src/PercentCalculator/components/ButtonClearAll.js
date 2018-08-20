@@ -27,6 +27,7 @@ class ButtonClearAll extends React.Component {
 
         //do a clearall
 
+        ///CLEARALL
         //collate stirng from all segments     
         let screenMainTextLine1 = ""
         let screenLiveAnswerLine = ""
