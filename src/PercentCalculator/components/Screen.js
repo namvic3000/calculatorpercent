@@ -13,19 +13,33 @@ class Screen extends Component {
   render() {
 
 
+    let {segmentsArray, screenMainTextLine1, screenLiveAnswerLine} = this.props
+    
+    
+
+    //truncate the decimal places, for user display only, internally not truncated
+    //for keeping precision
+    //do this first before inserting thousands separators which would error
+    screenLiveAnswerLine = helpers.truncateDecimalPlacesOfString(screenLiveAnswerLine) 
+
+    //insert thousands separators, for display to screen only, 
+    //dont alter the segments array which created the screenMainTextLine1.
+    
+    screenMainTextLine1 = helpers.insertThousandsSeparatorsForWholeCalculation(segmentsArray)
+    screenLiveAnswerLine = helpers.insertThousandsSeparatorsForOneSingleNumberString(screenLiveAnswerLine)
+
+
+    
     let fontSizeOfScreenMainLine1;//default
-    let {screenMainTextLine1, screenLiveAnswerLine} = this.props
-
-
-
     ////////fontsize for mainline1
-    let allowedLengthBeforeShrinking = 40
+    let allowedLengthBeforeShrinking = 50
+
     let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
         overflowFromInitialExpectedLength = 0
     }
 
-    console.log('AT SCREEN, SCREENMAINTEXTLINE1 IS: ', screenMainTextLine1)
+    // console.log('AT SCREEN, SCREENMAINTEXTLINE1 IS: ', screenMainTextLine1)
 
     //large fontsize for initial x number of characters, before start shrinking
     if(screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
@@ -36,16 +50,15 @@ class Screen extends Component {
         fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.05))
     }
     
-    allowedLengthOfLiveAnswerLineBeforeShrinking = 12
+
+    let allowedLengthOfLiveAnswerLineBeforeShrinking = 16
     let excess = screenLiveAnswerLine.length - allowedLengthOfLiveAnswerLineBeforeShrinking
-    
-    fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((overflow * 0.1))
+    if (excess < 0) {
+      excess = 0
+    }
 
+    fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((excess * 0.1))
 
-    //insert thousands separators, for display to screen only, 
-    //dont alter the segments array which created the screenMainTextLine1.
-    screenMainTextLine1 = helpers.insertThousandSeparators(screenMainTextLine1)
-    screenLiveAnswerLine = helpers.insertThousandSeparators(screenLiveAnswerLine)
 
 
     let styles = StyleSheet.create({

@@ -179,12 +179,28 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             console.log('****AFTER REDUCED PARENTHESIS, CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
             //now calculate the percentage calculation and get a single number result
             contentOfSquareBrackets = calculateResultOfPercentCalculation(contentOfSquareBrackets)
+            
+            //error check the result of the percent calculation
+            if((Number(contentOfSquareBrackets) > 1000000000000000) ||
+                (Number(contentOfSquareBrackets)< -100000000000000)){//-100tr TO 1000 trillion
+                return 'Result Outside Range'
+            }
+            else 
+                if((Number(contentOfSquareBrackets) > 0) && (Number(contentOfSquareBrackets) < 0.0001) ) {
+                    return '0 (rounded)'
+                }
+                else 
+                    if((Number(contentOfSquareBrackets) < 0) && (Number(contentOfSquareBrackets) > -0.0001) ) {
+                        return '0 (rounded)'
+                    }
+            
+            //only gets to here if not returned due to error checking above
+
             //now replace the pair of square brackets and its content with a singl value
             let portion1 = wholeString.slice(0, indexOfOpenSquareBracket)//excludes the [ bracket
             let portion2 = wholeString.slice(indexOfCloseSquareBracket+1)//excludes the ] bracket
             //copy backk to real string with new single value in place of square brackets
             wholeString = portion1 + contentOfSquareBrackets + portion2
-            console.log('*** AFTER REDUCING PERCENT CALCULATION TO SINGLE VLUE, WHOLESTRING IS '+ wholeString)
         }
         else {//no square brackets, ie only percent calculation is on the string, no arith operators outside of square brackets
             //only percent calc exists, no operator outside of square breackets
@@ -200,19 +216,27 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             //so save result to string to pass to eval() 
             wholeString =  calculateResultOfPercentCalculation(wholeString)
 
+
             //error check
-            if(/[a-z]/i.test(wholeString)) {//if has text a-z, is a msg
+            //leave out x so wont confuse with multiply x
+            if(/[a-w]/i.test(wholeString)) {//if has text a-z, is a msg
                 return wholeString// return message
             }
 
 
-            //error check, make sure result of percent calc is within range,
-            //to not get the  the e.g 33556e+17 or 3355e-17  
+            //error check the result of the percent calculation
             if((Number(wholeString) > 1000000000000000) ||
-                (Number(wholeString)<0.0000001)){//1000 trillion
-                console.log('RESULT OF PERCENT CALUCLATION IS: '+wholeString)
+                (Number(wholeString)< -100000000000000)){//-100tr TO 1000 trillion
                 return 'Result Outside Range'
             }
+            else 
+                if((Number(wholeString) > 0) && (Number(wholeString) < 0.0001) ) {
+                    return '0 (rounded)p'
+                }
+                else 
+                    if((Number(wholeString) < 0) && (Number(wholeString) > -0.0001) ) {
+                        return '0 (rounded)---'
+                    }
             
         }
     }//if has percent calc
@@ -262,7 +286,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
         //impossible to get here, since above removed the last arith operarotor
         //here for unforseen error prevention only, will never get here
-        return 'incomplete'
+        return 'Incomplete'
     }
     ////////////////////////////////////
 
@@ -281,222 +305,49 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
      console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
   
 
-    //if whole string has text in it, dont evaluate, just return the text
-    //text is eithr error mesg, or a message like 'any number'
-    let resultToReturn;
-    if(/[a-z]/i.test(wholeString)) {//if has text a-z, is a msg
-        resultToReturn = wholeString//return as is
-    }
-    else {
-        //no message, just numbers, so evaluate
-        resultToReturn = eval(wholeString)
+    // //if whole string has text in it, dont evaluate, just return the text
+    // //text is eithr error mesg, or a message like 'any number'
+    // let resultToReturn;
+    // if(/[a-z]/i.test(wholeString)) {//if has text a-z, is a msg
+    //     resultToReturn = wholeString//return as is
+    // }
+    
+    
+    //evaluate, when gets here, value of percent calculation is a single
+    //number , so whole expression is e.g 25 x (27 + 5) x 17   , no percent
+    //calculations, it has been turned into a number e.g 17. so pass expession
+    //to eval to evaluate
+    resultToReturn = eval(wholeString)
 
-        //error check, make sure result of percent calc is within range,
-        //to not get the  the e.g 33556e+17 or 3355e-17  
-        if((Number(resultToReturn) > 1000000000000000) ||
-            (Number(resultToReturn)<0.0000001)){//1000 trillion
-            console.log('RESULT OF PERCENT CALUCLATION IS: '+wholeString)
-            return 'Result Outside Range'
+    //error check the result of the percent calculation
+    if((Number(resultToReturn) > 1000000000000000) ||
+            (Number(resultToReturn)< -100000000000000)){//-100tr TO 1000 trillion
+        return 'Result Outside Range'
+    }
+    else 
+        if((Number(resultToReturn) > 0) && (Number(resultToReturn) < 0.0001) ) {
+            return '0 (rounded)'
         }
-
-    }
+        else 
+            if((Number(resultToReturn) < 0) && (Number(resultToReturn) > -0.0001) ) {
+                return '0 (rounded)'
+            }
 
     console.log('*** RESULT OF WHOLE STRING, AFTER EVAL() IS ' + resultToReturn)
 
-    return resultToReturn
-
-}
-
-
-
-
-
-
-
-
-
-
-
-export const NEWcalculateResultOfWholeCalculation = (passedInString) => {
-    console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION, STIRNG PASSED IN IS: ', passedInString)
-    // let wholeString = collateStringsIntoOneString(segmentsArray)
-    
-    let wholeString = passedInString
-
-    let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted|if)/.test(wholeString)
-    console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
-    
-    let stringHasOpenSquareBracketFlag = /\[/.test(wholeString)
-    console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)
-    
-    let stringHasCloseSquareBracketFlag = /\]/.test(wholeString)
-    console.log('STRING HAS CLOSE SQUARE BRACKET ] FLAG IS : ' + stringHasCloseSquareBracketFlag)
-    
-
-    //if parenthesis open and close dont equal, means calculation incomplete
-    if(getParenthesesNetValueFromString(wholeString) <= -1) {
-        console.log('AT CALCULATERESULT, BRACKETS INCOMPLETE')
-        return "incomplete"
-    }
-
-
-    //if string has open square bracket [ but not close ssquare bracket ], means incomplete
-    if(stringHasOpenSquareBracketFlag && (! stringHasCloseSquareBracketFlag)) {
-        console.log('AT CALCULATERESULT, SQUARE BRACKETS INCOMPLETE')
-        return "incomplete"
-    }
-    
-
-    //if string has percent calculation, process thaat first
-
-    //if has percent calculation in it, 
-    if(stringHasPercentCalculationFlag) {
-
-        let percentCalculationString = ""//default
-        let resultOfPercentCalculation = ""//default
-        //if has ssquare brackets, remove the square brackekts and reduce any parenthesis
-        //in it e.g [(22 x 5)% of ((20 + 5) x 5)] becomes 110% of 125, then pass to 
-        //calculate percentage method
-
-
-        //if gets here, string has a percent calculation, either mixed with
-        //arith or on its own.
-        //e.g 12% of ...  incomplete  , on its own,  has only 1 operand
-        //e.g 12% of 350   complete, on its own coz no square bracket, has 2 operands
-        //or   10 x [12% of 360]  mixed coz has square bracket, complete
-        //or 10 x [12% of    mixed has '[', percent calculaion is incomplete
-
-
-
-
-
-
-
-        //if it has NO open square bracket, it is a percent calculation on its own
-        //e.g 12% of 200   or  12% of ...   incomplete
-        if( ! stringHasOpenSquareBracketFlag) {//NO square bracket
-            //no square bracket, percent calcualtion is on its own
-
-            //if if%is, get string from if to operand2 only, exlude 'then' which is
-            //opernd3
-            if(/if/.test(wholeString) && ( ! /then/.test(wholeString))) {
-                //*******#######TO DO, SLICE UPTO OPERAND 2, BEFORE 'THEN'
-            }
-            //string only has percent calculation on its own
-            else {//all other percent calculation types
-                percentCalculationString = wholeString
-            }
-            //string is e.g 12% of 200 no open brackets, complete
-            //or (12 x 5)% of ((200 x  incomplete , has open bracket or brackets
-
-            //when gets here, it is at operand2 since operand 1 is just a number without operators
-
-            //get nett value of brackets and fill them in internally so can pass string
-            //to reducebrackets method
-            let nettValue = getParenthesesNetValueFromString(percentCalculationString)
-            console.log('**** CALCULATERESULT, PERCENTAGE PORTION, NETTVALUE OF ROUNDBRAKCETS IS: ', nettValue)
-            for (let i = 0; i>nettValue; i--) {//add same number of closing brackets
-                //netvalue is a -number, eg -2 means 2 open brackets
-                percentCalculationString += ')' //auto add closing brackt, for internal use onlly
-            }
-            console.log('CALCULATERESULTS, PERCENT PORTION, AFTER AUTO ADD BRACKETS, PERCENT STRING IS: ' ,  percentCalculationString)
-            
-
-
-            percentCalculationString = reduceBracketsPairContentsIntoSingleValues(percentCalculationString)
-            console.log('CALCULATERESULTS, PERCENT PORTION, AFTER REDUCED BRACKETS, PERCENT STRING IS: ' ,  percentCalculationString)
-            
-            
-            //make sure it has 2 operands, or 3 if it is if%is type
-            //before sending string to calculatepercent calculation
-
-            let returnedArray = (percentCalculationString.match(/([0-9]+)/g) || [])
-            let numberOfOperands = (percentCalculationString.match(/([0-9]+)/g) || []).length
-
-            console.log('**** CALCULATERESULT, PERCENTAGE PORTION, RTURNED ARRAY FROM MATCH IS: ', returnedArray)
-            console.log('**** CALCULATERESULT, PERCENTAGE PORTION, NUMBER OF OPERANDS IS: ' + numberOfOperands)
-
-
-        }
-
-
-
-
-
-        return "not yet"
-
-
-
-
-
-
-        if(stringHasOpenSquareBracketFlag && stringHasCloseSquareBracketFlag) {
-            //get index of the open square bracket in the string
-            let indexOfOpenSquareBracket = wholeString.search(/\[/)
-            //get index of the close square bracket
-            let indexOfCloseSquareBracket = wholeString.search(/\]/)
-
-            //get content of square brackets, exclude the square brackets themselves
-            let contentOfSquareBrackets = wholeString.slice(indexOfOpenSquareBracket+1, indexOfCloseSquareBracket)
-            console.log('CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
-            //now reduce any parenthesis content to single values e.g ((23 + 5) x 2) becomes 56
-            contentOfSquareBrackets = reduceBracketsPairContentsIntoSingleValues(contentOfSquareBrackets)
-            console.log('****AFTER REDUCED PARENTHESIS, CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
-            //now calculate the percentage calculation and get a single number result
-            contentOfSquareBrackets = calculateResultOfPercentCalculation(contentOfSquareBrackets)
-            //now replace the pair of square brackets and its content with a singl value
-            let portion1 = wholeString.slice(0, indexOfOpenSquareBracket)//excludes the [ bracket
-            let portion2 = wholeString.slice(indexOfCloseSquareBracket+1)//excludes the ] bracket
-            //copy backk to real string with new single value in place of square brackets
-            wholeString = portion1 + contentOfSquareBrackets + portion2
-            console.log('*** AFTER REDUCING PERCENT CALCULATION TO SINGLE VLUE, WHOLESTRING IS '+ wholeString)
-        }
-        else {//no square brackets, ie only percent calculation is on the string, no arith operators outside of square brackets
-            //only percent calc exists, no operator outside of square breackets
-
-            //there is no square brackets if gets here, but there may be round brackets,
-            //e.g 20 add (2 x 5)%, so need to reduce the round brackets before passing in to
-            //calculate percentage calculation, becomes 20 add 10% when passed into calculateresultofpercentcalcualtion
-            wholeString = reduceBracketsPairContentsIntoSingleValues(wholeString)
-            //calculate the percetn calculation
-            wholeString =  calculateResultOfPercentCalculation(wholeString)
-        }
-    }//if has percent calc
-
-
-
-
-
-
-    return "not yet"
-
-
-
-
-
-    //when gets here, string still has alll the round brackets, except content of square brackets
-    //ie percentage, is replace by a single value, so now stirng is eg 23 x ((2 + 3) x 7) x 777 
-    ///777 is result of % calculation ie square bracket content
-    //now calculate the value of the whole string by passing it to eval()
-
-    //need to replace 'x' with '*' and '÷' with '/' for js to evaluate string
-     //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
-     wholeString = wholeString.replace(/x/g, '*')
-     wholeString = wholeString.replace(/÷/g, '/')
-     console.log('****#### AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG TO CALCULATE IS ' + wholeString)
-  
-    let resultToReturn = eval(wholeString)
-
-    console.log('*** RESULT OF WHOLE STRING, AFTER EVAL() IS ' + resultToReturn)
 
     return resultToReturn
 
-}
+}//method, calcresultofwholecalculation
 
 
 
 
 
+
+
+
+ 
 
 
 
@@ -825,16 +676,62 @@ export const checkNumberLengthOfUserInput = (passedInString) => {
 
 
 
+export const insertThousandsSeparatorsForWholeCalculation = (passedInArray = []) => {
+
+    //make a local copy, so no longer pointing to original passed in array
+    //so wont change passed in array by reference
+    
+    // let localArrayOfSegments = []
+    let localArrayOfSegments = JSON.parse(JSON.stringify(passedInArray))
+    console.log('AT INSERT THOSAND SEPARATORS, AFTER STRINGIFY, PASSED IN ARRAY IS: ', passedInArray)
+ 
+
+    localArrayOfSegments.forEach( segment => {
+        console.log('THOUSANDS SEPARATOR, ONE SEGMENT IS: '+segment.stringValue)
+        segment.stringValue = insertThousandsSeparatorsForOneSingleNumberString(segment.stringValue)
+    })
+
+    let collatedString = collateStringsIntoOneString(localArrayOfSegments)
+    console.log('STRING TO RETURN FROM INSERTTHOUSAND SEPARATORS IS: '+collatedString)
+    console.log('LOCAL COPIED ARRAY IS: ',localArrayOfSegments)
+    console.log('ORIGINAL ARRAY PASSED IN IS: ',passedInArray)
+    return collatedString
+}
 
 
 
-export const insertThousandSeparators = (passedInString) => {
+
+
+
+
+
+
+
+
+export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString = "") => {
+
+    // console.log('THOUSANDS SEPARATOR SUBMTHOD: PASSEDINSTRING IS: ' + passedInString)
+    
+    //if empty stirng return it, coz if process below, toFix would insert 
+    //0.000000 into an empty string, ie "".toFix(6) would give 0.000000
+    ////instead of ""
+    if(passedInString == "") return passedInString
+
+    // //also if passed in string is an error messsge, return as is
+    // //exlude test for alpha x because the multiply sign x will get interpreted as an alpha
+    // //dont know how to exclude it using regex yet
+    // if(/[a-w]/i.test(passedInString)) {
+    //     console.log('AT INSRT SEPARATOR, PASSED IN STRING HAS ALPHA, SO RETURN AS IS')
+    //     return passedInString
+    // }
+
 
     //make sure string is a string, even if passed in a number
     //so we can use string search functions
+    
     passedInString = passedInString.toString()
 
-    console.log('THOUSANDS SEPARATOR: PASSEDINSTRING IS: ', passedInString)
+    // console.log('THOUSANDS SEPARATOR SUBMETHOD: PASSEDINSTRING IS: ', passedInString)
     let stringToReturn = passedInString //default
 
     //first find index of decipoint if exists, if not, it is assumed
@@ -843,7 +740,7 @@ export const insertThousandSeparators = (passedInString) => {
     //if not found, then assume it is at eoline
     if(indexOfDeciPoint == -1) {
         indexOfDeciPoint = passedInString.length
-        console.log('SEARCH DEDIPOINT, NOT FOUND, ASSIGN TO EOL')
+        // console.log('AT SEPARATOR SUBMETHOD: SEARCH DEDIPOINT, NOT FOUND, ASSIGN TO EOL')
     }
 
 
@@ -851,26 +748,28 @@ export const insertThousandSeparators = (passedInString) => {
     for(let i = indexOfDeciPoint -1; i >=0 ; i--) {
         if(/[0-9]/.test(passedInString.charAt(i))) {//if is a numeral
             numeralCount++
-            console.log('INSERT THOUSANDS SEPARATOR: NUMERAL FOUND, COUINT IS NOW: ',numeralCount)
+            // console.log('INSERT THOUSANDS SEPARATOR SUBMETHOD: NUMERAL FOUND, IT IS: ',passedInString.charAt(i))
+            // console.log('INSERT THOUSANDS SEPARATOR SUBMETHOD: NUMERAL FOUND, COUINT IS NOW: ',numeralCount)
         }
-        else {
-            numeralCount = 0//reset if encounters a non-numeral to start over
+        else {//non-numeral
+            //reset if encounters a non-numeral eg a space or letter to start over
+            numeralCount = 0
         }
 
         if(numeralCount ===3) {
-            console.log('3 NUMERALS FOUND')
+            // console.log('3 NUMERALS FOUND')
             //if preceding char is a numeral, then
             //insert a separator at this index, which will push the rest of the
             //string up a spot
             if(i>0 && (/[0-9]/.test(passedInString.charAt(i-1)))) {
-                console.log('OK TO INSERT SEPARATOR, NOT START OF LINE, HAS PRIOR NUMERAL')
+                // console.log('OK TO INSERT SEPARATOR, NOT START OF LINE, HAS PRIOR NUMERAL')
                 //if not at start of line, and preceding char is a numeral
                 //then insert a separator
                 let tempStr = passedInString.slice(0, i) + ',' + passedInString.slice(i)
                 passedInString = tempStr
                 stringToReturn = passedInString
 
-                console.log('AFTER INSERTING A THOUSAND SEPARATOR, LINE IS: ', tempStr)
+                // console.log('AFTER INSERTING A THOUSAND SEPARATOR, LINE IS: ', tempStr)
             }
 
             numeralCount = 0
@@ -878,7 +777,65 @@ export const insertThousandSeparators = (passedInString) => {
         }//if count is 3
     }//for
 
-    console.log('STRING AFTER INSERT SEPARATORS, TO RETURN IS: ',stringToReturn)
+    // console.log('THOUSANDS SEPARATOR SUBMETHOD, STIRNG TO RETURN IS: ' + stringToReturn)
+
+    return stringToReturn
+
+}
+
+
+
+
+
+export const truncateDecimalPlacesOfString = (passedInString) => {
+    
+    // console.log('AT TRUNCATE DECPOINTS: PASSEDINSTRING IS: ' + passedInString)
+
+    //if empty stirng return it, coz if process below, toFix would insert 
+    //0.000000 into an empty string, ie "".toFix(6) would give 0.000000
+    ////instead of ""
+    if(passedInString == "") return passedInString
+
+    //also if passed in string is an error messsge, return as is
+    //exlude alpha x because  the multiply sign x will get interpreted as an alpha
+    //dont know how to exclude it using regex yet
+    if(/[a-w]/i.test(passedInString)) {
+        // console.log('AT TRUNCATE, PASSED IN STRING HAS ALPHA, SO RETURN AS IS')
+        return passedInString
+    }
+
+
+    //passed in string is in format of  2355777.882858788   eithr number ofr string
+    // console.log('AT TRUNCATEDECIMALPLACES, PASSEDINSTRING IS: ',passedInString)
+
+
+
+    //make sure it is a string even if number is passed in
+    passedInString = passedInString//.toString()
+    // console.log('AT TRUNCATEDECIMALPLACES, AFTER CONVERT TO STRING IS: ',passedInString)
+
+
+
+    // let floatValue = Number(passedInString)
+    // console.log('AFTER TOFIXED(), PASSED IN STRING IS: ',stringToReturn)
+    // return stringToReturn
+
+
+
+    let floatValue = Number(passedInString)
+    // console.log('FLOAT VLUE OF PASSE')
+    // console.log('AT TRUNCATEDECIMALPLACES, FLOATVALUE OF  IS: ',passedInString)
+
+    if(floatValue <= 0.05 && floatValue >= -0.05) {
+        stringToReturn = floatValue.toFixed(5)
+    }
+    else {
+        stringToReturn = floatValue.toFixed(2)
+    }
+
+
+    // console.log('TRUNCATE DECIOINTS: STRINGTO RETURN IS: ' + stringToReturn)
+
 
     return stringToReturn
 

@@ -39,21 +39,25 @@ class ButtonAddPercent extends React.Component {
             // alert('Enter a Number First')
             return//dont process below code
         }
-                
-
-
 
     
-        let answer = helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
-            
+        let answer = this.props.screenLiveAnswerLine//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
+        answer = helpers.truncateDecimalPlacesOfString(answer)
+        //dont insert thousand separators because this is the reeal string, not 
+        //user mirror string for user to see only
+        
+        //add answer as ann input segment to segments array, so becomes part of
+        //screenmainline1 so other methods such as truncate decipoint and insert
+        //thousandss separators can go through each segment which would include hthe
+        //answer.
+        currentSegmentIndex++//move forward 1 spot
+        segmentsArray[currentSegmentIndex] = {}//create object
+        segmentsArray[currentSegmentIndex].stringValue = '\n =\u00A0' + answer
 
         
-
-
         
+      
 
-
-        
         //save to timemachine
         if(allowToTakeSnapShotOfState) {
             //take a snapshot and return
@@ -62,10 +66,11 @@ class ButtonAddPercent extends React.Component {
         
         //collate stirng from all segments and update store
         let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
-                                    + '\n = ' + answer
+                                    + '\n =\u00A0' + answer// \u00A0 is unicode for &nbsp;
         let screenLiveAnswerLine = ""//helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
         let screenMidScreenMessage = ''
         
+        console.log('EQUALS BUTTON: MAINSCREENLINE1 TO SEND TO REDUCER IS' + screenMainTextLine1)
         this.props.dispatch(updateCalculatorData(
             screenMainTextLine1,
             screenLiveAnswerLine,
@@ -120,6 +125,7 @@ class ButtonAddPercent extends React.Component {
 
 
 const mapStateToProps = (state) => ({
+    screenLiveAnswerLine: state.calculatorStateData.screenLiveAnswerLine,
     segmentsArray: state.calculatorStateData.segmentsArray,
     currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
     timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots
