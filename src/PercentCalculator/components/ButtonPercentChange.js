@@ -39,7 +39,14 @@ class ButtonPercentChange extends React.Component {
             alert('Enter a Number First')
             return//dont process below code
         }
-                
+              
+        
+
+        //clear any trailing decimal point if exist, every time press on 
+        //arith operator or percent operator or close bracket
+        helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
+
+        
 
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
         console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)

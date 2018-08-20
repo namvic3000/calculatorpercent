@@ -15,6 +15,10 @@ class ButtonArithmetic extends React.Component {
         this.handleCalcButtonClicked = this.handleCalcButtonClicked.bind(this)
     }
     
+
+
+
+
     handleCalcButtonClicked = (buttonValue) => {
 
         
@@ -24,7 +28,7 @@ class ButtonArithmetic extends React.Component {
 
         let emptyScreenMainLine = (segmentsArray || []).length <= 0
 
-
+        
 
         
         //ignore key if screen is empty, alert user to enter a number first
@@ -32,6 +36,13 @@ class ButtonArithmetic extends React.Component {
             // alert('Enter a Number First')
             return//dont process below code
         }
+
+
+
+        //clear any trailing decimal point if exist, every time press on 
+        //arith operator or percent operator or close bracket
+        helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
+
 
         
 

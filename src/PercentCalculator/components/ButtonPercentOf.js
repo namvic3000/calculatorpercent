@@ -43,6 +43,12 @@ class ButtonPercentOf extends React.Component {
 
 
 
+        //clear any trailing decimal point if exist, every time press on 
+        //arith operator or percent operator or close bracket
+        helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
+
+        
+
         //to get valid '% of' input, current segment must be a
         //number, number with open bracket, or numbr with close bracket at end.
         //e.g   367% of,   or (5 x 63)% of .. , or (55% of ..

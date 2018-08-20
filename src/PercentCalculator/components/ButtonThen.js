@@ -42,6 +42,12 @@ class ButtonThen extends React.Component {
                 
         
 
+        //clear any trailing decimal point if exist, every time press on 
+        //arith operator or percent operator or close bracket
+        helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
+
+        
+
         //if there is just 'if' without 'then', then at operand2,
         //if there is an open round brracket outstanding, then dont add 
         //then, just ignore user input when they press on 'then'

@@ -41,6 +41,15 @@ class ButtonCloseBracket extends React.Component {
         }
  
 
+
+
+        //clear any trailing decimal point if exist, every time press on 
+        //arith operator or percent operator or close bracket
+        helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
+
+
+
+
         ///can only enter a close bracket if current segment is a number,
         //and nett bracket count is -1 or less
         //Each ( has value of -1

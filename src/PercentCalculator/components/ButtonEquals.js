@@ -40,6 +40,13 @@ class ButtonAddPercent extends React.Component {
             return//dont process below code
         }
 
+
+
+        //clear any trailing decimal point if exist, every time press on 
+        //arith operator or percent operator or close bracket
+        helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
+
+        
     
         let answer = this.props.screenLiveAnswerLine//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
         answer = helpers.truncateDecimalPlacesOfString(answer)

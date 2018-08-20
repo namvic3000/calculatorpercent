@@ -14,8 +14,12 @@ class Button0To9 extends React.Component {
         //the constructor function just to do this. weird.
         this.handleCalcButtonClicked = this.handleCalcButtonClicked.bind(this)
     }
+
+
+
     
     handleCalcButtonClicked = (buttonValue) => {
+
 
         
         // console.log('AT BUTTON0-9: BUTTON PRESSED IS:' + buttonValue)
@@ -51,10 +55,6 @@ class Button0To9 extends React.Component {
             
             return //dont process below code
         }
-
-
-
-
 
 
 
