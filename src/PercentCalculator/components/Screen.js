@@ -42,6 +42,11 @@ class Screen extends Component {
     fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((overflow * 0.1))
 
 
+    //insert thousands separators, for display to screen only, 
+    //dont alter the segments array which created the screenMainTextLine1.
+    screenMainTextLine1 = helpers.insertThousandSeparators(screenMainTextLine1)
+    screenLiveAnswerLine = helpers.insertThousandSeparators(screenLiveAnswerLine)
+
 
     let styles = StyleSheet.create({
       screen: {

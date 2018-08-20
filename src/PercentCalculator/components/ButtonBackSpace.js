@@ -71,6 +71,7 @@ class ButtonBackSpace extends React.Component {
         let indexOfLastSnapShot = timeMachineArrayOfSegmentsArraySnapShots.length -1
         console.log('**AT BACKSPACE KEY: INDEXOFLASTSNAPSHOT IS:',indexOfLastSnapShot)
         
+        //copy snapshot into segmnts array, do deep copy so wont point to original
         segmentsArray = JSON.parse(JSON.stringify(timeMachineArrayOfSegmentsArraySnapShots[indexOfLastSnapShot].segmentsArraySnapShot))
         console.log('**AT BACKSPACE KEY: AFTER COPYING FROM SNAPSHOT, THE SEGMENTS ARRAY IS ',segmentsArray)
     

@@ -106,6 +106,10 @@ export const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (a
 
 
 
+
+
+
+
 export const calculateResultOfWholeCalculation = (passedInString) => {
 
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
@@ -204,10 +208,10 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
             //error check, make sure result of percent calc is within range,
             //to not get the  the e.g 33556e+17 or 3355e-17  
-            if((Number(wholeString) > 100000000000000) ||
-                (Number(wholeString)<0.000000001)){//100 trillion
+            if((Number(wholeString) > 1000000000000000) ||
+                (Number(wholeString)<0.0000001)){//1000 trillion
                 console.log('RESULT OF PERCENT CALUCLATION IS: '+wholeString)
-                return 'Number Outside Range'
+                return 'Result Outside Range'
             }
             
         }
@@ -218,7 +222,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
 
 
-    let arrayOfOperands = (wholeString.match(/([0-9|.]+)/g) || [])
+    let arrayOfOperands = (wholeString.match(/(\-[0-9|.]+)|([0-9|.]+)/g) || []) 
     let numberOfOperands = arrayOfOperands.length
     console.log('** CALULATEWHOLESTRING: ARRAY OF OPERANDS IS: ', arrayOfOperands)
     
@@ -286,6 +290,15 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
     else {
         //no message, just numbers, so evaluate
         resultToReturn = eval(wholeString)
+
+        //error check, make sure result of percent calc is within range,
+        //to not get the  the e.g 33556e+17 or 3355e-17  
+        if((Number(resultToReturn) > 1000000000000000) ||
+            (Number(resultToReturn)<0.0000001)){//1000 trillion
+            console.log('RESULT OF PERCENT CALUCLATION IS: '+wholeString)
+            return 'Result Outside Range'
+        }
+
     }
 
     console.log('*** RESULT OF WHOLE STRING, AFTER EVAL() IS ' + resultToReturn)
@@ -569,7 +582,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     //they have been removed prior to callng this method
 
     //find operand 1
-    let startIndexOfOperand1 = passedInString.search(/[0-9]/)
+    let startIndexOfOperand1 = passedInString.search(/([0-9]|\-[0-9])/)
     //now cut from start index to eostring
     let tempStr = passedInString.slice(startIndexOfOperand1)
     //end of operand1 is the first space, counting from the first numeral of operand1
@@ -579,7 +592,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
    
     //find operand 2
     tempStr = tempStr.slice(endIndexOfOperand1+1)//remove opeerand1 from string
-    let startIndexOfOperand2 = tempStr.search(/[0-9]/) 
+    let startIndexOfOperand2 = tempStr.search(/([0-9]|\-[0-9])/) 
     tempStr = tempStr.slice(startIndexOfOperand2)
     console.log('AT EXTRACTION OF OPERAND2, TEMPSTR IS:' + tempStr)
     //if there is a space or % after opereand2, e.g if operand3 exists, then eooperand2 is 
@@ -605,7 +618,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     
     //find operand 3, only for if%is calculation type
     tempStr = tempStr.slice(endIndexOfOperand2+1)//remove opeerand1 from string
-    let startIndexOfOperand3 = tempStr.search(/[0-9]/) 
+    let startIndexOfOperand3 = tempStr.search(/([0-9]|\-[0-9])/) 
     tempStr = tempStr.slice(startIndexOfOperand3)
     console.log('AT EXTRACTION OF OPERAND3, TEMPSTR IS:' + tempStr)
     //if there is a space or % after opereand3, 
@@ -672,7 +685,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
         console.log('AT AFTERDEDUCTEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         //if after deducted 100% or more, error
         if( (Number(operand1ValueString) == 0) && (Number(operand2ValueString) == 100)) {
-            return 'Any Value'
+            return 'Any >= 0 Value'
         }
         else 
         if( (Number(operand1ValueString) == 0)) {
@@ -697,7 +710,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
 
 
 
-    return JSON.stringify(result)
+    return result.toString()  //return type is string, not number
 }
 
 
@@ -751,6 +764,7 @@ export const takeASnapShotOfCurrentCalculationState = (segmentsArray, timeMachin
     let currentIndex = timeMachineArrayOfSegmentsArraySnapShots.length - 1
     currentIndex++//advance to  next element
     timeMachineArrayOfSegmentsArraySnapShots[currentIndex] = {} //create
+    //copy
     timeMachineArrayOfSegmentsArraySnapShots[currentIndex].segmentsArraySnapShot = JSON.parse(JSON.stringify(segmentsArray))
     console.log('###### TIMEMACHINEARRAYOFSEGMENTSARRAY IS:',timeMachineArrayOfSegmentsArraySnapShots)
 
@@ -805,5 +819,67 @@ export const checkNumberLengthOfUserInput = (passedInString) => {
 
     //if gets here, then string len is less than limit
     return overLimit
+
+}
+
+
+
+
+
+
+
+export const insertThousandSeparators = (passedInString) => {
+
+    //make sure string is a string, even if passed in a number
+    //so we can use string search functions
+    passedInString = passedInString.toString()
+
+    console.log('THOUSANDS SEPARATOR: PASSEDINSTRING IS: ', passedInString)
+    let stringToReturn = passedInString //default
+
+    //first find index of decipoint if exists, if not, it is assumed
+    //to be at eoline
+    let indexOfDeciPoint = passedInString.search(/\./)
+    //if not found, then assume it is at eoline
+    if(indexOfDeciPoint == -1) {
+        indexOfDeciPoint = passedInString.length
+        console.log('SEARCH DEDIPOINT, NOT FOUND, ASSIGN TO EOL')
+    }
+
+
+    let numeralCount = 0
+    for(let i = indexOfDeciPoint -1; i >=0 ; i--) {
+        if(/[0-9]/.test(passedInString.charAt(i))) {//if is a numeral
+            numeralCount++
+            console.log('INSERT THOUSANDS SEPARATOR: NUMERAL FOUND, COUINT IS NOW: ',numeralCount)
+        }
+        else {
+            numeralCount = 0//reset if encounters a non-numeral to start over
+        }
+
+        if(numeralCount ===3) {
+            console.log('3 NUMERALS FOUND')
+            //if preceding char is a numeral, then
+            //insert a separator at this index, which will push the rest of the
+            //string up a spot
+            if(i>0 && (/[0-9]/.test(passedInString.charAt(i-1)))) {
+                console.log('OK TO INSERT SEPARATOR, NOT START OF LINE, HAS PRIOR NUMERAL')
+                //if not at start of line, and preceding char is a numeral
+                //then insert a separator
+                let tempStr = passedInString.slice(0, i) + ',' + passedInString.slice(i)
+                passedInString = tempStr
+                stringToReturn = passedInString
+
+                console.log('AFTER INSERTING A THOUSAND SEPARATOR, LINE IS: ', tempStr)
+            }
+
+            numeralCount = 0
+
+        }//if count is 3
+    }//for
+
+    console.log('STRING AFTER INSERT SEPARATORS, TO RETURN IS: ',stringToReturn)
+
+    return stringToReturn
 
 }
