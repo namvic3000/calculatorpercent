@@ -17,16 +17,47 @@ class Screen extends Component {
     
     
 
+    //THE REAL DATA IS IN THE SEGMENTSARRAY[].STRINGVALUE WHICH ARE NOT ALTERED,
+    //, HERE WE ALTER THE COPIES OR 
+    //ALTER THE OTHER FIELDS IN THE SEGMENTS ARRAY WHICH CHANGE CONSTANTLY AND CAN
+    //BE DEDUCED FROM THE SEGMENTSARRAY[].STRINGVALUE FIELD.
+
+    //NOTE: ALLL THE ALTERING FOR USER DISPLAY IS DONE HERE IN SCREEN.JS, AND DONT ALTER
+    //THE UNDERLYING DATA SEGMENTSARRAY[].STRINGVALUE 
+
+    //WHEN GETS HERE, ANSWER IS ALREADY CALCULATED AND STORED IN SCREENLIVEANSWERLINE
+    //, WE ALTER THE MIRROR HERE ONLY FOR DISPLAY, THE REAL ANSWER STORED 
+    //IS UNALTERED.
+
+
+
+    console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY BEFORE ALTERING FOR USER DISPLAY IS: ',segmentsArray)
+    console.log('AT SCREEN.JS: LIVEANSWERLINE BEFORE ALTERING FOR USER DISPLAY IS: ',screenLiveAnswerLine)
+
+
     //truncate the decimal places, for user display only, internally not truncated
     //for keeping precision
     //do this first before inserting thousands separators which would error
     screenLiveAnswerLine = helpers.truncateDecimalPlacesOfString(screenLiveAnswerLine) 
 
     //insert thousands separators, for display to screen only, 
-    //dont alter the segments array which created the screenMainTextLine1.
-    
+    //dont alter the segments array[].stingvalue which created the screenMainTextLine1.
     screenMainTextLine1 = helpers.insertThousandsSeparatorsForWholeCalculation(segmentsArray)
     screenLiveAnswerLine = helpers.insertThousandsSeparatorsForOneSingleNumberString(screenLiveAnswerLine)
+
+
+    ///add extra details
+    //now add the extra text details to the result, e.g '% change' 
+    // , result is e.g 255 , we add %sign and 'increase' in, becomes 255% (increase)
+    //this method requires answer string, and whole calculation tring
+    screenLiveAnswerLine = helpers.addExtraDetailsTextToAnswer(screenLiveAnswerLine, helpers.collateStringsIntoOneString(segmentsArray))
+
+
+
+    console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY AFTER ALTERING FOR USER DISPLAY IS: ',segmentsArray)
+    console.log('AT SCREEN.JS: LIVEANSWERLINE AFTER ALTERING FOR USER DISPLAY IS: ',screenLiveAnswerLine)
+
+
 
 
     
@@ -58,7 +89,6 @@ class Screen extends Component {
     }
 
     fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((excess * 0.1))
-
 
 
     let styles = StyleSheet.create({

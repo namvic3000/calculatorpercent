@@ -1,10 +1,12 @@
 import {combineReducers} from 'redux'
 import calculatorDataReducer from './calculatorDataReducer';
+import { tapeReducer } from './tapeReducer';
 
 
 
 const rootReducer = combineReducers({
-        calculatorStateData: calculatorDataReducer
+        calculatorStateData: calculatorDataReducer,
+        tape: tapeReducer
 })
 
 

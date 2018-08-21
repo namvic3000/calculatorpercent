@@ -3,13 +3,13 @@ import { Button, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 're
 import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
+import {addRecordToTape} from '../../../actions/tapeActions'
 
 
 
 
 
-
-class ButtonAddPercent extends React.Component {
+class ButtonEquals extends React.Component {
 
     constructor() {
         super()
@@ -46,24 +46,44 @@ class ButtonAddPercent extends React.Component {
         //arith operator or percent operator or close bracket
         helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
 
-        
+
     
-        let answer = this.props.screenLiveAnswerLine//helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))
+        console.log('AT EQUALSBUTON START: SCREENLIVEANSWER IS: ' + this.props.screenLiveAnswerLine)
+        
+        //get result of whole calculation
+        let answer = helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))//this.props.screenLiveAnswerLine//gets number only, no extra details text
+        
+        //truncate decipooints
         answer = helpers.truncateDecimalPlacesOfString(answer)
         //dont insert thousand separators because this is the reeal string, not 
         //user mirror string for user to see only
         
-        //add answer as ann input segment to segments array, so becomes part of
-        //screenmainline1 so other methods such as truncate decipoint and insert
-        //thousandss separators can go through each segment which would include hthe
-        //answer.
+        //add thousand separators
+        answer = helpers.insertThousandsSeparatorsForOneSingleNumberString(answer)
+
+        //add extra details, e.g 'originally was' or '%' to the answer
+        // answer = helpers.addExtraDetailsTextToAnswer(answer, helpers.collateStringsIntoOneString(segmentsArray))
+        
+        ///add extra details
+        //now add the extra text details to the result, e.g '% change' 
+        // , result is e.g 255 , we add %sign and 'increase' in, becomes 255% (increase)
+        //this method requires answer string, and whole calculation tring
+        answer = helpers.addExtraDetailsTextToAnswer(answer, helpers.collateStringsIntoOneString(segmentsArray))
+
+
+        //add whole answer with extra details e.g 'origiallly was' 
+        //as a segment to segments array, so a segment of
+        //the array, and therefore is now included in the whole calculaton stirng.
         currentSegmentIndex++//move forward 1 spot
         segmentsArray[currentSegmentIndex] = {}//create object
-        segmentsArray[currentSegmentIndex].stringValue = '\n =\u00A0' + answer
+        segmentsArray[currentSegmentIndex].stringValue = '\n=\u00A0' + answer
+
+
+
+
 
         
-        
-      
+        console.log('AT EQUALS BUTTON: AFTER ADDED ANSWER TO SEGMENTS ARRAY, SEGMENTS ARRAY IS NOW: ', segmentsArray)
 
         //save to timemachine
         if(allowToTakeSnapShotOfState) {
@@ -71,13 +91,23 @@ class ButtonAddPercent extends React.Component {
             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
         }
         
+
+        //save the finished calculation, ie the segmentsarray to the Tape
+        this.props.dispatch(addRecordToTape(segmentsArray))
+
+
+
+
+        // //now add the extra 
+        // answer = helpers.addExtraDetailsTextToAnswer(answer)
+      
+
         //collate stirng from all segments and update store
-        let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
-                                    + '\n =\u00A0' + answer// \u00A0 is unicode for &nbsp;
-        let screenLiveAnswerLine = ""//helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+        let screenMainTextLine1 = ""//WILL GET REFILLED AT SCREEN.JS 
+        let screenLiveAnswerLine = ""//WILL GET REFILLED AT SCREEN.JS 
         let screenMidScreenMessage = ''
         
-        console.log('EQUALS BUTTON: MAINSCREENLINE1 TO SEND TO REDUCER IS' + screenMainTextLine1)
+        // console.log('EQUALS BUTTON: PAYLOAD TO SEND TO REDUCER IS' + screenMainTextLine1)
         this.props.dispatch(updateCalculatorData(
             screenMainTextLine1,
             screenLiveAnswerLine,
@@ -139,7 +169,7 @@ const mapStateToProps = (state) => ({
 })
 
 
-export default connect(mapStateToProps)(ButtonAddPercent)
+export default connect(mapStateToProps)(ButtonEquals)
 
 
 

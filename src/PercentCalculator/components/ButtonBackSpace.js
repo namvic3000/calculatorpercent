@@ -38,8 +38,7 @@ class ButtonBackSpace extends React.Component {
         //so do a clearall and return, treat it as a clearall
         if(timeMachineArrayOfSegmentsArraySnapShots.length <=1) {
              
-            //do a clearall
-
+            //CLEARALL BLOCK///////////////////////////
             //collate stirng from all segments     
             let screenMainTextLine1 = ""
             let screenLiveAnswerLine = ""
@@ -56,7 +55,7 @@ class ButtonBackSpace extends React.Component {
                 currentSegmentIndex, 
                 timeMachineArrayOfSegmentsArraySnapShots
             ))
-
+            //////////////////////////////////////////////////
             return//done , dont process below
         }//if
     

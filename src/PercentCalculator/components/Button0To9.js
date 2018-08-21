@@ -31,6 +31,8 @@ class Button0To9 extends React.Component {
 
         let allowToTakeSnapShotOfState = true
 
+
+
         
         if(emptyScreenMainLineFlag) {
             segmentsArray[0] = {}//create empty object
@@ -57,6 +59,14 @@ class Button0To9 extends React.Component {
         }
 
 
+
+
+
+
+
+
+
+        
 
         //first detect if current segment is a number or not
         //include % and ) as a number for this key input

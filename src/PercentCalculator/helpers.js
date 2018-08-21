@@ -115,7 +115,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
     // let wholeString = collateStringsIntoOneString(segmentsArray)
-    let wholeString = passedInString
+    let wholeString = JSON.parse(JSON.stringify(passedInString))
 
     let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted|if)/.test(wholeString)
     console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
@@ -177,9 +177,18 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             //now reduce any parenthesis content to single values e.g ((23 + 5) x 2) becomes 56
             contentOfSquareBrackets = reduceBracketsPairContentsIntoSingleValues(contentOfSquareBrackets)
             console.log('****AFTER REDUCED PARENTHESIS, CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
+            
             //now calculate the percentage calculation and get a single number result
             contentOfSquareBrackets = calculateResultOfPercentCalculation(contentOfSquareBrackets)
             
+
+            //error check, if percent calculation returns a error message,
+            //just return, no more processing
+            //leave out x so wont confuse with multiply x
+            if(/[a-w]/i.test(contentOfSquareBrackets)) {//if has text a-z, is a msg
+                return contentOfSquareBrackets// return message
+            }
+
             //error check the result of the percent calculation
             if((Number(contentOfSquareBrackets) > 1000000000000000) ||
                 (Number(contentOfSquareBrackets)< -100000000000000)){//-100tr TO 1000 trillion
@@ -206,6 +215,10 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             //only percent calc exists, no operator outside of square breackets
 
 
+            //NOTE: IF GETS HERE, WHOLE STRING ONLY HAS RESULT OF PERCENT CALCULATIO
+            //. THERE IS NO ARITH CALCLATION
+            
+            
             //there is no square brackets if gets here, but there may be round brackets,
             //e.g 20 add (2 x 5)%, so need to reduce the round brackets before passing in to
             //calculate percentage calculation, becomes 20 add 10% when passed into calculateresultofpercentcalcualtion
@@ -217,7 +230,11 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             wholeString =  calculateResultOfPercentCalculation(wholeString)
 
 
-            //error check
+            //NOTE: IF GETS HERE, WHOLE STRING ONLY HAS RESULT OF PERCENT CALCULATIO
+            //. THERE IS NO ARITH CALCLATION
+
+            //error check, if percent calculation returns a error message,
+            //just return, no more processing
             //leave out x so wont confuse with multiply x
             if(/[a-w]/i.test(wholeString)) {//if has text a-z, is a msg
                 return wholeString// return message
@@ -231,11 +248,11 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             }
             else 
                 if((Number(wholeString) > 0) && (Number(wholeString) < 0.0001) ) {
-                    return '0 (rounded)p'
+                    return '0 (rounded)'
                 }
                 else 
                     if((Number(wholeString) < 0) && (Number(wholeString) > -0.0001) ) {
-                        return '0 (rounded)---'
+                        return '0 (rounded)'
                     }
             
         }
@@ -292,6 +309,9 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
 
 
+    //####if gets to here, percent portion, if exists, is valid, (if invalid would
+    //###have returned already without gettig here
+
 
     //when gets here, string still has alll the round brackets, except content of square brackets
     //ie percentage, is replace by a single value, so now stirng is eg 23 x ((2 + 3) x 7) x 777 
@@ -333,12 +353,14 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
                 return '0 (rounded)'
             }
 
-    console.log('*** RESULT OF WHOLE STRING, AFTER EVAL() IS ' + resultToReturn)
+    console.log('*** RESULT OF WHOLE STRING TO RETURN, GOT FROM EVAL() IS ' + resultToReturn)
 
 
     return resultToReturn
 
 }//method, calcresultofwholecalculation
+
+
 
 
 
@@ -416,6 +438,14 @@ export const reduceBracketsPairContentsIntoSingleValues = (passedInString) => {
 
 
 
+
+
+
+
+
+
+
+
 export const calculateResultOfPercentCalculation = (passedInString) => {
 
     //passed in string in syntax of eg. 23% of 50, there are on () brackets in the string,
@@ -466,7 +496,16 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     console.log('*** ##OPERAND2 STRING EXTRACTED IS ' + operand2ValueString)
 
 
-    
+    //if no operand2 entered yet, return as is, so to avoid incorrect result
+    //in live answer line
+    if(operand2ValueString === "") {
+        return 'incomplete'
+    }
+
+
+
+    //if if%is, get 3rd operand
+
     //find operand 3, only for if%is calculation type
     tempStr = tempStr.slice(endIndexOfOperand2+1)//remove opeerand1 from string
     let startIndexOfOperand3 = tempStr.search(/([0-9]|\-[0-9])/) 
@@ -487,14 +526,24 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
 
 
     console.log('INDEX OF EOOPEAND3 IS '+endIndexOfOperand3)
-    let operand3ValueString = tempStr.slice(0, endIndexOfOperand3)
+    let operand3ValueString = tempStr.slice(0, endIndexOfOperand3) || ""
     console.log('*** ##OPERAND3 STRING EXTRACTED IS ' + operand3ValueString)
 
-      
+
+    
+    //if if%is calculation, and no operand3 entered yet, return as is,
+    // so to avoid incorrect result in live answer line
+    if(/if/.test(passedInString)) {
+        if(operand3ValueString === "") {
+            return 'incomplete'
+        }
+    }
+    
+
 
 
     //% of calculation type
-    if(/%/.test(passedInString) && (/of/i.test(passedInString))) {
+    if(/\%/.test(passedInString) && (/of/i.test(passedInString))) {
         console.log('AT PERCENTOF, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         result = (Number(operand1ValueString)/100) * Number(operand2ValueString) 
     }
@@ -525,14 +574,14 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     }
     else
     //after added %, calculation type
-    if(/after/i.test(passedInString) && /added/i.test(passedInString)) {
+    if(/after/i.test(passedInString) && /added /i.test(passedInString)) {
         console.log('AT AFTERADDEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         let factor = 1 + (Number(operand2ValueString)/100)
         result = Number(operand1ValueString)/factor
     }
     else
     //after deducted %, calculation type
-    if(/after/i.test(passedInString) && /deducted/i.test(passedInString)) {
+    if(/after/i.test(passedInString) && /deducted /i.test(passedInString)) {
         console.log('AT AFTERDEDUCTEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         //if after deducted 100% or more, error
         if( (Number(operand1ValueString) == 0) && (Number(operand2ValueString) == 100)) {
@@ -555,12 +604,17 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     else 
     //if % is, calculation type
     if(/if/i.test(passedInString)) {
+
         console.log('AT IFPERCENTIS, OPERAND1 AND 2 AND 3 ARE:',operand1ValueString,operand2ValueString,operand3ValueString)
         result = (Number(operand3ValueString)/Number(operand1ValueString)) * Number(operand2ValueString)
+        if(operand3ValueString == "") {
+            return 'incomplete'
+        }
     }
 
 
 
+    console.log('PERCENT CALCUATION: RESULT TO RETURN IS: ' + result)
     return result.toString()  //return type is string, not number
 }
 
@@ -853,4 +907,110 @@ export const truncateDecimalPlacesOfString = (passedInString) => {
 
     return stringToReturn
 
+}
+
+
+
+
+
+
+
+
+
+
+export const addExtraDetailsTextToAnswer = (passedInAnswerString, wholeCalculationString) => {
+
+    //this method adds the extra text details to the result, e.g form 25 to 77 
+    // , result is e.g 255 , we add %sign and 'increase' in, becomes 255% (increase)
+    //or 25 x [from 10 to 100] = 25000  
+    //becomes 25 x [from 10 to 100] = 25000% (increase)
+    
+    // console.log('#########**************************** GOT TO ADD EXTRA DETAILS, PASSED IN STRING IS '+ passedInAnswerString)
+
+    //if answer string is empty, e.g incomplete calculation, dont add
+    //extra details to empty answer, would get e.g  '% (unchanged)' added
+    //to empty answer, incorrect
+    if(passedInAnswerString === "") {
+        return passedInAnswerString
+    }
+
+
+    //if there is text in the passedinanswer, dont add extra details
+    if( /[a-w]+/i.test(passedInAnswerString)) {
+        return passedInAnswerString
+    }
+
+
+
+
+
+
+    let stringToReturn = passedInAnswerString
+
+    //% of
+    if((/of/.test(wholeCalculationString) && (! /out/.test(wholeCalculationString)))) {
+        //e.g 25% 0f 1000,000 = 250,000 no need to add any extra text to answer
+    }
+    else
+    //out of
+    if((/out /.test(wholeCalculationString))) {
+        //e.g 25 out of 27 = 95%,  need to add % to answer
+        stringToReturn = passedInAnswerString + '%'
+        console.log('ADD EXTRA DETAILS: GOT TO OUTOF PORTION, AFTER ADDED %, STRING TO RETURN IS: ',stringToReturn)
+    }
+    else
+    //add %
+    if(/add /.test(wholeCalculationString)) {//need the space to differentiate from 'added' which also matches
+        //25 add 15% = 32  //no need to add extra text to answer
+    }
+    else
+    //deduct %
+    if(/deduct /.test(wholeCalculationString)) {//need the space to diff from 'deducted' which also matches
+        //25 deduct 15% = 32  //no need to add extra text to answer
+    }
+    else           
+    //%change
+    if(/from/.test(wholeCalculationString)) {
+    //eg from25 to 35 = 70  need to add extra text to answer
+    //, becomes from 25 to 35 = 70% (increase)
+        if(Number(passedInAnswerString) == 0) {
+            stringToReturn =  passedInAnswerString + ("% (no change)")
+        }
+        else
+            if(Number(passedInAnswerString) > 0) {
+                stringToReturn =  passedInAnswerString + "% (increase)"
+            }
+            else
+                if(Number(passedInAnswerString) < 0) {
+                    stringToReturn =  passedInAnswerString +  "% (decrease)"
+                }
+    }
+    else                   
+    //after added %
+    if(/added /.test(wholeCalculationString)) {
+        //e.g is 20 after added 20% = 17
+        //becomes is 20 after added 20% = originally was 17
+        stringToReturn = 'originally was '+ passedInAnswerString
+    }
+    else
+    //after deducted %
+    if(/deducted /.test(wholeCalculationString)) {
+        //e.g is 20 after deducted 20% = 22
+        //becomes is 20 after deducted 20% = originally was 22
+        stringToReturn = 'originally was '+ passedInAnswerString
+    }    
+    else
+    //if%is
+    if(/then/.test(wholeCalculationString)) {
+        //e.g if 20% is 150 then 35% = 250
+        //no need to add any extra text
+    }
+    
+
+                        
+
+    //return the modified passedinstring
+    // console.log('AT ADDEXTRADETAILS TO ANSER; STRING TO RETURN IS: ', stringToReturn)
+    return stringToReturn
+                 
 }
