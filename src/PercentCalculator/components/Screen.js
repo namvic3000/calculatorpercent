@@ -40,17 +40,20 @@ class Screen extends Component {
     //do this first before inserting thousands separators which would error
     screenLiveAnswerLine = helpers.truncateDecimalPlacesOfString(screenLiveAnswerLine) 
 
-    //insert thousands separators, for display to screen only, 
-    //dont alter the segments array[].stingvalue which created the screenMainTextLine1.
-    screenMainTextLine1 = helpers.insertThousandsSeparatorsForWholeCalculation(segmentsArray)
-    screenLiveAnswerLine = helpers.insertThousandsSeparatorsForOneSingleNumberString(screenLiveAnswerLine)
 
-
+    ////MUST ADD EXTRA DETAILS BEFORE ADDING SEPARATORS. WONT WORK IF HAVE
+    //SEPARATORS IN THE STRING TO PASS TO ADDEXTRADETAILS
     ///add extra details
     //now add the extra text details to the result, e.g '% change' 
     // , result is e.g 255 , we add %sign and 'increase' in, becomes 255% (increase)
     //this method requires answer string, and whole calculation tring
     screenLiveAnswerLine = helpers.addExtraDetailsTextToAnswer(screenLiveAnswerLine, helpers.collateStringsIntoOneString(segmentsArray))
+
+    //insert thousands separators, for display to screen only, 
+    //dont alter the segments array[].stingvalue which created the screenMainTextLine1.
+    screenMainTextLine1 = helpers.insertThousandsSeparatorsForWholeCalculation(segmentsArray)
+    screenLiveAnswerLine = helpers.insertThousandsSeparatorsForOneSingleNumberString(screenLiveAnswerLine)
+
 
 
 

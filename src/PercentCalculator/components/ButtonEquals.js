@@ -58,17 +58,23 @@ class ButtonEquals extends React.Component {
         //dont insert thousand separators because this is the reeal string, not 
         //user mirror string for user to see only
         
+
+
+        ////MUST ADD EXTRA DETAILS BEFORE ADDING SEPARATORS. WONT WORK IF HAVE
+        //SEPARATORS IN THE STRING TO PASS TO ADDEXTRADETAILS
+        ///add extra details
+        //now add the extra text details to the result, e.g '% change' 
+        // , result is e.g 255 , we add %sign and 'increase' in, becomes 255% (increase)
+        //this method requires answer string, and whole calculation tring
+        answer = helpers.addExtraDetailsTextToAnswer(answer, helpers.collateStringsIntoOneString(segmentsArray))
+
+
         //add thousand separators
         answer = helpers.insertThousandsSeparatorsForOneSingleNumberString(answer)
 
         //add extra details, e.g 'originally was' or '%' to the answer
         // answer = helpers.addExtraDetailsTextToAnswer(answer, helpers.collateStringsIntoOneString(segmentsArray))
         
-        ///add extra details
-        //now add the extra text details to the result, e.g '% change' 
-        // , result is e.g 255 , we add %sign and 'increase' in, becomes 255% (increase)
-        //this method requires answer string, and whole calculation tring
-        answer = helpers.addExtraDetailsTextToAnswer(answer, helpers.collateStringsIntoOneString(segmentsArray))
 
 
         //add whole answer with extra details e.g 'origiallly was' 
@@ -92,8 +98,18 @@ class ButtonEquals extends React.Component {
         }
         
 
+        //before saving array to tape, add separators for each segment
+
+        //get a copy so wont point to and alter the original array
+        let tempArr = JSON.parse(JSON.stringify(segmentsArray))
+
+        //add separators to each segment, before savving to tape
+        for(let i = 0; i <= tempArr.length - 2; i++) {//dont do the last segment which is the answer
+            tempArr[i].stringValue = helpers.insertThousandsSeparatorsForOneSingleNumberString(tempArr[i].stringValue)
+        }
+         
         //save the finished calculation, ie the segmentsarray to the Tape
-        this.props.dispatch(addRecordToTape(segmentsArray))
+        this.props.dispatch(addRecordToTape(tempArr))
 
 
 

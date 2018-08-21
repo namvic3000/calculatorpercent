@@ -39,6 +39,71 @@ class ButtonArithmetic extends React.Component {
 
 
 
+
+
+
+
+        //if previous calculation has been completed, and the answer has been
+        //presented
+        //check for '=' sign to tell if answer been presented
+        
+        if(/\=/.test(segmentsArray[currentSegmentIndex].stringValue)) {
+            // console.log('******THERE IS = SIGN IN CURRENT SEGMENT, SO WILLL CLEARALL')
+            
+            //extract the number out of the answer, which is in current segment
+            let tempStr = segmentsArray[currentSegmentIndex].stringValue
+            console.log('AT ARITH AFTER ANSWER, BEFORE REMOVAL OF ALPHAS AND SEPARATORS, CURRENTSEGMETSTIRNG IS: ',tempStr)
+
+            //since answer segment has separators and extra details added, 
+            //need to remove the alphas and separators
+            tempStr = tempStr.replace(/[a-z]|\,|\)|\(|\=/ig,'')
+            //these dont work in regex, so find them as a string 
+            tempStr = tempStr.replace('%', '')
+            tempStr = tempStr.replace('\n', '')
+            tempStr = tempStr.replace(' ', '')
+            // tempStr = tempStr.replace(/[^(0-9|\-)]/ig,'')
+
+            console.log('AT ARITH AFTER ANSWER, AFTER REMOVAL OF ALPHAS AND SEPARATORS, CURRENTSEGMETSTIRNG IS: ',tempStr)
+ 
+            //reset
+            segmentsArray = []
+            currentSegmentIndex = 0
+
+            //add previous answer to first segment
+            segmentsArray[0] = {}//create empty object
+            segmentsArray[0].stringValue = tempStr
+            
+            //reset for each calculation
+            timeMachineArrayOfSegmentsArraySnapShots = []//
+            //take a snapshot ready for backspace action
+             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
+           
+             //collate stirng from all segments ready to send to reducer for update 
+            let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
+            let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+            let screenMidScreenMessage = ''
+            
+            //update store
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+            
+            // return //dont process below code
+            
+        }
+
+
+
+
+
+
+
+
         //clear any trailing decimal point if exist, every time press on 
         //arith operator or percent operator or close bracket
         helpers.cleanUpAllTrailingDeciPoints(segmentsArray)
