@@ -203,7 +203,7 @@ class ButtonMemRecall extends React.Component {
                         //add in new numeral, and add back in '%]' chars
                         let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-2)//everything except the '%]' 2 chars
                         //append key value and reinsert the )
-                        tempStr = buttonValue + '%]'
+                        tempStr = tempStr + buttonValue + '%]'
                         //copy back to real string
                         segmentsArray[currentSegmentIndex].stringValue = tempStr
                     }
@@ -221,7 +221,7 @@ class ButtonMemRecall extends React.Component {
                         //add number before the % sign
                         tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last % char
                         //append key value and reinsert the )
-                        tempStr = buttonValue + '%'
+                        tempStr = tempStr + buttonValue + '%'
                         //copy back to real string
                         segmentsArray[currentSegmentIndex].stringValue = tempStr
                     }

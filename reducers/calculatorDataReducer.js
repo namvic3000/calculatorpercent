@@ -3,7 +3,7 @@ import { UPDATE_CALCULATOR_DATA } from "../actions/calculatorDataActions";
 let initialState = {
     screenMainTextLine1: "",
     screenLiveAnswerLine: "",
-    screenMidScreenMessage: "",
+    screenMidScreenMessage: "Ready",
     segmentsArray: [],
     currentSegmentIndex: 0,
     timeMachineArrayOfSegmentsArraySnapShots: []

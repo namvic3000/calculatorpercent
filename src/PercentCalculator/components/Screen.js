@@ -9,6 +9,14 @@ import * as helpers from '../helpers.js'
 
 class Screen extends Component {
  
+
+  // componentWillMount = () => {
+  //   this.testMessage = 'TEST MSG'
+  //   setTimeout(() => {
+  //     this.testMessage = ""
+  //   }, 1000);
+  // }
+  
   
   
   render() {
@@ -138,29 +146,46 @@ class Screen extends Component {
       // midScreenMsgContainer: {
 
       // }
-      midScreenMsgStyle: {
+      midScreenMsgContainer: {
+        flex: 1,
         height: "100%",
         position: "absolute",
         top: 0,
         left: 0,
-        textAlign: "center",
+        // textAlign: "center",
+        justifyContent: "center",
         alignItems: "center",
-        lineHeight: this.calculatorScreenHeight,
+
+        // lineHeight: this.calculatorScreenHeight,
         width: "100%",
         backgroundColor: "transparent",
-        color: "blue",
-        fontSize: fontSizeOfScreenMainLine1
+        // color: "black",
+        // fontSize: fontSizeOfScreenMainLine1
+      },
+      midScreenMessageText: {
+        fontSize: fontSizeOfScreenMainLine1,
+        color: "black"
       }
     })
 
 
 
 
+
     return(
-      <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
+      
+      // <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
+      //   <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
+      //   <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
+      //   <Text style={styles.midScreenMsgContainer}>{screenMidScreenMessage}</Text>
+      //   // <Text style={styles.midScreenMsgContainer}>{this.testMessage}</Text>
+      // </View>
+      <View style={styles.screen}>
         <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
-        <Text style={styles.midScreenMsgStyle}>{this.creenMidScreenMessage}</Text>
+        <View style={styles.midScreenMsgContainer}>
+            <Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text>
+        </View>
       </View>
     )
   }
