@@ -38,11 +38,12 @@ class Button0To9 extends React.Component {
 
             //segmentsarray and timemachinearray  already created at 
             //reducer initial state
-
+            segmentsArray = []
             segmentsArray[0] = {}//create empty object
             segmentsArray[0].stringValue = buttonValue
             currentSegmentIndex = 0
             //take a snapshot and return
+            timeMachineArrayOfSegmentsArraySnapShots = []//reset for new calculation
             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
             
              //collate stirng from all segments     

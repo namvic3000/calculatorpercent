@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import  {updateMemoryData} from "../../../actions/memoryActions"
 import * as helpers from "../helpers"
 import {MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT} from '../config'
+import { updateCalculatorData } from "../../../actions/calculatorDataActions";
 
 
 
@@ -11,8 +12,7 @@ import {MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT} from '../config'
 
 
 
-
-class ButtonMemPlus extends React.Component {
+class ButtonMemRecall extends React.Component {
 
  
     handleCalcButtonClicked = () => {
@@ -23,6 +23,40 @@ class ButtonMemPlus extends React.Component {
         
         //ignore key if screen is empty, alert user to enter a number first
         if(emptyScreenMainLine) {
+            
+            //segmentsarray and timemachinearray  already created at 
+            //reducer initial state
+
+            //get memory value of active box
+            let memContent;
+            if(this.props.currentActiveMemory === 1) {
+                memContent = this.props.memory1Value
+            }
+            else {//mem2
+                memContent = this.props.memory2Value
+            }
+
+            segmentsArray[0] = {}//create empty object
+            segmentsArray[0].stringValue = memContent
+            currentSegmentIndex = 0
+            //take a snapshot and return
+            timeMachineArrayOfSegmentsArraySnapShots = []//reset for new calculation
+            timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
+            
+             //collate stirng from all segments     
+            let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
+            let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+            let screenMidScreenMessage = ''
+            
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+            
             return//dont process below code
         }
                 
@@ -170,7 +204,7 @@ class ButtonMemPlus extends React.Component {
         
                 return(
                     <TouchableOpacity style={styles.container} onPress={this.handleCalcButtonClicked}>
-                        <Text style={styles.buttonText}>M+</Text>
+                        <Text style={styles.buttonText}>MR</Text>
                     </TouchableOpacity>
                 )
             }
@@ -190,4 +224,4 @@ const mapStateToProps = (state) => ({
 
 
 
-export default connect(mapStateToProps)(ButtonMemPlus)
+export default connect(mapStateToProps)(ButtonMemRecall)

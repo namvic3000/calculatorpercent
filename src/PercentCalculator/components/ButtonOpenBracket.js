@@ -33,17 +33,16 @@ class ButtonOpenBracket extends React.Component {
 
 
         
-        //ok if user presses  decipoint key when screen is empty
+        //ok if user presses  open bracket key when screen is empty
         if(emptyScreenMainLineFlag) {
+
+            segmentsArray = []
             segmentsArray[0] = {}//create empty object
             segmentsArray[0].stringValue = '('
                  
+            timeMachineArrayOfSegmentsArraySnapShots = []//reset for new calculation            
+            timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
             
-            //save to timemachine
-            if(allowToTakeSnapShotOfState) {
-                //take a snapshot and return
-                timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
-            }
             
             //collate stirng from all segments and update store
             let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)

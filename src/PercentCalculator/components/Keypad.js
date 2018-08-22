@@ -22,8 +22,7 @@ import ButtonThen from './ButtonThen';
 import MemoryValuesTextBoxesPanel from './MemoryValuesTextBoxesPanel';
 import ButtonMemPlus from './ButtonMemPlus';
 import ButtonMemClear from './ButtonMemClear';
-// import ButtonMemRecall from './ButtonMemRecall';
-// import ButtonMemClear from './ButtonMemClear';
+import ButtonMemRecall from './ButtonMemRecall';
 
 
 
@@ -194,16 +193,12 @@ class Keypad extends React.Component {
         return(
             <View style={styles.wholeKeypadContainer}>
                 <MemoryValuesTextBoxesPanel />
-                 
-
                 <View style={styles.percentButtonsRowContainer}>
                     <ButtonOpenBracket />
                     <ButtonCloseBracket />
                     <ButtonMemPlus />
                     <ButtonMemClear/>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("mr")}}>
-                        <Text style={styles.memoryButtonText}>MR</Text>
-                    </TouchableOpacity>
+                    <ButtonMemRecall/>
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
@@ -252,8 +247,6 @@ class Keypad extends React.Component {
                         <Button0To9 buttonValue="0" />
                         <ButtonDeciPoint />
                         <ButtonArithmetic buttonValue="+" />
-
-
                         {
                             /if/.test(this.props.screenMainTextLine1)&& (!/then/.test(this.props.screenMainTextLine1)) ? (
                                 <ButtonThen />

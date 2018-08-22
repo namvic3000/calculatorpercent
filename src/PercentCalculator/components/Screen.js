@@ -9,7 +9,8 @@ import * as helpers from '../helpers.js'
 
 class Screen extends Component {
 
-
+ 
+  
   render() {
 
 
@@ -147,17 +148,19 @@ class Screen extends Component {
         lineHeight: this.calculatorScreenHeight,
         width: "100%",
         backgroundColor: "transparent",
-        color: "black",
+        color: "blue",
         fontSize: fontSizeOfScreenMainLine1
       }
     })
+
+
 
 
     return(
       <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
         <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
-        <Text style={styles.midScreenMsg}>{screenMidScreenMessage}</Text>
+        <Text style={styles.midScreenMsg}>{this.props.screenMidScreenMessage}</Text>
       </View>
     )
   }

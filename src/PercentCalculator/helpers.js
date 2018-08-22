@@ -1,4 +1,4 @@
-import { MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT } from "./settings";
+import { MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT } from "./config";
 
 
 export const collateStringsIntoOneString = (arr) => {//arr is array of objects

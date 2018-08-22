@@ -34,14 +34,13 @@ class ButtonDeciPoint extends React.Component {
 
         //ok if user presses  decipoint key when screen is empty
         if(emptyScreenMainLineFlag) {
+            segmentsArray = [] //new calculation
             segmentsArray[0] = {}//create empty object
             segmentsArray[0].stringValue = '0.'
 
-            //save to timemachine
-            if(allowToTakeSnapShotOfState) {
-                //take a snapshot and return
-                timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
-            }
+            timeMachineArrayOfSegmentsArraySnapShots = []//reset for new calculation
+            timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
+            
             
             //collate stirng from all segments and update store
             let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
