@@ -19,6 +19,11 @@ import ButtonAfterDeductedPercent from './ButtonAfterDeductedPercent';
 import ButtonIfPercentIs from './ButtonIfPercentIs';
 import ButtonEquals from './ButtonEquals';
 import ButtonThen from './ButtonThen';
+import MemoryValuesTextBoxesPanel from './MemoryValuesTextBoxesPanel';
+import ButtonMemPlus from './ButtonMemPlus';
+import ButtonMemClear from './ButtonMemClear';
+// import ButtonMemRecall from './ButtonMemRecall';
+// import ButtonMemClear from './ButtonMemClear';
 
 
 
@@ -188,99 +193,35 @@ class Keypad extends React.Component {
 
         return(
             <View style={styles.wholeKeypadContainer}>
-
-                <View style={styles.allMemoriesContainer}>
-                    <View style={styles.memory1Container}>
-                        {/* <Text style={styles.memTitle}>Mem1</Text> */}
-                        <Text style={styles.memoryContentText}> 222278.7777</Text>
-                    </View>
-                    <View style={styles.memory2Container}>
-                        <Text style={styles.memoryContentText}> 77778888.8888</Text>
-                    </View>
-                </View>
+                <MemoryValuesTextBoxesPanel />
+                 
 
                 <View style={styles.percentButtonsRowContainer}>
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("(")}}>
-                        <Text style={styles.percentButtonText}>(</Text>
-                    </TouchableOpacity> */}
                     <ButtonOpenBracket />
-
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked(")")}}>
-                        <Text style={styles.percentButtonText}>)</Text>
-                    </TouchableOpacity> */}
                     <ButtonCloseBracket />
-
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("m+")}}>
-                        <Text style={styles.memoryButtonText}>M+</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("mc")}}>
-                        <Text style={styles.memoryButtonText}>MC</Text>
-                    </TouchableOpacity>
+                    <ButtonMemPlus />
+                    <ButtonMemClear/>
                     <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("mr")}}>
                         <Text style={styles.memoryButtonText}>MR</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("out of")}}>
-                        <Text style={styles.percentButtonText}>out of</Text>
-                    </TouchableOpacity> */}
                     <ButtonOutOf />
-
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after added %")}}>
-                        <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>added</Text></View>
-                    </TouchableOpacity> */}
                     <ButtonAfterAddedPercent />
-                   
-
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("after deducted %")}}>
-                        <View><Text style={styles.afterPercentAddedButtonText}>after %</Text><Text style={styles.afterPercentAddedButtonText}>deducted</Text></View>
-                    </TouchableOpacity> */}
                     <ButtonAfterDeductedPercent />
-
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("if % is")}}>
-                        <Text style={styles.percentButtonText}>if % is</Text>
-                    </TouchableOpacity> */}
                     <ButtonIfPercentIs />
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("% of")}}>
-                        <Text style={styles.percentButtonText}>% of</Text>
-                    </TouchableOpacity> */}
                     <ButtonPercentOf />
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("add %")}}>
-                        <Text style={styles.percentButtonText}>add %</Text>
-                    </TouchableOpacity> */}
                     <ButtonAddPercent />
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("deduct %")}}>
-                        <Text style={styles.percentButtonText}>deduct %</Text>
-                    </TouchableOpacity> */}
                     <ButtonDeductPercent />
-
-                    {/* <TouchableOpacity style={styles.percentButtonContainer} onPress={()=> {this.handleCalcButtonClicked("% change")}}>
-                        <Text style={styles.percentButtonText}>% change</Text>
-                    </TouchableOpacity> */}
                     <ButtonPercentChange />
                 </View>
 
                 <View style={styles.standardButtonRowContainer}>
                 {/* doesnt work onLayout={e => this.standardButtonHeight = e.nativeEvent.layout.height} */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("7")}}>
-                            <Text style={styles.calcButtonText}>7</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("8")}}>
-                            <Text style={styles.calcButtonText}>8</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("9")}}>
-                            <Text style={styles.calcButtonText}>9</Text>
-                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("÷")}}>
-                            <Text style={styles.calcButtonTextArithOperators}>÷</Text>
-                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("«")}}>
-                            <Text style={styles.calcButtonTextForBackArrow}>«</Text>
-                        </TouchableOpacity> */}
                         <Button0To9 buttonValue="7" />
                         <Button0To9 buttonValue="8" />
                         <Button0To9 buttonValue="9" />
@@ -289,21 +230,6 @@ class Keypad extends React.Component {
                 </View>
 
                 <View style={styles.standardButtonRowContainer}>
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("4")}}>
-                            <Text style={styles.calcButtonText}>4</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("5")}}>
-                            <Text style={styles.calcButtonText}>5</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("6")}}>
-                            <Text style={styles.calcButtonText}>6</Text>
-                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("x")}}>
-                            <Text style={styles.calcButtonTextMultiplyOperator}>x</Text>
-                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("ca")}}>
-                            <Text style={styles.calcButtonTextForCA}>CA</Text>
-                        </TouchableOpacity> */}
                         <Button0To9 buttonValue="4" />
                         <Button0To9 buttonValue="5" />
                         <Button0To9 buttonValue="6" />
@@ -312,18 +238,6 @@ class Keypad extends React.Component {
                 </View>
                     
                 <View style={styles.standardButtonRowContainer}>
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={ () => {this.handleCalcButtonClicked("1")}}>
-                            <Text style={styles.calcButtonText} >1</Text> 
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} value={2} onPress={ () => {this.handleCalcButtonClicked("2")}}>
-                            <Text style={styles.calcButtonText}>2</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.standardButtonContainer} value={3} onPress={ () => {this.handleCalcButtonClicked("3")}}>
-                            <Text style={styles.calcButtonText}>3</Text>
-                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("-")}}>
-                            <Text style={styles.calcButtonTextSubtractOperator}>-</Text>
-                        </TouchableOpacity> */}
                         <Button0To9 buttonValue="1" />
                         <Button0To9 buttonValue="2" />
                         <Button0To9 buttonValue="3" />
@@ -334,20 +248,6 @@ class Keypad extends React.Component {
                 </View>
                 
                 <View style={styles.standardButtonRowContainer}>
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("+-")}}>
-                            <Text style={styles.calcButtonText}>+-</Text>
-                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("0")}}>
-                            <Text style={styles.calcButtonText}>0</Text>
-                        </TouchableOpacity> */}
-                       
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} 
-                                            onPress={()=> {this.handleCalcButtonClicked(".")}}>
-                                            <Text style={styles.calcButtonText}>.</Text>
-                                        </TouchableOpacity> */}
-                        {/* <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => {this.handleCalcButtonClicked("+")}}>
-                            <Text style={styles.calcButtonTextArithOperators}>+</Text>
-                        </TouchableOpacity> */}
                         <ButtonNegSign />
                         <Button0To9 buttonValue="0" />
                         <ButtonDeciPoint />
@@ -356,34 +256,14 @@ class Keypad extends React.Component {
 
                         {
                             /if/.test(this.props.screenMainTextLine1)&& (!/then/.test(this.props.screenMainTextLine1)) ? (
-                                // <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("then")}}>
-                                //     <Text style={styles.calcButtonText}>then</Text>
-                                // </TouchableOpacity>
                                 <ButtonThen />
                             )
                             : (
-                                // <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("=")}}>
-                                //     <Text style={styles.calcButtonTextForBackArrow}>=</Text>
-                                // </TouchableOpacity>
                                 <ButtonEquals />
                             )
                         }
                 </View>
 
-                {/* <View style={styles.buttonSmallRowContainer}>
-                        <TouchableOpacity style={styles.buttonSmallContainer} onPress={()=> {this.handleCalcButtonClicked("skin}")}>
-                            <Text style={styles.buttonSmallText}>Skin</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonSmallContainer} onPress={()=> {this.handleCalcButtonClicked("abou}t")}>
-                            <Text style={styles.buttonSmallText}>About</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonSmallContainer} onPress={()=> {this.handleCalcButtonClicked("tape}")}>
-                            <Text style={styles.buttonSmallText}>Tape</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonSmallContainer} onPress={()=> {this.handleCalcButtonClicked("adde}r")}>
-                            <Text style={styles.buttonSmallText}>Adder</Text>
-                        </TouchableOpacity>
-                </View> */}
             </View>
         )
     }

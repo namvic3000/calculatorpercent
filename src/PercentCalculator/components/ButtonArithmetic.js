@@ -98,7 +98,7 @@ class ButtonArithmetic extends React.Component {
 
 
 
-        
+
 
         //clear any trailing decimal point if exist, every time press on 
         //arith operator or percent operator or close bracket

@@ -13,7 +13,7 @@ let initialState = {
 }
 
 
-export const tapeReducer = (state = initialState, action) => {
+const tapeReducer = (state = initialState, action) => {
 
     switch(action.type) {
         case ADD_RECORD_TO_TAPE: 
@@ -57,3 +57,6 @@ export const tapeReducer = (state = initialState, action) => {
 
     }
 }
+
+
+export default tapeReducer

@@ -1,3 +1,4 @@
+import { MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT } from "./settings";
 
 
 export const collateStringsIntoOneString = (arr) => {//arr is array of objects
@@ -190,8 +191,8 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             }
 
             //error check the result of the percent calculation
-            if((Number(contentOfSquareBrackets) > 1000000000000000) ||
-                (Number(contentOfSquareBrackets)< -100000000000000)){//-100tr TO 1000 trillion
+            if((Number(contentOfSquareBrackets) > MAX_NUMBER_LIMIT) ||
+                (Number(contentOfSquareBrackets)< MIN_NUMBER_LIMIT)){//-100tr TO 1000 trillion
                 return 'Result Outside Range'
             }
             else 
@@ -242,8 +243,8 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
 
             //error check the result of the percent calculation
-            if((Number(wholeString) > 1000000000000000) ||
-                (Number(wholeString)< -100000000000000)){//-100tr TO 1000 trillion
+            if((Number(wholeString) > MAX_NUMBER_LIMIT) ||
+                (Number(wholeString)< MIN_NUMBER_LIMIT)){//-100tr TO 1000 trillion
                 return 'Result Outside Range'
             }
             else 
@@ -340,8 +341,8 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
     resultToReturn = eval(wholeString)
 
     //error check the result of the percent calculation
-    if((Number(resultToReturn) > 1000000000000000) ||
-            (Number(resultToReturn)< -100000000000000)){//-100tr TO 1000 trillion
+    if((Number(resultToReturn) > MAX_NUMBER_LIMIT) ||
+            (Number(resultToReturn)< MIN_NUMBER_LIMIT)){//-100tr TO 1000 trillion
         return 'Result Outside Range'
     }
     else 
@@ -857,7 +858,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
 
 export const truncateDecimalPlacesOfString = (passedInString) => {
     
-    // console.log('AT TRUNCATE DECPOINTS: PASSEDINSTRING IS: ' + passedInString)
+    console.log('AT TRUNCATE DECPOINTS: PASSEDINSTRING IS: ' + passedInString)
 
     //if empty stirng return it, coz if process below, toFix would insert 
     //0.000000 into an empty string, ie "".toFix(6) would give 0.000000
@@ -897,12 +898,16 @@ export const truncateDecimalPlacesOfString = (passedInString) => {
     if(floatValue <= 0.05 && floatValue >= -0.05) {
         stringToReturn = floatValue.toFixed(5)
     }
-    else {
-        stringToReturn = floatValue.toFixed(2)
-    }
+    else 
+        if(floatValue <= 10000000000000) {//10tr
+            stringToReturn = floatValue.toFixed(2)
+        }
+        else {//>10tr
+            stringToReturn = floatValue.toFixed(0)
+        }
 
 
-    // console.log('TRUNCATE DECIOINTS: STRINGTO RETURN IS: ' + stringToReturn)
+    console.log('TRUNCATE DECIOINTS: STRINGTO RETURN IS: ' + stringToReturn)
 
 
     return stringToReturn
