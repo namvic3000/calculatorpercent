@@ -196,9 +196,9 @@ class Keypad extends React.Component {
                 <View style={styles.percentButtonsRowContainer}>
                     <ButtonOpenBracket />
                     <ButtonCloseBracket />
-                    <ButtonMemPlus />
                     <ButtonMemClear/>
                     <ButtonMemRecall/>
+                    <ButtonMemPlus />
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>

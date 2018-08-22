@@ -8,8 +8,8 @@ import * as helpers from '../helpers.js'
 
 
 class Screen extends Component {
-
  
+  
   
   render() {
 
@@ -138,7 +138,7 @@ class Screen extends Component {
       // midScreenMsgContainer: {
 
       // }
-      midScreenMsg: {
+      midScreenMsgStyle: {
         height: "100%",
         position: "absolute",
         top: 0,
@@ -160,7 +160,7 @@ class Screen extends Component {
       <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
         <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
-        <Text style={styles.midScreenMsg}>{this.props.screenMidScreenMessage}</Text>
+        <Text style={styles.midScreenMsgStyle}>{this.creenMidScreenMessage}</Text>
       </View>
     )
   }

@@ -304,6 +304,9 @@ class Button0To9 extends React.Component {
 
         }//if has prior open [ square bracket
 
+
+
+        
         //save to timemachine
         if(allowToTakeSnapShotOfState) {
             //take a snapshot and return
