@@ -81,7 +81,7 @@ class ButtonOpenBracket extends React.Component {
             segmentsArray[0] = {}//create empty object
             segmentsArray[0].stringValue = "("
             
-            //reset for each calculation
+            //reset for each new calculation
             timeMachineArrayOfSegmentsArraySnapShots = []//
             //take a snapshot ready for backspace action
              timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)

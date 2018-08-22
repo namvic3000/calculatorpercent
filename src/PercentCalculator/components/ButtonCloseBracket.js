@@ -42,6 +42,21 @@ class ButtonCloseBracket extends React.Component {
  
 
 
+        //if previous calculation has been completed, and the answer has been
+        //presented
+        //check for '=' sign to tell if answer been presented
+        
+        if(/\=/.test(segmentsArray[currentSegmentIndex].stringValue)) {
+            // console.log('******THERE IS = SIGN IN CURRENT SEGMENT, SO WILLL CLEARALL')
+             
+            //if annswer been presented, and close bracket  pressed, no action
+            
+            return //dont process below code
+            
+        }
+
+
+
 
         //clear any trailing decimal point if exist, every time press on 
         //arith operator or percent operator or close bracket

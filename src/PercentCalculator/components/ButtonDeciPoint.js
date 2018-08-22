@@ -63,6 +63,51 @@ class ButtonDeciPoint extends React.Component {
  
 
 
+
+
+        //if previous calculation has been completed, and the answer has been
+        //presented
+        //check for '=' sign to tell if answer been presented
+        
+        if(/\=/.test(segmentsArray[currentSegmentIndex].stringValue)) {
+            // console.log('******THERE IS = SIGN IN CURRENT SEGMENT, SO WILLL CLEARALL')
+            
+            //reset
+            segmentsArray = []
+            currentSegmentIndex = 0
+
+            //add input to segment
+            segmentsArray[0] = {}//create empty object
+            segmentsArray[0].stringValue = '0.'
+            
+            //reset for each calculation
+            timeMachineArrayOfSegmentsArraySnapShots = []//
+            //take a snapshot ready for backspace action
+             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
+           
+             //collate stirng from all segments ready to send to reducer for update 
+            let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
+            let screenLiveAnswerLine = helpers.calculateResultOfWholeCalculation(screenMainTextLine1) 
+            let screenMidScreenMessage = ''
+            
+            //update store
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+            
+            return //dont process below code
+            
+        }
+
+
+
+
+
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
         let currentSegmentString = segmentsArray[currentSegmentIndex].stringValue
         

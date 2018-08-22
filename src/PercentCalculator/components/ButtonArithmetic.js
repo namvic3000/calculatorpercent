@@ -40,8 +40,7 @@ class ButtonArithmetic extends React.Component {
 
 
 
-
-
+        
 
         //if previous calculation has been completed, and the answer has been
         //presented
@@ -52,19 +51,22 @@ class ButtonArithmetic extends React.Component {
             
             //extract the number out of the answer, which is in current segment
             let tempStr = segmentsArray[currentSegmentIndex].stringValue
-            console.log('AT ARITH AFTER ANSWER, BEFORE REMOVAL OF ALPHAS AND SEPARATORS, CURRENTSEGMETSTIRNG IS: ',tempStr)
 
             //since answer segment has separators and extra details added, 
             //need to remove the alphas and separators
             tempStr = tempStr.replace(/[a-z]|\,|\)|\(|\=/ig,'')
-            //these dont work in regex, so find them as a string 
+            //these % and \n dont work in regex, so find them as a string 
             tempStr = tempStr.replace('%', '')
             tempStr = tempStr.replace('\n', '')
-            tempStr = tempStr.replace(' ', '')
-            // tempStr = tempStr.replace(/[^(0-9|\-)]/ig,'')
+            //remove &nbsp; also
+            tempStr = tempStr.replace('\u00A0','')
+            //rmove white spae if any
+            tempStr = tempStr.replace('\s', '')
+            
+            //rmove all spaces if any
+            tempStr = tempStr.replace(/[ ]+/, '')
+            
 
-            console.log('AT ARITH AFTER ANSWER, AFTER REMOVAL OF ALPHAS AND SEPARATORS, CURRENTSEGMETSTIRNG IS: ',tempStr)
- 
             //reset
             segmentsArray = []
             currentSegmentIndex = 0
@@ -92,17 +94,11 @@ class ButtonArithmetic extends React.Component {
                 currentSegmentIndex, 
                 timeMachineArrayOfSegmentsArraySnapShots
             ))
-            
-            // return //dont process below code
-            
         }
 
 
 
-
-
-
-
+        
 
         //clear any trailing decimal point if exist, every time press on 
         //arith operator or percent operator or close bracket
