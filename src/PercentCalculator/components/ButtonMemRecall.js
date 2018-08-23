@@ -17,6 +17,8 @@ class ButtonMemRecall extends React.Component {
  
     handleCalcButtonClicked = () => {
         
+
+        
         // console.log('AT BUTTON0-9: BUTTON PRESSED IS:' + buttonValue)
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
         
@@ -25,8 +27,7 @@ class ButtonMemRecall extends React.Component {
         // console.log('AT BUTTON0-9: SEGMENTS ARRY, INDEX, AND TIMEMACHINEARRAY GOT ARE:',segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots)
 
         let allowToTakeSnapShotOfState = true
-
-
+ 
 
         //get memory value of active box
         let memContent;
@@ -40,7 +41,7 @@ class ButtonMemRecall extends React.Component {
 
         //if mem content is empty, and memrecall pressed, no action
         if(/empty/.test(memContent)) {
-            console.log('MEMCONTENT IS EMPTY, NO ACTION')
+            alert('memory is empty')
             return
         }
 
@@ -49,7 +50,10 @@ class ButtonMemRecall extends React.Component {
 
         //make the mem content the button value, treat as if entered via
         //keypad buttons
-        let buttonValue = memContent
+        //MAKE THE BUTTONVALUE THE MEMORY CONTENT, TREAT AS SAME.
+        //THIS LOGIC IS FROM THE 0-9BUTTON
+
+        let buttonValue = memContent  
 
         
         if(emptyScreenMainLineFlag) {
@@ -102,7 +106,7 @@ class ButtonMemRecall extends React.Component {
             //reset for each calculation
             timeMachineArrayOfSegmentsArraySnapShots = []//
             //take a snapshot ready for backspace action
-             timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
+            timeMachineArrayOfSegmentsArraySnapShots = helpers.takeASnapShotOfCurrentCalculationState(segmentsArray, timeMachineArrayOfSegmentsArraySnapShots)
            
              //collate stirng from all segments ready to send to reducer for update 
             let screenMainTextLine1 = helpers.collateStringsIntoOneString(segmentsArray)
@@ -166,13 +170,13 @@ class ButtonMemRecall extends React.Component {
         if(currentSegmentIsANumberFlag) {
             // console.log('AT PROCESS0-9KEYS, GOT TO CURENTSEGMENTIS A NUMBER')
 
-            //check for input lengh
-            let overLimit = helpers.checkNumberLengthOfUserInput(segmentsArray[currentSegmentIndex].stringValue)
-            if(overLimit) {
-                //return as is, no change, ignnore user input
-                //collate stirng from all segments, to return     
-                return
-            }
+            // //check for input lengh
+            // let overLimit = helpers.checkNumberLengthOfUserInput(segmentsArray[currentSegmentIndex].stringValue)
+            // if(overLimit) {
+            //     //return as is, no change, ignnore user input
+            //     //collate stirng from all segments, to return     
+            //     return
+            // }
 
 
 
@@ -194,7 +198,7 @@ class ButtonMemRecall extends React.Component {
                 allowToTakeSnapShotOfState = false
 
             }
-            else 
+            else //no close round bracket
                 if(currentSegmentHasCloseSquareBracketFlag) {
                     //if has percent sign, add input before the percent sign
                     // //get the string, minus the last char whichis the  bracket
@@ -202,56 +206,90 @@ class ButtonMemRecall extends React.Component {
                         //e.g 2 x [23 add 23%] into 2 x [23 add 235%], need to remove both %] chars
                         //add in new numeral, and add back in '%]' chars
                         let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-2)//everything except the '%]' 2 chars
+                        
+                        //if there is existing numbers, e.g 35%], 
+                        //we want to replace the existing number with the recalled
+                        //number. so we remove all the existing numbers, and leave
+                        //any existing chars as is , so 35%] would slice off the %] and
+                        //now we remove the 35 to be replaced with recalled number
+                        let numbersRemoved = tempStr.replace(/[0-9]|\-|\./g,'')
+
                         //append key value and reinsert the )
-                        tempStr = tempStr + buttonValue + '%]'
+                        tempStr = numbersRemoved + buttonValue + '%]'
                         //copy back to real string
                         segmentsArray[currentSegmentIndex].stringValue = tempStr
                     }
-                    else {//no % sign, just ] bracket only, 1 char
+                    else {//no % sign, just close square ] bracket only, 1 char
+                        
                         let tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last char
+                        
+                        //remove the numerals because we want to replace them,
+                        //not append to them
+                        let numbersRemoved = tempStr.replace(/[0-9]|\-|\./g,'')
+                        
                         //append key value and reinsert the )
-                        tempStr = tempStr + buttonValue + ']'
+                        tempStr = numbersRemoved + buttonValue + ']'
                         //copy back to real string
                         segmentsArray[currentSegmentIndex].stringValue = tempStr
                     }
                 
                 }
-                else
+                else//no close round bracket, no close square bracket
                     if(hasPriorOpenSquareBracketFlag && (!currentSegmentHasCloseSquareBracketFlag) && hasPercentSignFlag){
-                        //add number before the % sign
+                        
+                        //has prior open round bracket, no close square bracket, has %sign,
+                        //e.g 2 X (7 x [25%   , no close round bracket, open round bracket in diff segment
+                        //cant be 25%) becuase if has close ) round brackket,, would have returned earlier 
+                        
+                        //we add number before the % sign
+                       
+                        //slice, leave out the %sign
                         tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last % char
-                        //append key value and reinsert the )
-                        tempStr = tempStr + buttonValue + '%'
+                        
+                        //remove the numerals because we want to replace them,
+                        //not append to them
+                        let numbersRemoved = tempStr.replace(/[0-9]|\-|\./g,'')
+                        
+                        //append recalled value and reinsert the %
+                        tempStr = numbersRemoved + buttonValue + '%'
                         //copy back to real string
                         segmentsArray[currentSegmentIndex].stringValue = tempStr
                     }
                     else
                         if((!hasPriorOpenSquareBracketFlag) && (!currentSegmentHasCloseSquareBracketFlag)&&(hasPercentSignFlag)) {
+                            //no close square brackket, no close round bracket,
+                            //no prior open square bracket
+                            //has %sign in current segment
+
                             //if has no open and close square bracket, and has % sign, then insert before the %sign
                             //add number before the % sign
                             tempStr = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)//everything except the last % char
+                            
+                            //remove the numerals because we want to replace them,
+                            //not append to them
+                            let numbersRemoved = tempStr.replace(/[0-9]|\-|\./g,'')
+                            
                             //append key value and reinsert the )
-                            tempStr = buttonValue + '%'
+                            tempStr = numbersRemoved + buttonValue + '%'
+                            
                             //copy back to real string
                             segmentsArray[currentSegmentIndex].stringValue = tempStr
                         }
                         else {//no square brackt, either has open bracket, or no brackets, append the numaeral key value string
-                            //need to prevent cases of 0005 (0005 etc... so look at last numeral,
-                            //if it is a 0 without a decipoint, 0. is ok, 0 will be replaced if it is the
-                            //first numeral
+                            console.log('##########################################GOT TO HERE PT 101')                            
+                             
+                            //no open or close brackets of round or square, /
+                            //no %sign
 
-                            //if current segment has 1 numeral, and it is a 0, and no dedipoint, then remove it before
-                            //adding this numeral input
-                            let currentSegmentString = segmentsArray[currentSegmentIndex].stringValue
-                            if( ((currentSegmentString.match(/[0-9]/) || []).length ===1) //len of 1 numeral
-                                    && ( currentSegmentString[currentSegmentString.search(/[0-9]/)] === '0')//first numeral is a '0'
-                                    && ( ! /\./.test(segmentsArray[currentSegmentIndex].stringValue)) ) {//no decipoint present
-                                //remove the leading 0, no decipoint present
-                                segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.slice(0,-1)
-                            }
-
+                            let tempStr = segmentsArray[currentSegmentIndex].stringValue
+                            
+                            //remove the existing numerals because we want to replace them,
+                            //not append to them
+                            let numbersRemoved = tempStr.replace(/[0-9]|\-|\./g,'')
                             //add the input 
-                            segmentsArray[currentSegmentIndex].stringValue = buttonValue
+                            tempStr = numbersRemoved + buttonValue
+
+                            segmentsArray[currentSegmentIndex].stringValue = tempStr
                         }
 
         }
@@ -285,9 +323,11 @@ class ButtonMemRecall extends React.Component {
             //incomplete, therefore nettvalue of () is not 0.
             let tempStr = helpers.collateStringsIntoOneString(segmentsArray)
             let indexOfOpenSquareBracket = tempStr.search(/\[/)
+            
             if(indexOfOpenSquareBracket === -1) {
                 indexOfOpenSquareBracket = 0
             }
+
             let nettValueOfParenthesis = helpers.getParenthesesNetValueFromString(tempStr.slice(indexOfOpenSquareBracket))
             // console.log('NETVALUE OF PARANTHESIS IS ' + nettValueOfParenthesis)
             if(nettValueOfParenthesis === 0) {
@@ -345,7 +385,8 @@ class ButtonMemRecall extends React.Component {
              timeMachineArrayOfSegmentsArraySnapShots
          ))
 
-
+ 
+        
  
     }//handlecalcbuttonclick
 

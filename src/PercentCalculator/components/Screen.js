@@ -8,15 +8,6 @@ import * as helpers from '../helpers.js'
 
 
 class Screen extends Component {
- 
-
-  // componentWillMount = () => {
-  //   this.testMessage = 'TEST MSG'
-  //   setTimeout(() => {
-  //     this.testMessage = ""
-  //   }, 1000);
-  // }
-  
   
   
   render() {
@@ -111,12 +102,11 @@ class Screen extends Component {
         width: "100%",
         paddingLeft: this.calculatorScreenHeight/25,//defined in <view></view>
         paddingRight: this.calculatorScreenHeight/27,
-        paddingBottom: 0,//-this.calculatorScreenHeight/40,
-        paddingTop: 0//this.calculatorScreenHeight/18,
+        paddingBottom: 0,
+        paddingTop: 0
       },
       screenMainTextLine1Style: {
         display: "flex",
-        // flexDirection: "row",
         flex:1, 
         width: "100%",
         marginTop: fontSizeOfScreenMainLine1/6,
@@ -126,8 +116,6 @@ class Screen extends Component {
         backgroundColor: "white",
         textAlign: "left",
         flexWrap: "wrap"
-        
-        // height: "25%",
       },
       screenLiveAnswerLineStyle: {
         position: "absolute",
@@ -149,18 +137,13 @@ class Screen extends Component {
       midScreenMsgContainer: {
         flex: 1,
         height: "100%",
+        width: "100%",
         position: "absolute",
         top: 0,
         left: 0,
-        // textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
-
-        // lineHeight: this.calculatorScreenHeight,
-        width: "100%",
-        backgroundColor: "transparent",
-        // color: "black",
-        // fontSize: fontSizeOfScreenMainLine1
+        backgroundColor: "transparent"
       },
       midScreenMessageText: {
         fontSize: fontSizeOfScreenMainLine1,
@@ -173,13 +156,6 @@ class Screen extends Component {
 
 
     return(
-      
-      // <View style={styles.screen} onLayout={ e => {this.calculatorScreenHeight = e.nativeEvent.layout.height}}>
-      //   <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
-      //   <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
-      //   <Text style={styles.midScreenMsgContainer}>{screenMidScreenMessage}</Text>
-      //   // <Text style={styles.midScreenMsgContainer}>{this.testMessage}</Text>
-      // </View>
       <View style={styles.screen}>
         <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>

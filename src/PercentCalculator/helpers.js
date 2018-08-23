@@ -23,6 +23,10 @@ export const collateStringsIntoOneString = (arr) => {//arr is array of objects
 
  
 
+
+
+
+
 export const getParenthesesNetValueFromString = (passedInString) => {
 
     console.log('AT GETPARENTHESIS NETTVALUE, PASSED IN STRING IS '  + passedInString)
@@ -46,6 +50,11 @@ export const getParenthesesNetValueFromString = (passedInString) => {
     return nettValue
 }
  
+
+
+
+
+
 
 
 
@@ -193,7 +202,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             //error check the result of the percent calculation
             if((Number(contentOfSquareBrackets) > MAX_NUMBER_LIMIT) ||
                 (Number(contentOfSquareBrackets)< MIN_NUMBER_LIMIT)){//-100tr TO 1000 trillion
-                return 'Result Outside Range'
+                return 'result outside range'
             }
             else 
                 if((Number(contentOfSquareBrackets) > 0) && (Number(contentOfSquareBrackets) < 0.0001) ) {
@@ -245,7 +254,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             //error check the result of the percent calculation
             if((Number(wholeString) > MAX_NUMBER_LIMIT) ||
                 (Number(wholeString)< MIN_NUMBER_LIMIT)){//-100tr TO 1000 trillion
-                return 'Result Outside Range'
+                return 'result outside range'
             }
             else 
                 if((Number(wholeString) > 0) && (Number(wholeString) < 0.0001) ) {
@@ -343,7 +352,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
     //error check the result of the percent calculation
     if((Number(resultToReturn) > MAX_NUMBER_LIMIT) ||
             (Number(resultToReturn)< MIN_NUMBER_LIMIT)){//-100tr TO 1000 trillion
-        return 'Result Outside Range'
+        return 'result outside range'
     }
     else 
         if((Number(resultToReturn) > 0) && (Number(resultToReturn) < 0.0001) ) {
@@ -590,12 +599,12 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
         }
         else 
         if( (Number(operand1ValueString) == 0)) {
-            return 'Invalid Expression'
+            return 'invalid expression'
         }
         else 
             if( (Number(operand1ValueString) > 0) && (Number(operand2ValueString) >=100)) {
                 //if operand2 is 100 or more %, invalid
-                return 'Error: Must Be Less Than 100%'
+                return 'error: Must Be Less Than 100%'
             }
             else {
                 let factor = 1 - (Number(operand2ValueString)/100)
