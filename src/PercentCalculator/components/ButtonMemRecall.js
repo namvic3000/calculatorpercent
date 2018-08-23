@@ -276,7 +276,6 @@ class ButtonMemRecall extends React.Component {
                             segmentsArray[currentSegmentIndex].stringValue = tempStr
                         }
                         else {//no square brackt, either has open bracket, or no brackets, append the numaeral key value string
-                            console.log('##########################################GOT TO HERE PT 101')                            
                              
                             //no open or close brackets of round or square, /
                             //no %sign
