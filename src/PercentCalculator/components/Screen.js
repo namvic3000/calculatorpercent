@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {StyleSheet,View, Text, Dimensions} from 'react-native'
 import { connect } from "react-redux";
 import * as helpers from '../helpers.js'
+import IconOfTape  from "./IconOfTape";
 
 
 
@@ -13,7 +14,8 @@ class Screen extends Component {
   render() {
 
 
-    let {segmentsArray, screenMainTextLine1, screenLiveAnswerLine, screenMidScreenMessage} = this.props
+    let {segmentsArray, currentSegmentIndex, screenMainTextLine1, 
+        screenLiveAnswerLine, screenMidScreenMessage} = this.props
     
     
 
@@ -148,6 +150,24 @@ class Screen extends Component {
       midScreenMessageText: {
         fontSize: fontSizeOfScreenMainLine1,
         color: "black"
+      },
+      iconsContainer: {
+        flex: 1,
+        flexDirection: "row",
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        backgroundColor: "transparent",
+        paddingLeft: 10,
+        paddingRight: 10
+      },
+      iconsText: {
+        fontSize: fontSizeOfScreenMainLine1*0.5,
+        color: "gray"
       }
     })
 
@@ -161,6 +181,10 @@ class Screen extends Component {
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
         <View style={styles.midScreenMsgContainer}>
             <Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text>
+        </View>
+        
+        <View style={styles.iconsContainer}>
+          <IconOfTape/>
         </View>
       </View>
     )
