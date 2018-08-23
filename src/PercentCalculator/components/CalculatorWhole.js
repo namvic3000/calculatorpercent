@@ -2,8 +2,8 @@ import React from 'react'
 import {View, StyleSheet, Platform, NativeModules} from 'react-native'
 import Screen from './Screen'
 import Keypad from './Keypad'
-
-
+import Tape from "./Tape";
+import ButtonSmallsPanel from "./ButtonSmallsPanel";
 
 
 
@@ -23,6 +23,9 @@ class CalculatorWhole extends React.Component {
             },
             wholeKeypadSectionContainer: {
                 flex: 3
+            },
+            buttonSmallsRowContainer: {
+                flex: 0.3
             }
         })
 
@@ -36,10 +39,15 @@ class CalculatorWhole extends React.Component {
                     <Screen />
                 </View>
 
-                {/* keypad includes the 2 memorycontents text views */}
                 <View style={styles.wholeKeypadSectionContainer}>
                     <Keypad />
                 </View>
+
+                <View style={styles.buttonSmallsRowContainer}>
+                    <ButtonSmallsPanel />
+                </View>
+
+                <Tape/>
             </View>
 
             

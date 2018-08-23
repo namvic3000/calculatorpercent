@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet , Dimensions, ScrollView} from 'react-native'
-
-
+import {connect} from "react-redux";
+import {updateShowTapeStatus}  from "../../../actions/tapeActions";
 
 
 
@@ -9,6 +9,7 @@ class IconOfTape extends React.Component {
 
     handleClick = () => {
 
+        this.props.dispatch(updateShowTapeStatus( ! this.props.showTapeStatus))
 
     }
     render() {
@@ -47,5 +48,11 @@ class IconOfTape extends React.Component {
 
 
 
-export default IconOfTape
+
+const mapStateToProps = (state) => ({
+    showTapeStatus: state.tape.showTapeStatus
+})
+
+
+export default connect(mapStateToProps)(IconOfTape)
 

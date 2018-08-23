@@ -1,4 +1,5 @@
-import { ADD_RECORD_TO_TAPE, REMOVE_RECORD_FROM_TAPE } from "../actions/tapeActions";
+import { ADD_RECORD_TO_TAPE, REMOVE_RECORD_FROM_TAPE,
+            UPDATE_SHOW_TAPE_STATUS } from "../actions/tapeActions";
 
 
 //  data structure of this reducer's state is  = [
@@ -9,7 +10,8 @@ import { ADD_RECORD_TO_TAPE, REMOVE_RECORD_FROM_TAPE } from "../actions/tapeActi
 
 
 let initialState = {
-    arrayOfRecords: [] //array of objects with an array
+    arrayOfRecords: [], //array of objects with an array
+    showTapeStatus: false 
 }
 
 
@@ -52,6 +54,17 @@ const tapeReducer = (state = initialState, action) => {
                 arrayOfRecords: updatedArrayOfRecords
             }
 
+
+            
+
+        case UPDATE_SHOW_TAPE_STATUS: 
+            
+            return {
+                ...state,
+                showTapeStatus: action.payload.status
+            }
+            
+            
 
         default: return state
 

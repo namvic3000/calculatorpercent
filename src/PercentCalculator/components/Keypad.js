@@ -23,7 +23,7 @@ import MemoryValuesTextBoxesPanel from './MemoryValuesTextBoxesPanel';
 import ButtonMemPlus from './ButtonMemPlus';
 import ButtonMemClear from './ButtonMemClear';
 import ButtonMemRecall from './ButtonMemRecall';
-
+import ButtonSmallsPanel from './ButtonSmallsPanel'
 
 
 
@@ -186,6 +186,9 @@ class Keypad extends React.Component {
                 color: "white",
                 lineHeight: fontSizeOfStandardButton*0.7,
             },
+            buttonSmallsRowContainer: {
+                
+            }
         })
 
 
