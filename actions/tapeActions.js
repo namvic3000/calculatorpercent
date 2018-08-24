@@ -4,11 +4,11 @@ export const UPDATE_SHOW_TAPE_STATUS = 'UPDATE_SHOW_TAPE_STATUS'
 
 
 
-export const addRecordToTape = (oneSegmentsArray) => ({
+export const addRecordToTape = (oneWholeCalculationString) => ({
 
     type: ADD_RECORD_TO_TAPE,
     payload: {
-        oneSegmentsArray
+        oneWholeCalculationString
     }
 })
 

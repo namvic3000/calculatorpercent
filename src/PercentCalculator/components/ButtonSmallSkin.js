@@ -27,17 +27,19 @@ const mapStateToProps = (state) => ({
     showTapeStatus: state.tape.showTapeStatus
 })
 
-export default connect(mapStateToProps)(ButtonSmallSkin)
-
-
 
 
 let styles = StyleSheet.create({
     button: {
-        backgroundColor: 'green',
         flex: 1,
+        backgroundColor: 'green',
         justifyContent: 'center',
         alignItems: 'center'
     }
     
 })
+
+export default connect(mapStateToProps)(ButtonSmallSkin)
+
+
+

@@ -125,8 +125,8 @@ class ButtonEquals extends React.Component {
             tempArr[i].stringValue = helpers.insertThousandsSeparatorsForOneSingleNumberString(tempArr[i].stringValue)
         }
          
-        //save the finished calculation, ie the segmentsarray to the Tape
-        this.props.dispatch(addRecordToTape(tempArr))
+        //save the finished calculation, ie the whole calculation stirng to the Tape
+        this.props.dispatch(addRecordToTape(helpers.collateStringsIntoOneString(segmentsArray)))
 
 
 

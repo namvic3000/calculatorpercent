@@ -3,64 +3,58 @@ import { Text, View, StyleSheet , Dimensions, TouchableOpacity, ScrollView, Butt
 import uuid from 'uuid/v4'
 import { connect  } from "react-redux";
 import  * as helpers from "../helpers";
-import {updateShowTapeStatus} from "../../../actions/tapeActions";
+import {updateShowTapeStatus, removeRecordFromTape} from "../../../actions/tapeActions";
 
 
 class Tape extends Component {
+ 
+    
 
+    deleteOneCalculation = (index) => {
 
-    handleClick = () => {
-        alert('clicked')
+        //delete the record from the history array
+        this.props.dispatch(removeRecordFromTape(index))
 
     }
 
-    closeTape = () => {
 
-        this.props.dispatch(updateShowTapeStatus(false))
-    }
+
 
 
 
     render() {
 
         let {arrayOfRecords, showTapeStatus} = this.props
-
-        let arrayOfCompleteCalculationStrings = arrayOfRecords.map( segmentsArray => {
-            return helpers.collateStringsIntoOneString(segmentsArray)
-        })
-        console.log('####################################AT TAPE: ARRAY OF HISTORY RECORDS, ARRAY IS ', arrayOfRecords)
-        console.log('####################################AT TAPE: ARRAY OF HISTORY RECORDS, ARRAY OF HISTORY STRING IS ', arrayOfCompleteCalculationStrings)
-        console.log('####################################AT TAPE: ARRAY OF HISTORY RECORDS, TAPE STATUS IS ', showTapeStatus)
-
-
+ 
         return(
                 showTapeStatus ? (
+                    // <View style={styles.scrollView}>
                     <ScrollView style={styles.scrollView}>
                     {
-                        arrayOfCompleteCalculationStrings.map( (string, index) => (
+                        arrayOfRecords.map( (string, index) => (
                             <View key={index} style={styles.oneSegmentContainer}>
-                                <View><Text style={styles.calculationText} key={uuid()}>{string}</Text></View>
-                                <Button style={styles.deleteButton} title="delete"/>
+                                <View style={styles.calculationTextContainer}><Text style={styles.calculationText}>{string}</Text></View>
+                                <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}><Text style={styles.deleteButtonText}>Delete</Text></TouchableOpacity>
                             </View>))
                         
                     }
-                    <TouchableOpacity onPress={this.closeTape} style={styles.closeButton}><Text>Close</Text></TouchableOpacity>
                     </ScrollView>
+                    
                 ): (
                     null
                 )
         )
 
         
-
+        //OR THIS, SAFER, IF ABOVE DOESNT WORK, TRICONDITIONAL NOT RELIABLE IN REACTNATIVE
         // if(showTapeStatus) {
         //     return(
         //         <ScrollView style={styles.scrollView}>
         //         {
-        //             arrayOfCompleteCalculationStrings.map( (string, index) => (
+        //             arrayOfRecords.map( (string, index) => (
         //                 <View key={index} style={styles.oneSegmentContainer}>
-        //                     <View><Text style={styles.calculationText} key={uuid()}>{string}</Text></View>
-        //                     <Button style={styles.deleteButton} title="delete"/>
+        //                     <View><Text style={styles.calculationTextContainer} key={uuid()}>{string}</Text></View>
+        //                     <Button style={styles.deleteButtonContainer} title="delete"/>
         //                 </View>))
                     
         //         }
@@ -88,34 +82,58 @@ let styles = StyleSheet.create({
     scrollView: {
         position: "absolute",
         flex: 1,
-        backgroundColor: "orange",
+        backgroundColor: "lightyellow",
         width: "100%",
-        height: "100%"
+        height: "93%",
+        top: 0,
+        // paddingTop: Dimensions.get('window').height/25,
     },
     oneSegmentContainer: {
-
         flexDirection: "row",
-        // height: "8%",
-        backgroundColor: "yellow",
-        marginBottom: 3
+        backgroundColor: "white",
+        marginTop: '1%',
+        marginBottom: '1%',
+        marginLeft: '3%',
+        marginRight: '3%',
+        width: '95%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    calculationTextContainer: {
+        // width: "80%",
+        flex: 4,
+        backgroundColor: 'white',
+        padding: '1% 1%',
+        alignItems: 'flex-start',
+        justifyContent: 'center'
     },
     calculationText: {
-        width: "80%"
+        fontSize: 20
     },
-    deleteButton: {
-        backgroundColor: "red",
-        height: "50%",
-        width: "20%",
-        color: "red"
+    deleteButtonContainer: {
+        backgroundColor: "orange",
+        flex: 1,
+        height: 30,
     },
-    closeTape: {
-        alignItems: 'center',
+    deleteButtonText: {
+        lineHeight: 30,
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 16
+    },
+    deleteAllButtonContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '15%',
-        backgroundColor: 'red'
+        height: Dimensions.get('window').height/25,
+        color: 'white',
+        backgroundColor: 'red',
+        width: '100%'
+    },
+    deleteAllButtonText: {
+        textAlign: 'center',
+        lineHeight: Dimensions.get('window').height/25,
+        fontSize: Dimensions.get('window').height/33,
     }
 })
 

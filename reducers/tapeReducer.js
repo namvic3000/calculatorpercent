@@ -10,7 +10,7 @@ import { ADD_RECORD_TO_TAPE, REMOVE_RECORD_FROM_TAPE,
 
 
 let initialState = {
-    arrayOfRecords: [], //array of objects with an array
+    arrayOfRecords: [], //array of whhole calclation strings
     showTapeStatus: false 
 }
 
@@ -25,7 +25,7 @@ const tapeReducer = (state = initialState, action) => {
             let updatedArrayOfRecords = JSON.parse(JSON.stringify(state.arrayOfRecords))
             
 
-            let newRecord = action.payload.oneSegmentsArray
+            let newRecord = action.payload.oneWholeCalculationString
             
             //push new record onto state array
             updatedArrayOfRecords.push(newRecord)
