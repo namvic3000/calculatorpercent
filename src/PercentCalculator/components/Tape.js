@@ -81,11 +81,12 @@ class Tape extends Component {
 let styles = StyleSheet.create({
     scrollView: {
         position: "absolute",
-        flex: 1,
+        // flex: 1,
         backgroundColor: "lightyellow",
         width: "100%",
-        height: "93%",
+        height: "94%",
         top: 0,
+        paddingBottom: '30%'
         // paddingTop: Dimensions.get('window').height/25,
     },
     oneSegmentContainer: {
@@ -103,7 +104,7 @@ let styles = StyleSheet.create({
         // width: "80%",
         flex: 4,
         backgroundColor: 'white',
-        padding: '1% 1%',
+        padding: '2% 2%',
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
@@ -113,13 +114,13 @@ let styles = StyleSheet.create({
     deleteButtonContainer: {
         backgroundColor: "orange",
         flex: 1,
-        height: 30,
+        height: Dimensions.get('window').height*0.04,
     },
     deleteButtonText: {
-        lineHeight: 30,
+        lineHeight: Dimensions.get('window').height*0.04,
         textAlign: 'center',
         color: 'white',
-        fontSize: 16
+        fontSize: Dimensions.get('window').height*0.025,
     },
     deleteAllButtonContainer: {
         position: 'absolute',

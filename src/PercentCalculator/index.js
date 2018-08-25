@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
-import {Platform, StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, onLayout} from 'react-native';
+import {AsyncStorage,Platform, StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, onLayout} from 'react-native';
 import {connect} from 'react-redux'
 import CalculatorWhole from "./components/CalculatorWhole"
 
 
 class PercentCalculator extends Component {
  
+
   
   render() {
 
@@ -18,21 +19,7 @@ class PercentCalculator extends Component {
     // console.log('*****screenheight is' + this.calculatorScreenHeight)
     
 
-    const styles = StyleSheet.create({
-      pageContainer: {
-        flex: 1,
-        width: "100%",
-        backgroundColor: 'black',
-      },
-      keyboardAndScreenContainer: {
-          flex: 1,
-          backgroundColor: "blue",
-          width: "100%"
-      },
-    })
-    
-
- 
+  
 
     return (
       <View style={styles.pageContainer}>
@@ -47,6 +34,22 @@ class PercentCalculator extends Component {
 }
  
  
+
+
+
+const styles = StyleSheet.create({
+  pageContainer: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: 'black',
+  },
+  keyboardAndScreenContainer: {
+      flex: 1,
+      backgroundColor: "blue",
+      width: "100%"
+  },
+})
+
 
 
 

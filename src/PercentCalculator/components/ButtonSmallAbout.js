@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { Dimensions,View, Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import {updateShowTapeStatus} from '../../../actions/tapeActions'
 import { connect } from 'react-redux'
 
@@ -12,11 +12,26 @@ class ButtonSmallAbout extends Component {
 
     }
     
+
     
     render() {
 
+
+
+        // //get the correct styleing depending on state
+        // if(this.props.showTapeStatus){
+        //     styleToApply = styles.buttonActive
+        // }
+        // else {
+        //     styleToApply = styles.buttonInactive
+        // }
+        let styleToApply = styles.buttonInactive
+
+
         return (
-            <TouchableOpacity style={styles.button} onPress={this.handleClick}><Text>About</Text></TouchableOpacity>
+            <TouchableOpacity style={styleToApply} onPress={this.handleClick}>
+                <Text style={styles.buttonText}>About</Text>
+            </TouchableOpacity>
         )
     }
 }
@@ -34,13 +49,22 @@ export default connect(mapStateToProps)(ButtonSmallAbout)
 
 
 
+
 let styles = StyleSheet.create({
-    button: {
-        backgroundColor: 'green',
+    buttonInactive: {
+        backgroundColor: 'lightblue',
         flex: 1,
-        // height: '100%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    buttonActive: {
+        backgroundColor: 'lightyellow',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: 'black',
+        fontSize: Dimensions.get('window').width/16.5
     }
-    
 })

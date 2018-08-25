@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
+import { AsyncStorage,Button, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
@@ -18,7 +18,7 @@ class ButtonEquals extends React.Component {
         //the constructor function just to do this. weird.
         this.handleCalcButtonClicked = this.handleCalcButtonClicked.bind(this)
     }
-    
+
 
 
 
@@ -126,11 +126,10 @@ class ButtonEquals extends React.Component {
         }
          
         //save the finished calculation, ie the whole calculation stirng to the Tape
+        let wholeCalculationString = 
         this.props.dispatch(addRecordToTape(helpers.collateStringsIntoOneString(segmentsArray)))
 
-
-
-
+ 
         // //now add the extra 
         // answer = helpers.addExtraDetailsTextToAnswer(answer)
       
@@ -198,7 +197,8 @@ const mapStateToProps = (state) => ({
     screenLiveAnswerLine: state.calculatorStateData.screenLiveAnswerLine,
     segmentsArray: state.calculatorStateData.segmentsArray,
     currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
-    timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots
+    timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots,
+    arrayOfRecords: state.tape.arrayOfRecords
 })
 
 

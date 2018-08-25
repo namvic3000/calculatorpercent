@@ -68,7 +68,7 @@ class Screen extends Component {
     
     let fontSizeOfScreenMainLine1;//default
     ////////fontsize for mainline1
-    let allowedLengthBeforeShrinking = 75
+    let allowedLengthBeforeShrinking = 60
 
     let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
@@ -100,16 +100,20 @@ class Screen extends Component {
       screen: {
         flex: 1,
         flexWrap: "wrap",
-        backgroundColor: "yellow",
+        backgroundColor: "white",
         width: "100%",
-        paddingLeft: this.calculatorScreenHeight/25,//defined in <view></view>
-        paddingRight: this.calculatorScreenHeight/27,
+        paddingLeft: this.calculatorScreenHeight/22,//defined in <view></view>
+        paddingRight: this.calculatorScreenHeight/25,
         paddingBottom: 0,
         paddingTop: 0
       },
       screenMainTextLine1Style: {
         display: "flex",
         flex:1, 
+        paddingLeft: '2%',
+        paddingRight: '2%',
+        paddingTop: '1%',
+        paddingBottom: '1%',
         width: "100%",
         marginTop: fontSizeOfScreenMainLine1/6,
         fontSize: fontSizeOfScreenMainLine1,//32,
@@ -180,11 +184,7 @@ class Screen extends Component {
         <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
         <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
         <View style={styles.midScreenMsgContainer}>
-            <Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text>
-        </View>
-        
-        <View style={styles.iconsContainer}>
-          <IconOfTape/>
+          <Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text>
         </View>
       </View>
     )

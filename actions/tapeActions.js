@@ -1,6 +1,7 @@
 export const ADD_RECORD_TO_TAPE = 'ADD_RECORD_TO_TAPE'
 export const REMOVE_RECORD_FROM_TAPE = 'REMOVE_RECORD_FROM_TAPE'
 export const UPDATE_SHOW_TAPE_STATUS = 'UPDATE_SHOW_TAPE_STATUS'
+export const REPLACE_WHOLE_TAPE_DATA = 'REPLACE_WHOLE_TAPE_DATA'
 
 
 
@@ -32,5 +33,15 @@ export const updateShowTapeStatus = (status) => ({
     type: UPDATE_SHOW_TAPE_STATUS,
     payload: {
         status
+    }
+})
+
+
+
+
+export const replaceWholeTapeData = (newTapeArray) => ({
+    type: REPLACE_WHOLE_TAPE_DATA,
+    payload: {
+        newTapeArray
     }
 })

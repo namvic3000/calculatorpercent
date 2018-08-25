@@ -1,17 +1,44 @@
 import React from 'react'
-import {View, StyleSheet, Platform, NativeModules, Text, TouchableOpacity} from 'react-native'
+import {AsyncStorage,View, StyleSheet, Platform, NativeModules, Text, TouchableOpacity} from 'react-native'
 import Screen from './Screen'
 import Keypad from './Keypad'
 import Tape from "./Tape";
 import ButtonSmallsPanel from "./ButtonSmallsPanel";
 import { connect } from "react-redux"
-
+import { replaceWholeTapeData } from "../../../actions/tapeActions";
 
 class CalculatorWhole extends React.Component {
  
 
+
+    readTapeFromLocalStorage = async () => {
+
+        //input is array of strings
+        try {
+            let result = await AsyncStorage.getItem('storedTapeObject')
+            result = await JSON.parse(result)
+            // console.log('DATA GOT FROM LOCALSTORAGE IS  ', result)
+            return result
+        }
+        catch(error) {
+            console.log(error)
+        }
+    }
+
+
+
+
+
+
     render() {
 
+
+        //read stored data for tape from local storage
+        this.readTapeFromLocalStorage()
+        .then( result => {
+            // console.log('RESULT FROM READING IN LOCALSTROAGE IS : ', result)
+            this.props.dispatch(replaceWholeTapeData(result))
+        })
 
 
         //buttonsmallpanel and thin strip have diferent height, and cant 
@@ -20,11 +47,11 @@ class CalculatorWhole extends React.Component {
         let buttonSmallsPanelOrThinStripStyle;
         
         if(this.props.showButtonSmallsPanelStatus) {
-            console.log('***AT CALCULALTORWHOLE, STYLE IS FOR BUTTONSMALLSPANEL')
+            // console.log('***AT CALCULALTORWHOLE, STYLE IS FOR BUTTONSMALLSPANEL')
             buttonSmallsPanelOrThinStripStyle = styles.buttonSmallsPanelContainer
         }
         else {
-            console.log('***AT CALCULALTORWHOLE, STYLE IS FOR THIN STRIP')
+            // console.log('***AT CALCULALTORWHOLE, STYLE IS FOR THIN STRIP')
             buttonSmallsPanelOrThinStripStyle = styles.thinStripContainer
         }
 
@@ -61,7 +88,7 @@ class CalculatorWhole extends React.Component {
 let styles = StyleSheet.create({
     containerOfWholeCalculator: {
         flex: 1,
-        backgroundColor: "lightyellow"
+        backgroundColor: "white"
     },
     screenContainer: {
         flex: 1
@@ -75,7 +102,7 @@ let styles = StyleSheet.create({
         // height: '5%',
         width: '100%',
         // flex: 0.3,
-        height: '7%',
+        height: '6%',
         backgroundColor: 'transparent'
     },
     thinStripContainer: {
@@ -84,7 +111,7 @@ let styles = StyleSheet.create({
         // height:10,
         flex:0.1,
         width: '100%',
-        backgroundColor: 'green'
+        backgroundColor: 'blue'
     },
     tapeContainer: {
         position: 'absolute',

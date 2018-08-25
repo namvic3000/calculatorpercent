@@ -9,7 +9,6 @@ import store from '../store'
 class App extends Component {//<Props> {
  
  
-  
   render() {
 
     //status bar is enabled, so allow 20 for ios status bar, 
@@ -28,13 +27,11 @@ class App extends Component {//<Props> {
         width: "100%",
         height: STATUSBAR_HEIGHT + 2,
         color: "transparent",
-        backgroundColor: "pink"
+        backgroundColor: "transparent"
       }
     });
     
      
-
-
 
     return (
       
@@ -53,5 +50,6 @@ class App extends Component {//<Props> {
   }
 }
 
+ 
 
 export default App
