@@ -69,7 +69,7 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         height: '100%',
-        backgroundColor: 'lightgreen'
+        backgroundColor: 'lightblue'
     },
     // thinStrip: {
     //     backgroundColor: 'pink',

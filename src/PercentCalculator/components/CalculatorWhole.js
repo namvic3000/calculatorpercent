@@ -91,7 +91,7 @@ let styles = StyleSheet.create({
         backgroundColor: "white"
     },
     screenContainer: {
-        flex: 1
+        flex: 1.2
     },
     wholeKeypadSectionContainer: {
         flex: 3

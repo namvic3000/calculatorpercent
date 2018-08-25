@@ -68,7 +68,7 @@ class Screen extends Component {
     
     let fontSizeOfScreenMainLine1;//default
     ////////fontsize for mainline1
-    let allowedLengthBeforeShrinking = 60
+    let allowedLengthBeforeShrinking = 59
 
     let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
