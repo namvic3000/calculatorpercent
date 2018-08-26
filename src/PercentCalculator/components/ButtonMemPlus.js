@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import  {updateMemoryData} from "../../../actions/memoryActions"
 import * as helpers from "../helpers"
 import {MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT} from '../config'
+import { updateSkinData } from "../../../actions/skinDataActions"
+import { updateCalculatorData } from "../../../actions/calculatorDataActions"
 
 
 
@@ -17,6 +19,56 @@ class ButtonMemPlus extends React.Component {
  
     handleCalcButtonClicked = () => {
        
+
+
+        ////check if in skinn color selection mode, if so, indicate that
+        //that component to chage is keysSet1
+        if(this.props.skinData.skinSelectionModeActiveStatus) {
+            //component to chanage is keyset1
+
+            //leave everything same, except set keys to change to keysset1
+            //and showcolorpicker to true.
+            let dataObject = {
+                showColorPickerStatus: true,//show color picker now
+                skinSelectionModeActiveStatus: this.props.skinData.skinSelectionModeActiveStatus,
+                currentComponentSkinToBeChanged: 'memoryButtonsColor',
+                memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
+                percentButtonsColor: this.props.skinData.percentButtonsColor,
+                keysSet1Color: this.props.skinData.keysSet1Color,
+                keysSet2Color: this.props.skinData.keysSet2Color,
+                buttonSmallsColor: this.props.skinData.buttonSmallsColor
+            }
+
+            this.props.dispatch(updateSkinData(dataObject))
+
+
+            //show message to pick a color
+
+            //show 'select component to change' message
+            ///CLEARALL
+            //collate stirng from all segments     
+            let screenMainTextLine1 = ""
+            let screenLiveAnswerLine = ""
+            let screenMidScreenMessage = "set the color"
+            segmentsArray = []
+            currentSegmentIndex = 0
+            timeMachineArrayOfSegmentsArraySnapShots = []
+            //clearall
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+
+            return;//dont process below code
+        }
+
+
+
         let {segmentsArray, currentSegmentIndex} = this.props 
 
         let emptyScreenMainLine = (segmentsArray || []).length <= 0
@@ -155,7 +207,7 @@ class ButtonMemPlus extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 textAlign: "center",
-                backgroundColor: "gray",
+                backgroundColor: `${this.props.skinData.memoryButtonsColor}`,
                 borderWidth: 0,
                 borderColor: "black",
                 height: "100%",
@@ -184,7 +236,8 @@ const mapStateToProps = (state) => ({
     memory2Value: state.memory.memoryData.memory2Value,
     currentActiveMemory: state.memory.memoryData.currentActiveMemory,
     segmentsArray: state.calculatorStateData.segmentsArray,
-    currentSegmentIndex: state.calculatorStateData.currentSegmentIndex
+    currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
+    skinData: state.skinData
 })
 
 

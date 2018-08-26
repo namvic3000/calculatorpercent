@@ -3,6 +3,8 @@ import { View, Text , StyleSheet, Dimensions, TouchableOpacity} from 'react-nati
 import {connect} from 'react-redux'
 import  {updateMemoryData} from "../../../actions/memoryActions"
 import * as helpers from '../helpers'
+import {updateCalculatorData} from '../../../actions/calculatorDataActions'
+import {updateSkinData} from '../../../actions/skinDataActions'
 
 
 
@@ -10,6 +12,56 @@ import * as helpers from '../helpers'
 class MemoryValuesPanel extends React.Component {
 
     handleMemoryValuePress = memoryNumber => {
+
+
+        ////check if in skinn color selection mode, if so, indicate that
+        //that component to chage is keysSet1
+        if(this.props.skinData.skinSelectionModeActiveStatus) {
+            //component to chanage is keyset1
+
+            //leave everything same, except set keys to change to keysset1
+            //and showcolorpicker to true.
+            let dataObject = {
+                showColorPickerStatus: true,//show color picker now
+                skinSelectionModeActiveStatus: this.props.skinData.skinSelectionModeActiveStatus,
+                currentComponentSkinToBeChanged: 'memoryBoxesColor',
+                memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
+                percentButtonsColor: this.props.skinData.percentButtonsColor,
+                keysSet1Color: this.props.skinData.keysSet1Color,
+                keysSet2Color: this.props.skinData.keysSet2Color,
+                buttonSmallsColor: this.props.skinData.buttonSmallsColor
+            }
+
+            this.props.dispatch(updateSkinData(dataObject))
+
+
+            //show message to pick a color
+
+            //show 'select component to change' message
+            ///CLEARALL
+            //collate stirng from all segments     
+            let screenMainTextLine1 = ""
+            let screenLiveAnswerLine = ""
+            let screenMidScreenMessage = "set the color"
+            segmentsArray = []
+            currentSegmentIndex = 0
+            timeMachineArrayOfSegmentsArraySnapShots = []
+            //clearall
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+
+            return;//dont process below code
+        }
+
+
+
 
         console.log('MEMORY PRESSED, MEMORY NUMER: ' + memoryNumber)
 
@@ -62,7 +114,7 @@ class MemoryValuesPanel extends React.Component {
                 height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "darkgray",
+                backgroundColor: `${this.props.skinData.memoryBoxesColor}`,
                 borderWidth: 0,
             },
             memory2ValueContainer: {
@@ -72,27 +124,25 @@ class MemoryValuesPanel extends React.Component {
                 height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "darkgray",
+                backgroundColor: `${this.props.skinData.memoryBoxesColor}`,
                 borderWidth: 0,
                 borderColor: "black"
             },
             memory1ValueTextStyle: {
                 alignItems: "center",
                 fontSize: fontSizeOfMem1Value,
-                color: "blue",
                 backgroundColor: "transparent"
             },
             memory2ValueTextStyle: {
                 alignItems: "center",
                 fontSize: fontSizeOfMem2Value,
-                color: "blue",
                 backgroundColor: "transparent"
             },
             active: {
-                color: "green"
+                color: "white"
             },
             inActive: {
-                color: "gray"
+                color: "darkgray"
             }
         })
 
@@ -136,6 +186,7 @@ const mapStateToProps = (state) => ({
     memory1Value: state.memory.memoryData.memory1Value,
     memory2Value: state.memory.memoryData.memory2Value,
     currentActiveMemory: state.memory.memoryData.currentActiveMemory,
+    skinData: state.skinData
 })
 
 

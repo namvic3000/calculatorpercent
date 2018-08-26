@@ -4,13 +4,15 @@ import tapeReducer from './tapeReducer';
 import memoryDataReducer from "./memoryDataReducer";
 import buttonSmallsPanelReducer   from '../reducers/buttonSmallsPanelReducer'
 import skinDataReducer   from '../reducers/skinDataReducer'
+import aboutPageReducer from './aboutPageReducer';
 
 const rootReducer = combineReducers({
         calculatorStateData: calculatorDataReducer,
         tape: tapeReducer,
         memory: memoryDataReducer,
         buttonSmallsPanel: buttonSmallsPanelReducer,
-        skinData: skinDataReducer
+        skinData: skinDataReducer,
+        aboutPage: aboutPageReducer
 })
 
 

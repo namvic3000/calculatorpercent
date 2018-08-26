@@ -24,6 +24,56 @@ class ButtonDeciPoint extends React.Component {
 
     handleCalcButtonClicked = (buttonValue) => {
 
+
+
+        ////check if in skinn color selection mode, if so, indicate that
+        //that component to chage is keysSet1
+        if(this.props.skinData.skinSelectionModeActiveStatus) {
+            //component to chanage is keyset1
+
+            //leave everything same, except set keys to change to keysset1
+            //and showcolorpicker to true.
+            let dataObject = {
+                showColorPickerStatus: true,//show color picker now
+                skinSelectionModeActiveStatus: this.props.skinData.skinSelectionModeActiveStatus,
+                currentComponentSkinToBeChanged: 'keysSet1',
+                memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
+                percentButtonsColor: this.props.skinData.percentButtonsColor,
+                keysSet1Color: this.props.skinData.keysSet1Color,
+                keysSet2Color: this.props.skinData.keysSet2Color,
+                buttonSmallsColor: this.props.skinData.buttonSmallsColor
+            }
+
+            this.props.dispatch(updateSkinData(dataObject))
+
+
+            //show message to pick a color
+
+            //show 'select component to change' message
+            ///CLEARALL
+            //collate stirng from all segments     
+            let screenMainTextLine1 = ""
+            let screenLiveAnswerLine = ""
+            let screenMidScreenMessage = "set the color"
+            segmentsArray = []
+            currentSegmentIndex = 0
+            timeMachineArrayOfSegmentsArraySnapShots = []
+            //clearall
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+
+            return;//dont process below code
+        }
+
+
+
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
         
@@ -213,7 +263,7 @@ class ButtonDeciPoint extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'blue',
-                backgroundColor: "darkblue",//"rgb(250,250,255)",
+                backgroundColor: `${this.props.skinData.keysSet1Color}`,//"rgb(250,250,255)",
                 borderWidth: 0,
                 height: "100%",
             },
@@ -242,7 +292,8 @@ class ButtonDeciPoint extends React.Component {
 const mapStateToProps = (state) => ({
     segmentsArray: state.calculatorStateData.segmentsArray,
     currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
-    timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots
+    timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots,
+    skinData: state.skinData
 })
 
 

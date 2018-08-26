@@ -7,6 +7,7 @@ import ColorPickerTool from "./ColorPickerTool";
 import ButtonSmallsPanel from "./ButtonSmallsPanel";
 import { connect } from "react-redux"
 import { replaceWholeTapeData } from "../../../actions/tapeActions";
+import { updateSkinData } from "../../../actions/skinDataActions";
 
 
 
@@ -33,6 +34,20 @@ class CalculatorWhole extends React.Component {
 
  
 
+    readSkinDataFromLocalStorage = async () => {
+
+        try {
+            let result = await AsyncStorage.getItem('skinData')
+            result = await JSON.parse(result)
+            console.log('SKIN DATA READ FROM LOCAL STORAGE IS ', result )
+            return result
+        }
+        catch(error) {
+            console.log(error)
+        }
+
+    }
+
 
     render() {
 
@@ -44,6 +59,12 @@ class CalculatorWhole extends React.Component {
             this.props.dispatch(replaceWholeTapeData(result))
         })
 
+
+        //read in saved skin data
+        await this.readSkinDataFromLocalStorage()
+        .then( resultObject => {
+            this.props.dispatch(updateSkinData(resultObject))
+        })
 
         //buttonsmallpanel and thin strip have diferent height, and cant 
         //make heigt 'auto', so need to manually change height of container

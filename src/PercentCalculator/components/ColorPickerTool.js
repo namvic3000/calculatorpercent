@@ -1,9 +1,9 @@
 import React from 'react'
-import {AsyncStorage,View, StyleSheet, Platform, NativeModules, Text, TouchableOpacity} from 'react-native'
+import {AsyncStorage,View, Dimensions, Button, StyleSheet, Platform, NativeModules, Text, TouchableOpacity} from 'react-native'
 import { connect } from "react-redux"
-import {ColorPicker, fromHsv} from "react-native-color-picker"
-
-
+import {TriangleColorPicker, fromHsv} from "react-native-color-picker"
+import { updateSkinData } from "../../../actions/skinDataActions";
+import { updateCalculatorData } from "../../../actions/calculatorDataActions";
 
 
 
@@ -15,11 +15,124 @@ class ColorPickerTool extends React.Component {
 
 
 
-    colorPicked = color => {
+    colorPicked = hsvColor => {
 
-        let hexColor = fromHsv(color)
-        console.log('color picked is ' + hexColor)
+        let selectedHexColorFromColorPicker = fromHsv(hsvColor)
+
+        //get all fields original values, leave as is
+        let showColorPickerStatus = this.props.skinData.showColorPickerStatus
+        let skinSelectionModeActiveStatus = this.props.skinData.skinSelectionModeActiveStatus
+        let currentComponentSkinToBeChanged = this.props.skinData.currentComponentSkinToBeChanged
+        let memoryBoxesColor = this.props.skinData.memoryBoxesColor
+        let memoryButtonsColor = this.props.skinData.memoryButtonsColor
+        let percentButtonsColor = this.props.skinData.percentButtonsColor
+        let keysSet1Color = this.props.skinData.keysSet1Color
+        let keysSet2Color = this.props.skinData.keysSet2Color
+        let buttonSmallsColor = this.props.skinData.buttonSmallsColor
+
+        //nnow change the selected component's color
+        switch(this.props.skinData.currentComponentSkinToBeChanged) {
+            
+            case 'memoryBoxesColor':
+                memoryBoxesColor = selectedHexColorFromColorPicker
+                break
+
+            case 'memoryButtonsColor':
+                memoryButtonsColor = selectedHexColorFromColorPicker
+                break
+
+            case 'percentButtonsColor': 
+                percentButtonsColor = selectedHexColorFromColorPicker
+                break
+
+            case 'keysSet1': 
+                keysSet1Color = selectedHexColorFromColorPicker
+                break 
+
+            case 'keysSet2': 
+                keysSet2Color = selectedHexColorFromColorPicker
+                break 
+            
+            case 'buttonSmallsColor':
+                buttonSmallsColor = selectedHexColorFromColorPicker
+                break
+
+            default: break 
+            
+        }
+
+
+
+        //now update store to affect change
+        //leave everything same, except change skincolor of the selected componennt
+        let dataObject = {
+            showColorPickerStatus,
+            skinSelectionModeActiveStatus,
+            currentComponentSkinToBeChanged,
+            memoryBoxesColor,
+            memoryButtonsColor,
+            percentButtonsColor,
+            keysSet1Color,
+            keysSet2Color,
+            buttonSmallsColor,
+        }
+
+        this.props.dispatch(updateSkinData(dataObject))
+
+
+
+
     }
+
+
+
+
+    
+
+    dismissColorPicker = () => {
+
+        //set status to false to dimiss color picker
+        
+            //leave everything same, except change skinseletionactivestatus to false
+            let dataObject = {
+                showColorPickerStatus: false,
+                skinSelectionModeActiveStatus: this.props.skinData.skinSelectionModeActiveStatus,
+                currentComponentSkinToBeChanged: this.props.skinData.currentComponentSkinToBeChanged,
+                memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
+                percentButtonsColor: this.props.skinData.percentButtonsColor,
+                keysSet1Color: this.props.skinData.keysSet1Color,
+                keysSet2Color: this.props.skinData.keysSet2Color,
+                buttonSmallsColor: this.props.skinData.buttonSmallsColor
+            }
+
+            this.props.dispatch(updateSkinData(dataObject))
+
+
+            //change message back to 'select a section '
+
+            //show 'select component to change' message
+            ///CLEARALL
+            //collate stirng from all segments     
+            let screenMainTextLine1 = ""
+            let screenLiveAnswerLine = ""
+            let screenMidScreenMessage = "select a section"
+            segmentsArray = []
+            currentSegmentIndex = 0
+            timeMachineArrayOfSegmentsArraySnapShots = []
+            //clearall
+            this.props.dispatch(updateCalculatorData(
+                screenMainTextLine1,
+                screenLiveAnswerLine,
+                screenMidScreenMessage,
+                segmentsArray, 
+                currentSegmentIndex, 
+                timeMachineArrayOfSegmentsArraySnapShots
+            ))
+
+    }
+
+
 
 
 
@@ -31,13 +144,16 @@ class ColorPickerTool extends React.Component {
 
 
         return(
-                this.props.showColorPickerStatus ? (
+                this.props.skinData.showColorPickerStatus ? (
                     <View style={styles.colorPickerOuterMostContainer}>
 
                     <View style={styles.colorPickerContainer}>
-                        <ColorPicker style={styles.colorPicker} 
+                        <TriangleColorPicker style={styles.colorPicker} 
                                 onColorChange={color => { this.colorPicked(color) }}
                                 hideSliders={true}/>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={this.dismissColorPicker}>
+                            <Text style={styles.buttonText}>Done</Text>
+                        </TouchableOpacity>
                     </View>
                     </View>
                 ): (
@@ -62,25 +178,40 @@ let styles = StyleSheet.create({
     },
     colorPickerContainer: {
         // position: 'absolute',
-        height: '40%',
+        height: '50%',
         width: '60%',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        backgroundColor: 'transparent' //'rgba(20,30,50,0.3)'
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        padding: '5%'
     },
     colorPicker: {
         height: '100%',
         width: '100%',
+    },
+    buttonContainer: {
+        backgroundColor: 'green',
+        width: '40%',
+        height: Dimensions.get('window').height*0.04,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '10%'
+    },
+    buttonText: {
+        // textAlign: 'center', NO NEED IF CONTAINER HAS CENTERED IT
+        // lineHeight: Dimensions.get('window').height*0.04,
+        fontSize: Dimensions.get('window').height*0.03,
+        color: 'white'
     }
 })
 
 
 
 
+
 const mapStateToProps = (state) => ({
-    showColorPickerStatus: state.skinData.showColorPickerStatus,
-    showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus
+    skinData: state.skinData,
 })
 
 

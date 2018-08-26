@@ -32,6 +32,7 @@ class ButtonSmallSkin extends Component {
                 skinSelectionModeActiveStatus: false,
                 currentComponentSkinToBeChanged: this.props.skinData.currentComponentSkinToBeChanged,
                 memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
                 percentButtonsColor: this.props.skinData.percentButtonsColor,
                 keysSet1Color: this.props.skinData.keysSet1Color,
                 keysSet2Color: this.props.skinData.keysSet2Color,
@@ -77,6 +78,7 @@ class ButtonSmallSkin extends Component {
                 skinSelectionModeActiveStatus: true,
                 currentComponentSkinToBeChanged: this.props.skinData.currentComponentSkinToBeChanged,
                 memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
                 percentButtonsColor: this.props.skinData.percentButtonsColor,
                 keysSet1Color: this.props.skinData.keysSet1Color,
                 keysSet2Color: this.props.skinData.keysSet2Color,
@@ -95,7 +97,7 @@ class ButtonSmallSkin extends Component {
             //collate stirng from all segments     
             let screenMainTextLine1 = ""
             let screenLiveAnswerLine = ""
-            let screenMidScreenMessage = "select component"
+            let screenMidScreenMessage = "select a section"
             segmentsArray = []
             currentSegmentIndex = 0
             timeMachineArrayOfSegmentsArraySnapShots = []
@@ -123,6 +125,28 @@ class ButtonSmallSkin extends Component {
     render() {
 
 
+
+        let styles = StyleSheet.create({
+            buttonInactive: {
+                backgroundColor: `${this.props.skinData.buttonSmallsColor}`,
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            buttonActive: {
+                backgroundColor: 'lightyellow',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            buttonText: {
+                color: 'black',
+                fontSize: Dimensions.get('window').width/16.5
+            }
+        })
+
+
+
         let styleToApply;
         //get the correct styleing depending on state
         if(this.props.skinData.skinSelectionModeActiveStatus){
@@ -143,27 +167,6 @@ class ButtonSmallSkin extends Component {
 }
 
 
-
-
-
-let styles = StyleSheet.create({
-    buttonInactive: {
-        backgroundColor: 'lightblue',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    buttonActive: {
-        backgroundColor: 'lightyellow',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: 'black',
-        fontSize: Dimensions.get('window').width/16.5
-    }
-})
 
 
 

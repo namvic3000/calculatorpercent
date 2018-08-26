@@ -16,11 +16,12 @@ class ButtonSmallsPanel extends React.Component {
         //show buttonsmallspanel
         this.props.dispatch(updateShowButtonSmallsPanelStatus(true))
         
-        //set time out to close buttonsmallspanel if tape or about or skin
-        //screen is not showing
+        //set time out to close buttonsmallspanel if no buttonsmalll is clicked
+        //dont close if any buttonsmall is clicked and becomes active
         setTimeout( () => {
             if( ( ! this.props.showTapeStatus) 
-                && ( ! this.props.skinSelectionModeActiveStatus) )//####ADD MORE SCREENS LATER
+                && ( ! this.props.skinSelectionModeActiveStatus) 
+                &&(( ! this.props.showAboutPageStatus)) )//####ADD MORE SCREENS LATER
                 this.props.dispatch(updateShowButtonSmallsPanelStatus(false))
         }, 3000)
 
@@ -48,6 +49,21 @@ class ButtonSmallsPanel extends React.Component {
 
     render() {
         
+
+        let styles = StyleSheet.create({
+            container: {
+                flexDirection: 'row',
+                flex: 1,
+                height: '100%',
+                backgroundColor: `${this.props.skinData.buttonSmallsColor}`,
+            },
+            // thinStrip: {
+            //     backgroundColor: 'pink',
+
+            // }
+        })
+
+
         return (
             //  this.buttonSmallsPanelOrThinStrip()
             this.props.showButtonSmallsPanelStatus ? (
@@ -65,18 +81,6 @@ class ButtonSmallsPanel extends React.Component {
 
 
 
-let styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        flex: 1,
-        height: '100%',
-        backgroundColor: 'lightblue'
-    },
-    // thinStrip: {
-    //     backgroundColor: 'pink',
-
-    // }
-})
 
 
 
@@ -84,7 +88,9 @@ let styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus,
     showTapeStatus: state.tape.showTapeStatus,
-    skinSelectionModeActiveStatus: state.skinData.skinSelectionModeActiveStatus || false
+    skinSelectionModeActiveStatus: state.skinData.skinSelectionModeActiveStatus || false,
+    skinData: state.skinData,
+    showAboutPageStatus: state.aboutPage.showAboutPageStatus
 })
 
 

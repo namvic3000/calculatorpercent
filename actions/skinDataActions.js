@@ -9,6 +9,7 @@ export const updateSkinData = (dataObject) => ({
             skinSelectionModeActiveStatus: dataObject.skinSelectionModeActiveStatus,
             currentComponentSkinToBeChanged: dataObject.currentComponentSkinToBeChanged,
             memoryBoxesColor: dataObject.memoryBoxesColor,
+            memoryButtonsColor: dataObject.memoryButtonsColor,
             percentButtonsColor: dataObject.percentButtonsColor,
             keysSet1Color: dataObject.keysSet1Color,
             keysSet2Color: dataObject.keysSet2Color,
