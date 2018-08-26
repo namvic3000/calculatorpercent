@@ -28,9 +28,16 @@ const tapeReducer = (state = initialState, action) => {
 
             let newRecord = action.payload.oneWholeCalculationString
             
-            //push new record onto state array
+            //push new record onto state array, push at start
+            //so use  unshift
             updatedArrayOfRecords.unshift(newRecord)
 
+            //if over 100 records, remove the last
+            if(updatedArrayOfRecords.length > 100) {
+                updatedArrayOfRecords.pop()//remove last on list end
+            }
+
+            
             saveTapeToLocalStorage(updatedArrayOfRecords)
 
             return {

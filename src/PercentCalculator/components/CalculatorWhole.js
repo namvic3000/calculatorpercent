@@ -3,9 +3,15 @@ import {AsyncStorage,View, StyleSheet, Platform, NativeModules, Text, TouchableO
 import Screen from './Screen'
 import Keypad from './Keypad'
 import Tape from "./Tape";
+import ColorPickerTool from "./ColorPickerTool";
 import ButtonSmallsPanel from "./ButtonSmallsPanel";
 import { connect } from "react-redux"
 import { replaceWholeTapeData } from "../../../actions/tapeActions";
+
+
+
+
+
 
 class CalculatorWhole extends React.Component {
  
@@ -25,9 +31,7 @@ class CalculatorWhole extends React.Component {
         }
     }
 
-
-
-
+ 
 
 
     render() {
@@ -46,6 +50,8 @@ class CalculatorWhole extends React.Component {
         //depending if it is buttonsmallpanel or thin strip.
         let buttonSmallsPanelOrThinStripStyle;
         
+        //change height of section, depending on if it is the strip or the 
+        //buttonsmalls
         if(this.props.showButtonSmallsPanelStatus) {
             // console.log('***AT CALCULALTORWHOLE, STYLE IS FOR BUTTONSMALLSPANEL')
             buttonSmallsPanelOrThinStripStyle = styles.buttonSmallsPanelContainer
@@ -75,6 +81,7 @@ class CalculatorWhole extends React.Component {
                 
                 <Tape/>
                  
+                <ColorPickerTool/>
             
             </View>
 
@@ -113,18 +120,13 @@ let styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'blue'
     },
-    tapeContainer: {
-        position: 'absolute',
-        height: '90%',
-        top: 0,
-    }
 })
 
 
 
 
 const mapStateToProps = (state) => ({
-    showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus
+    showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus,
 })
 
 

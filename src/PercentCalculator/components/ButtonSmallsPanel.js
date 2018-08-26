@@ -19,7 +19,8 @@ class ButtonSmallsPanel extends React.Component {
         //set time out to close buttonsmallspanel if tape or about or skin
         //screen is not showing
         setTimeout( () => {
-            if( ! this.props.showTapeStatus)//####ADD MORE SCREENS LATER
+            if( ( ! this.props.showTapeStatus) 
+                && ( ! this.props.skinSelectionModeActiveStatus) )//####ADD MORE SCREENS LATER
                 this.props.dispatch(updateShowButtonSmallsPanelStatus(false))
         }, 3000)
 
@@ -82,8 +83,10 @@ let styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus,
-    showTapeStatus: state.tape.showTapeStatus
+    showTapeStatus: state.tape.showTapeStatus,
+    skinSelectionModeActiveStatus: state.skinData.skinSelectionModeActiveStatus || false
 })
 
 
 export default connect(mapStateToProps)(ButtonSmallsPanel)
+
