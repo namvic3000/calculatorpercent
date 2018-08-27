@@ -23,7 +23,7 @@ import MemoryValuesTextBoxesPanel from './MemoryValuesTextBoxesPanel';
 import ButtonMemPlus from './ButtonMemPlus';
 import ButtonMemClear from './ButtonMemClear';
 import ButtonMemRecall from './ButtonMemRecall';
-import ButtonSmallsPanel from './ButtonSmallsPanel'
+import ButtonCurrency from './ButtonCurrency'
 
 
 
@@ -132,10 +132,7 @@ class Keypad extends React.Component {
                 fontSize: fontSizeOfStandardButton*1.2,
                 color: "white",
             },
-            calcButtonTextForCurrency: {
-                fontSize: fontSizeOfStandardButton*0.95,
-                color: "white",
-            },
+            
             calcButtonTextArithOperators: {
                 fontSize: fontSizeOfStandardButton*1.1,
                 color: "white",
@@ -240,9 +237,8 @@ class Keypad extends React.Component {
                         <Button0To9 buttonValue="2" />
                         <Button0To9 buttonValue="3" />
                         <ButtonArithmetic buttonValue="-" />
-                        <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => {this.handleCalcButtonClicked("currency")}}>
-                            <Text style={styles.calcButtonTextForCurrency}>$</Text>
-                        </TouchableOpacity>
+                        <ButtonCurrency/>
+                        
                 </View>
                 
                 <View style={styles.standardButtonRowContainer}>

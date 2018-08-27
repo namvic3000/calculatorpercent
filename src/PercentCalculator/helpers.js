@@ -1,4 +1,5 @@
 import { MAX_NUMBER_LIMIT, MIN_NUMBER_LIMIT } from "./config";
+import currencyReducer from "../../reducers/currencyReducer";
 
 
 export const collateStringsIntoOneString = (arr) => {//arr is array of objects
@@ -124,6 +125,23 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
     console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
+
+    //if empty string, return, no action
+    if( ! passedInString ) {
+        return ''
+    }
+
+
+     ////REMOVE CURRENCY SIGNS
+     console.log('CALCULATEWHOLERESULT: PASSEDINSTRING STRING BEFORE REPLACE CURRENCY SYMBOL IS ' + passedInString)
+     passedInString = passedInString.replace(/\$/g, '')
+     console.log('CALCULATEWHOLERESULT: PASSEDIN STRING AFTER REPLACE CURRENCY SYMBOL IS ' + passedInString)
+
+     
+   
+    
+
+
     // let wholeString = collateStringsIntoOneString(segmentsArray)
     let wholeString = JSON.parse(JSON.stringify(passedInString))
 
@@ -165,9 +183,9 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
 
 
-
     //if has percent calculation in it, 
     if(stringHasPercentCalculationFlag) {
+
 
         let errorMsg = ""
 
@@ -267,6 +285,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
             
         }
     }//if has percent calc
+
 
 
 

@@ -5,6 +5,7 @@ import memoryDataReducer from "./memoryDataReducer";
 import buttonSmallsPanelReducer   from '../reducers/buttonSmallsPanelReducer'
 import skinDataReducer   from '../reducers/skinDataReducer'
 import aboutPageReducer from './aboutPageReducer';
+import currencyReducer from './currencyReducer';
 
 const rootReducer = combineReducers({
         calculatorStateData: calculatorDataReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
         memory: memoryDataReducer,
         buttonSmallsPanel: buttonSmallsPanelReducer,
         skinData: skinDataReducer,
-        aboutPage: aboutPageReducer
+        aboutPage: aboutPageReducer,
+        currency: currencyReducer,
 })
 
 
