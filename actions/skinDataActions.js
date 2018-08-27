@@ -1,5 +1,5 @@
 export const UPDATE_SKIN_DATA = 'UPDATE_SKIN_DATA'
-
+export const INIT_WHOLE_SKIN_DATA_SET_WITH_LOCAL_STORAGE_DATA = 'INIT_WHOLE_SKIN_DATA_SET_WITH_LOCAL_STORAGE_DATA'
 
 
 export const updateSkinData = (dataObject) => ({
@@ -16,3 +16,5 @@ export const updateSkinData = (dataObject) => ({
             buttonSmallsColor: dataObject.buttonSmallsColor
         }
     })
+
+ 

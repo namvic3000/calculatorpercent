@@ -99,14 +99,14 @@ saveTapeToLocalStorage = async (tapeArray) => {
         
     //input is array of strings
 
-    //first remove the existing so we can replac it
-    try {
-        console.log('ABOUT TO REMOVE LOCALSTORAGE ITEM')
-        await AsyncStorage.removeItem('storedTapeObject')
-    }
-    catch(error) {
-        console.log(error)
-    }
+    // //first remove the existing so we can replac it
+    // try {
+    //     console.log('ABOUT TO REMOVE LOCALSTORAGE ITEM')
+    //     await AsyncStorage.removeItem('storedTapeObject')
+    // }
+    // catch(error) {
+    //     console.log(error)
+    // }
 
     // //if anything other than simple stirng, must convert it to 
     // //json format to be able to be stored

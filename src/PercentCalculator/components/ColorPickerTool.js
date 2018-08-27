@@ -80,8 +80,6 @@ class ColorPickerTool extends React.Component {
         this.props.dispatch(updateSkinData(dataObject))
 
 
-
-
     }
 
 

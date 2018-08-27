@@ -23,7 +23,7 @@ class CalculatorWhole extends React.Component {
         //input is array of strings
         try {
             let result = await AsyncStorage.getItem('storedTapeObject')
-            result = await JSON.parse(result)
+            result = JSON.parse(result)
             // console.log('DATA GOT FROM LOCALSTORAGE IS  ', result)
             return result
         }
@@ -37,13 +37,12 @@ class CalculatorWhole extends React.Component {
     readSkinDataFromLocalStorage = async () => {
 
         try {
-            let result = await AsyncStorage.getItem('skinData')
-            result = await JSON.parse(result)
-            console.log('SKIN DATA READ FROM LOCAL STORAGE IS ', result )
+            result = await AsyncStorage.getItem('skinData')
+            result = JSON.parse(result)
             return result
         }
         catch(error) {
-            console.log(error)
+            console.log('ERROR IN FETCHING SKIN DATA FROM LOCAL STORGE',error)
         }
 
     }
@@ -61,9 +60,10 @@ class CalculatorWhole extends React.Component {
 
 
         //read in saved skin data
-        await this.readSkinDataFromLocalStorage()
-        .then( resultObject => {
-            this.props.dispatch(updateSkinData(resultObject))
+        this.readSkinDataFromLocalStorage()
+        .then( result => {
+            console.log('SKIN DATA READ FROM LOCAL STORAGE, BEFORE ALTERATION IS ', result )
+            this.props.dispatch(updateSkinData(result))
         })
 
         //buttonsmallpanel and thin strip have diferent height, and cant 

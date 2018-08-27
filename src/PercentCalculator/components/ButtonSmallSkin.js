@@ -24,19 +24,22 @@ class ButtonSmallSkin extends Component {
 
         //if skin slection status is on, and user presses skinbuttonsmall,
         //turn secletionmode off, so normal calculaion mode resumes
+
+        console.log('AT BUTTONSMALLL SKIN, THIS.PROPS.SKINDATA IS ', this.props.skinData)
         if(this.props.skinData.skinSelectionModeActiveStatus) {
             console.log( 'GOT TO SKINBUTTON WHEN SELECTON STATUS IS TRUE')
             //leave everything same, except change skinseletionactivestatus to false
             let dataObject = {
-                showColorPickerStatus: this.props.skinData.showColorPickerStatus,
+                ...this.props.skinData,
+                showColorPickerStatus: false,//redundant, coz has to be false for skin button to be touchable.//this.props.skinData.showColorPickerStatus,
                 skinSelectionModeActiveStatus: false,
-                currentComponentSkinToBeChanged: this.props.skinData.currentComponentSkinToBeChanged,
-                memoryBoxesColor: this.props.skinData.memoryBoxesColor,
-                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
-                percentButtonsColor: this.props.skinData.percentButtonsColor,
-                keysSet1Color: this.props.skinData.keysSet1Color,
-                keysSet2Color: this.props.skinData.keysSet2Color,
-                buttonSmallsColor: this.props.skinData.buttonSmallsColor
+                currentComponentSkinToBeChanged: '',//reset to nothing. this.props.skinData.currentComponentSkinToBeChanged,
+                // memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                // memoryButtonsColor: this.props.skinData.memoryButtonsColor,
+                // percentButtonsColor: this.props.skinData.percentButtonsColor,
+                // keysSet1Color: this.props.skinData.keysSet1Color,
+                // keysSet2Color: this.props.skinData.keysSet2Color,
+                // buttonSmallsColor: this.props.skinData.buttonSmallsColor
             }
 
             this.props.dispatch(updateSkinData(dataObject))
@@ -74,15 +77,17 @@ class ButtonSmallSkin extends Component {
 
             //leave everything same, except change skinseletionactivestatus to false
             let dataObject = {
-                showColorPickerStatus: this.props.skinData.showColorPickerStatus,
+                ...this.props.skinData,
                 skinSelectionModeActiveStatus: true,
-                currentComponentSkinToBeChanged: this.props.skinData.currentComponentSkinToBeChanged,
-                memoryBoxesColor: this.props.skinData.memoryBoxesColor,
-                memoryButtonsColor: this.props.skinData.memoryButtonsColor,
-                percentButtonsColor: this.props.skinData.percentButtonsColor,
-                keysSet1Color: this.props.skinData.keysSet1Color,
-                keysSet2Color: this.props.skinData.keysSet2Color,
-                buttonSmallsColor: this.props.skinData.buttonSmallsColor
+
+                // showColorPickerStatus: this.props.skinData.showColorPickerStatus,
+                // currentComponentSkinToBeChanged: this.props.skinData.currentComponentSkinToBeChanged,
+                // memoryBoxesColor: this.props.skinData.memoryBoxesColor,
+                // memoryButtonsColor: this.props.skinData.memoryButtonsColor,
+                // percentButtonsColor: this.props.skinData.percentButtonsColor,
+                // keysSet1Color: this.props.skinData.keysSet1Color,
+                // keysSet2Color: this.props.skinData.keysSet2Color,
+                // buttonSmallsColor: this.props.skinData.buttonSmallsColor
             }
 
             this.props.dispatch(updateSkinData(dataObject))

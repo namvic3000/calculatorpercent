@@ -1,16 +1,16 @@
-import {UPDATE_SKIN_DATA} from '../actions/skinDataActions'
+import {UPDATE_SKIN_DATA, INIT_WHOLE_SKIN_DATA_SET_WITH_LOCAL_STORAGE_DATA} from '../actions/skinDataActions'
 import { AsyncStorage} from "react-native";
 
 let initialState = {
     showColorPickerStatus: false,
     skinSelectionModeActiveStatus: false,
     currentComponentSkinToBeChanged: "",
-    memoryBoxesColor: '#000000',
-    memoryButtonsColor: '#000000',
-    percentButtonsColor: '#000000',
-    keysSet1Color: '#000000',
-    keysSet2Color: '#000000',
-    buttonSmallsColor: '#000000',
+    memoryBoxesColor: '#ffffff',
+    memoryButtonsColor: '#ffffff',
+    percentButtonsColor: '#ffffff',
+    keysSet1Color: '#ffffff',
+    keysSet2Color: '#ffffff',
+    buttonSmallsColor: '#ffffff',
 } 
 
 
@@ -22,20 +22,26 @@ const skinDataReducer = (state = initialState, action) => {
         case UPDATE_SKIN_DATA: 
 
             saveSkinDataToLocalStorage(action.payload)
-
+ 
+             
             return {
-            showColorPickerStatus: action.payload.showColorPickerStatus,
-            skinSelectionModeActiveStatus: action.payload.skinSelectionModeActiveStatus,
-            currentComponentSkinToBeChanged: action.payload.currentComponentSkinToBeChanged,
-            memoryBoxesColor: action.payload.memoryBoxesColor,
-            memoryButtonsColor: action.payload.memoryButtonsColor,
-            percentButtonsColor: action.payload.percentButtonsColor,
-            keysSet1Color: action.payload.keysSet1Color,
-            keysSet2Color: action.payload.keysSet2Color,
-            buttonSmallsColor: action.payload.buttonSmallsColor
+                ...action.payload
+
+                //OR THIS:
+                // showColorPickerStatus: action.payload.showColorPickerStatus,
+                // skinSelectionModeActiveStatus: action.payload.skinSelectionModeActiveStatus,
+                // currentComponentSkinToBeChanged: action.payload.currentComponentSkinToBeChanged,
+                // memoryBoxesColor: action.payload.memoryBoxesColor,
+                // memoryButtonsColor: action.payload.memoryButtonsColor,
+                // percentButtonsColor: action.payload.percentButtonsColor,
+                // keysSet1Color: action.payload.keysSet1Color,
+                // keysSet2Color: action.payload.keysSet2Color,
+                // buttonSmallsColor: action.payload.buttonSmallsColor
             }
 
 
+
+ 
         default: return state 
     }
 
@@ -45,17 +51,20 @@ const skinDataReducer = (state = initialState, action) => {
 
 const saveSkinDataToLocalStorage = async (passedInObject) => {
 
-    //remove existing key , if exists
-    try {
-        await AsyncStorage.removeItem('skinData')
+    //dont save the statuses of colorpicking mode etc... they must be
+    //false at startup
+    let objToSave = 
+    {
+        ...passedInObject,
+        //overide these object's keys with these
+        showColorPickerStatus: false,
+        skinSelectionModeActiveStatus: false,
+        currentComponentSkinToBeChanged: '',
     }
-    catch(error) {
-        console.log(error)
-    }
-
+ 
 
     try {
-        await AsyncStorage.setItem('skinData', JSON.stringify(passedInObject))
+        await AsyncStorage.setItem('skinData', JSON.stringify(objToSave))
     }
     catch(error) {
         console.log(error)

@@ -102,6 +102,8 @@ class MemoryValuesPanel extends React.Component {
 
         
 
+        console.log('MEMVALUES CONTAINER, BGCOLORS ARE: ' + this.props.skinData.memoryBoxesColor)
+
         let styles = StyleSheet.create( {
             container: {
                 flex: 0.3,
@@ -114,7 +116,7 @@ class MemoryValuesPanel extends React.Component {
                 height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: `${this.props.skinData.memoryBoxesColor}`,
+                backgroundColor: `${this.props.skinData.memoryBoxesColor}` || '#000000',
                 borderWidth: 0,
             },
             memory2ValueContainer: {
