@@ -49,6 +49,13 @@ const skinDataReducer = (state = initialState, action) => {
 
 
 
+
+
+
+
+
+
+
 const saveSkinDataToLocalStorage = async (passedInObject) => {
 
     //dont save the statuses of colorpicking mode etc... they must be
@@ -62,6 +69,8 @@ const saveSkinDataToLocalStorage = async (passedInObject) => {
         currentComponentSkinToBeChanged: '',
     }
  
+
+    console.log('AT SKIN REDUCER, OBJECT TO SAVE IS: ',objToSave)
 
     try {
         await AsyncStorage.setItem('skinData', JSON.stringify(objToSave))

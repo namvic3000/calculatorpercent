@@ -78,43 +78,52 @@ class ButtonSmallAbout extends Component {
     render() {
 
 
+        
 
         let styles = StyleSheet.create({
-            buttonInactive: {
+            buttonBackgroundInactive: {
                 backgroundColor: `${this.props.skinData.buttonSmallsColor}`,
+                color: 'white',
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
             },
-            buttonActive: {
-                backgroundColor: 'lightyellow',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-            },
-            buttonText: {
+            buttonBackgroundActive: {
+                backgroundColor: 'yellow',
                 color: 'black',
-                fontSize: Dimensions.get('window').width/16.5
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            buttonTextActive: {
+                color: 'black',
+                fontSize: Dimensions.get('window').width/18
+            },
+            buttonTextInactive: {
+                color: 'white',
+                fontSize: Dimensions.get('window').width/18
             }
         })
 
 
-
-
+        let styleToApplyContainer;
+        let styleToApplyText
         //get the correct styleing depending on state
-        let styleToApply;
         if(this.props.showAboutPageStatus){
-            styleToApply = styles.buttonActive
+            styleToApplyContainer = styles.buttonBackgroundActive
+            styleToApplyText = styles.buttonTextActive
         }
         else {
-            styleToApply = styles.buttonInactive
+            styleToApplyContainer = styles.buttonBackgroundInactive
+            styleToApplyText = styles.buttonTextInactive
         }
+
 
 
 
         return (
-            <TouchableOpacity style={styleToApply} onPress={this.handleClick}>
-                <Text style={styles.buttonText}>About</Text>
+            <TouchableOpacity style={styleToApplyContainer} onPress={this.handleClick}>
+                <Text style={styleToApplyText}>About</Text>
             </TouchableOpacity>
         )
     }
