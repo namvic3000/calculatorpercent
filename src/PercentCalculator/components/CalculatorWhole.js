@@ -8,6 +8,7 @@ import ButtonSmallsPanel from "./ButtonSmallsPanel";
 import { connect } from "react-redux"
 import { replaceWholeTapeData } from "../../../actions/tapeActions";
 import { updateSkinData } from "../../../actions/skinDataActions";
+import { updateMemoryData } from "../../../actions/memoryActions";
 
 
 
@@ -48,6 +49,21 @@ class CalculatorWhole extends React.Component {
     }
 
 
+
+    readMemoryDataFromLocalStorage = async () => {
+
+        try {
+            result = await AsyncStorage.getItem('memoryData')
+            result = JSON.parse(result)
+            return result
+        }
+        catch(error) {
+            console.log('ERROR IN FETCHING MEMORY DATA FROM LOCAL STORGE',error)
+        }
+
+    }
+
+
     render() {
 
 
@@ -55,15 +71,45 @@ class CalculatorWhole extends React.Component {
         this.readTapeFromLocalStorage()
         .then( result => {
             // console.log('RESULT FROM READING IN LOCALSTROAGE IS : ', result)
-            this.props.dispatch(replaceWholeTapeData(result))
+            if ( ! result) { //if not exist
+                console.log('TAPE DATA NOT EXIST, SO NO UPDATE OF STORE')
+            }
+            else {
+                console.log('TAPE DATA DOES EXIST, SO NOW UPDATIN GSTORE')
+                this.props.dispatch(replaceWholeTapeData(result))
+            }
         })
 
 
         //read in saved skin data
         this.readSkinDataFromLocalStorage()
         .then( result => {
-            console.log('SKIN DATA READ FROM LOCAL STORAGE, BEFORE ALTERATION IS ', result )
-            this.props.dispatch(updateSkinData(result))
+            console.log('SKIN DATA READ FROM LOCAL STORAGE, IS ', result )
+            if( ! result) {//if NOT exists
+                console.log('SKKIN DATA NOT EXISWT, NOT UPDATING STORE')
+            }
+            else {//exists
+                console.log('SKKIN DATA DOES EXISWT, SO NOW UPDATING STORE')
+                this.props.dispatch(updateSkinData(result))
+            }
+        })
+
+        //read in saved mememory data
+        this.readMemoryDataFromLocalStorage()
+        .then( result => {
+            console.log('MEMORY DATA READ FROM LOCAL STORAGE, IS ', result )
+            if( ! result) {//if NOT exists
+                console.log('MEMORY DATA NOT EXISWT, NOT UPDATING STORE')
+            }
+            else {//exists
+                console.log('MEMORY DATA DOES EXISWT, SO NOW UPDATING STORE')
+                console.log('RESULT RECEIVED FROM READIN MEMORYDATA FROM STORAGE IS: ', result)
+                let memory1Value = result.memory1Value
+                let memory2Value = result.memory2Value
+                let currentActiveMemory = result.currentActiveMemory
+                
+                this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
+            }
         })
 
         //buttonsmallpanel and thin strip have diferent height, and cant 

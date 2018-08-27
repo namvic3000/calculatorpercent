@@ -1,5 +1,5 @@
 import {UPDATE_MEMORY_DATA} from '../actions/memoryActions'
-
+import { AsyncStorage } from "react-native";
 
 
 let initialState = {
@@ -28,6 +28,9 @@ const memoryDataReducer = (state = initialState, action) => {
 
             console.log('AT MEMORY REDUCER, UPDATE OBJECT ASSIGNED IS: ', obj)
 
+            saveMemoryDataToLocalStorage(obj)
+
+
             return {
                 ...state,
                 memoryData: {...obj}
@@ -40,4 +43,19 @@ const memoryDataReducer = (state = initialState, action) => {
 
 
 
+
+saveMemoryDataToLocalStorage = async (dataObj) => {
+
+    //havt to convert to json before saving
+    let jsonObj = JSON.stringify(dataObj)
+
+
+    try {
+        await AsyncStorage.setItem('memoryData', jsonObj)
+    }
+    catch(error) {
+        console.log(error)
+    }
+
+}
 export default memoryDataReducer
