@@ -206,6 +206,14 @@ class ButtonIfPercentIs extends React.Component {
                     
                     //add the % sign at end of this segmnt and 'of' in the next segment
                     segmentsArray[currentSegmentIndex].stringValue = 'if ' + segmentsArray[currentSegmentIndex].stringValue + '%'
+                    
+                      
+                    //remove any curency signs, cant have $23% 
+                    segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(/\$|£|¥|€/g, '')
+                    console.log('$$$$$ PERCNTOF:  1ST OPERAND IS SINGLE VALUE, NO PRIOR ARITH, NOW REMOVED $ SIGN')
+                 
+                    
+                    
                     //add 'of' into next segment
                     currentSegmentIndex++
                     segmentsArray[currentSegmentIndex] = {} //create
@@ -220,6 +228,13 @@ class ButtonIfPercentIs extends React.Component {
                     segmentsArray[currentSegmentIndex].stringValue = '[if ' + segmentsArray[currentSegmentIndex].stringValue
                     //add the % sign at end of this segmnt and 'of' in the next segment
                     segmentsArray[currentSegmentIndex].stringValue += '%'
+                    
+                    
+                    //remove any curency signs, cant have $23% 
+                    segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(/\$|£|¥|€/g, '')
+                    console.log('$$$$$ PERCNTOF:  1ST OPERAND IS SINGLE VALUE, HAS PRIOR ARITH, NOW REMOVED $ SIGN')
+                   
+                    
                     //add 'of' into next segment
                     currentSegmentIndex++
                     segmentsArray[currentSegmentIndex] = {} //create
@@ -247,6 +262,13 @@ class ButtonIfPercentIs extends React.Component {
                     //need to slice and recombine, to insert the square bracket
                     let portion1 = tempStr.slice(0, indexOfFirstNumeral)
                     let portion2 = tempStr.slice(indexOfFirstNumeral)//defaults to eostring, ie lenght-1
+                    
+                      
+                    //remove any currency in portion1,  eg porion1 has ($  portion2 has [22%
+                    portion1 = portion1.replace(/\$|£|¥|€/g, '')
+
+                    
+                    
                     tempStr = portion1 + '[if ' + portion2//insert
                     //copy back to real string
                     segmentsArray[currentSegmentIndex].stringValue = tempStr
@@ -288,11 +310,29 @@ class ButtonIfPercentIs extends React.Component {
                     let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
                     let portion1 = tempStr.slice(0, indexOfOpenBracketWithinSegment)//exclusive of open bracket
                     let portion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defualt end is length -1 
+                    
+                     
+                    ///in cases e.g 22 x [($23 x $25 x $27)% of .... we need to rmove currency
+                    //from segment which has open bracket to current segment
+
+                    //rmove currency in the segment that has the first open round bracket, starting
+                    //from the open bracket in that segment, prior to open bracket in tht segment is
+                    //left alone. from open brackets onward in the segment is the portion2.
+                    portion2 = portion2.replace(/\$|£|¥|€/g, '')
+                    console.log('$$$$$$$$$$ BUTTONPERCENT: CLOSED BRACKET CALC BEFORE PRESSING %OF BUTTON. NOW REPLACING CURRENCY WITH "" ')
+                    
+                    ///potion2 now has no currency, now addd the [ bracket
                     tempStr = portion1 + '[if ' + portion2
                     //copy back to real string
                     segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
 
 
+                    //now remove currencies from the segment+1 that has the open bracket, 
+                    //upto current segment
+                    for( let i=indexOfSegmentWithFirstOpenBracket + 1; i<=currentSegmentIndex; i++) {
+                        segmentsArray[i].stringValue = segmentsArray[i].stringValue.replace(/\$|£|¥|€/g, '')
+                    }
+                    
                 }
                 
                 //add the % sign at end of this segmnt and 'of' in the next segment
