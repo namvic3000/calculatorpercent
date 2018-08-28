@@ -76,7 +76,8 @@ class ButtonPercentOf extends React.Component {
 
 
 
-        let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
+        let {segmentsArray, currentSegmentIndex, 
+            timeMachineArrayOfSegmentsArraySnapShots, currentCurrency} = this.props 
 
         let allowToTakeSnapShotOfState = true
         
@@ -243,6 +244,11 @@ class ButtonPercentOf extends React.Component {
                     
                     //add the % sign at end of this segmnt and 'of' in the next segment
                     segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue + '%'
+                    
+                    //remove any curency signs, cant have $23% 
+                    segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(/\$|£|¥|€/g, '')
+                    console.log('$$$$$ PERCNTOF:  1ST OPERAND IS SINGLE VALUE, NO PRIOR ARITH, NOW REMOVED $ SIGN')
+                    
                     //add 'of' into next segment
                     currentSegmentIndex++
                     segmentsArray[currentSegmentIndex] = {} //create
@@ -257,6 +263,12 @@ class ButtonPercentOf extends React.Component {
                     segmentsArray[currentSegmentIndex].stringValue = '[' + segmentsArray[currentSegmentIndex].stringValue
                     //add the % sign at end of this segmnt and 'of' in the next segment
                     segmentsArray[currentSegmentIndex].stringValue += '%'
+
+
+                    //remove any curency signs, cant have $23% 
+                    segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(/\$|£|¥|€/g, '')
+                    console.log('$$$$$ PERCNTOF:  1ST OPERAND IS SINGLE VALUE, HAS PRIOR ARITH, NOW REMOVED $ SIGN')
+                    
                     //add 'of' into next segment
                     currentSegmentIndex++
                     segmentsArray[currentSegmentIndex] = {} //create
@@ -266,7 +278,10 @@ class ButtonPercentOf extends React.Component {
 
             else
             if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
-                console.log('AT %OF, GOT TO SEGMENT HAS OPEN BRACKT')
+                //when gets here, e.g 23 x (22    and user press on %of, 
+                //becomes 23 x ([22% of ...  
+                // if it is 23 x ($[22% of ...  then we remove the $ sign
+                console.log('$$$$$$ AT %OF, GOT TO SEGMENT HAS OPEN BRACKT')
                 //if has open bracket at start of segment, means user 
                 //typed it in, e.g 5 x (20 , or ((20% of ...
                 //if it is 5 x (20 , ie has prior arith operator, then we insert
@@ -284,6 +299,10 @@ class ButtonPercentOf extends React.Component {
                     //need to slice and recombine, to insert the square bracket
                     let portion1 = tempStr.slice(0, indexOfFirstNumeral)
                     let portion2 = tempStr.slice(indexOfFirstNumeral)//defaults to eostring, ie lenght-1
+                     
+                    //remove any currency in portion1,  eg porion1 has ($  portion2 has [22%
+                    portion1 = portion1.replace(/\$|£|¥|€/g, '')
+
                     tempStr = portion1 + '[' + portion2//insert
                     //copy back to real string
                     segmentsArray[currentSegmentIndex].stringValue = tempStr
@@ -320,14 +339,34 @@ class ButtonPercentOf extends React.Component {
                 //if prior arith operator exists, then add '[' before the open
                 //bracket of the unit
                 if( currentSegmentHasPriorArithOperator) {
+                    //if gets here, cacluation is 2 X (23 x 24) and user presses %of.
+
                     //add the '[' before unit's open bracket e.g 25 x ((23 + 10) ... 
                     //becomes 25 x ([(23 + 10) ...
                     let tempStr = segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue
                     let portion1 = tempStr.slice(0, indexOfOpenBracketWithinSegment)//exclusive of open bracket
                     let portion2 = tempStr.slice(indexOfOpenBracketWithinSegment)//defualt end is length -1 
+                    
+                    ///in cases e.g 22 x [($23 x $25 x $27)% of .... we need to rmove currency
+                    //from segment which has open bracket to current segment
+
+                    //rmove currency in the segment that has the first open round bracket, starting
+                    //from the open bracket in that segment, prior to open bracket in tht segment is
+                    //left alone. from open brackets onward in the segment is the portion2.
+                    portion2 = portion2.replace(/\$|£|¥|€/g, '')
+                    console.log('$$$$$$$$$$ BUTTONPERCENT: CLOSED BRACKET CALC BEFORE PRESSING %OF BUTTON. NOW REPLACING CURRENCY WITH "" ')
+                    
+                    ///potion2 now has no currency, now addd the [ bracket
                     tempStr = portion1 + '[' + portion2
                     //copy back to real string
                     segmentsArray[indexOfSegmentWithFirstOpenBracket].stringValue = tempStr
+
+
+                    //now remove currencies from the segment+1 that has the open bracket, 
+                    //upto current segment
+                    for( let i=indexOfSegmentWithFirstOpenBracket + 1; i<=currentSegmentIndex; i++) {
+                        segmentsArray[i].stringValue = segmentsArray[i].stringValue.replace(/\$|£|¥|€/g, '')
+                    }
 
 
                 }
@@ -414,7 +453,8 @@ const mapStateToProps = (state) => ({
     segmentsArray: state.calculatorStateData.segmentsArray,
     currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
     timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots,
-    skinData: state.skinData
+    skinData: state.skinData,
+    currentCurrency: state.currency.currentCurrency
 })
 
 
