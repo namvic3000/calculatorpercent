@@ -1,7 +1,8 @@
 import { AsyncStorage } from "react-native";
 import { ADD_RECORD_TO_TAPE, REMOVE_RECORD_FROM_TAPE,
             UPDATE_SHOW_TAPE_STATUS, 
-            REPLACE_WHOLE_TAPE_DATA } from "../actions/tapeActions";
+            REPLACE_WHOLE_TAPE_DATA,
+            DELETE_WHOLE_TAPE } from "../actions/tapeActions";
 
 
 //  data structure of this reducer's state is  = [
@@ -69,6 +70,16 @@ const tapeReducer = (state = initialState, action) => {
 
 
             
+        case DELETE_WHOLE_TAPE: //note: there is no corresponding action coz so simple
+
+            saveTapeToLocalStorage([])//empty array
+            
+            return {
+                ...state,
+                arrayOfRecords: []//empty array
+            }
+
+
 
         case UPDATE_SHOW_TAPE_STATUS: 
             

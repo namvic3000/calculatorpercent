@@ -5,12 +5,12 @@ let initialState = {
     showColorPickerStatus: false,
     skinSelectionModeActiveStatus: false,
     currentComponentSkinToBeChanged: "",
-    memoryBoxesColor: '#ffffff',
-    memoryButtonsColor: '#ffffff',
-    percentButtonsColor: '#ffffff',
-    keysSet1Color: '#ffffff',
-    keysSet2Color: '#ffffff',
-    buttonSmallsColor: '#ffffff',
+    memoryBoxesColor: '#000000',
+    memoryButtonsColor: '#000000',
+    percentButtonsColor: '#000000',
+    keysSet1Color: '#000000',
+    keysSet2Color: '#000000',
+    buttonSmallsColor: '#000000',
 } 
 
 

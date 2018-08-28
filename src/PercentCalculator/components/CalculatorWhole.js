@@ -72,8 +72,11 @@ class CalculatorWhole extends React.Component {
         .then( result => {
             // console.log('RESULT FROM READING IN LOCALSTROAGE IS : ', result)
             if ( ! result) { //if not exist
-                let result = []//empty array if not exist in storage
-                this.props.dispatch(replaceWholeTapeData(result))
+                let defaultTapeState = {
+                    arrayOfRecords: [], //array of segments arrays
+                    showTapeStatus: false 
+                }
+                this.props.dispatch(replaceWholeTapeData(defaultTapeState))
                 console.log('TAPE DATA NOT EXIST, SO NO UPDATE OF STORE')
             }
             else {
@@ -90,6 +93,18 @@ class CalculatorWhole extends React.Component {
             console.log('SKIN DATA READ FROM LOCAL STORAGE, IS ', result )
             if( ! result) {//if NOT exists
                 console.log('SKKIN DATA NOT EXISWT, NOT UPDATING STORE')
+                let defaultSkinData = {
+                    showColorPickerStatus: false,
+                    skinSelectionModeActiveStatus: false,
+                    currentComponentSkinToBeChanged: "",
+                    memoryBoxesColor: '#000000',
+                    memoryButtonsColor: '#000000',
+                    percentButtonsColor: '#000000',
+                    keysSet1Color: '#000000',
+                    keysSet2Color: '#000000',
+                    buttonSmallsColor: '#000000',
+                } 
+                this.props.updateSkinData(defaultSkinData)
             }
             else {//exists
                 console.log('SKKIN DATA DOES EXISWT, SO NOW UPDATING STORE')
@@ -97,18 +112,25 @@ class CalculatorWhole extends React.Component {
             }
         })
 
+
+
         //read in saved mememory data
         this.readMemoryDataFromLocalStorage()
         .then( result => {
             console.log('MEMORY DATA READ FROM LOCAL STORAGE, IS ', result )
             if( ! result) {//if NOT exists
                 console.log('MEMORY DATA NOT EXISWT, NOT UPDATING STORE')
+                let memory1Value = 'empty'
+                let memory2Value = 'empty'
+                let currentActiveMemory = 1
+                
+                this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
             }
             else {//exists
                 console.log('MEMORY DATA DOES EXISWT, SO NOW UPDATING STORE')
                 console.log('RESULT RECEIVED FROM READIN MEMORYDATA FROM STORAGE IS: ', result)
-                let memory1Value = result.memory1Value || 'empty'
-                let memory2Value = result.memory2Value || 'empty'
+                let memory1Value = result.memory1Value
+                let memory2Value = result.memory2Value
                 let currentActiveMemory = result.currentActiveMemory
                 
                 this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))

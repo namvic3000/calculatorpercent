@@ -2,6 +2,7 @@ export const ADD_RECORD_TO_TAPE = 'ADD_RECORD_TO_TAPE'
 export const REMOVE_RECORD_FROM_TAPE = 'REMOVE_RECORD_FROM_TAPE'
 export const UPDATE_SHOW_TAPE_STATUS = 'UPDATE_SHOW_TAPE_STATUS'
 export const REPLACE_WHOLE_TAPE_DATA = 'REPLACE_WHOLE_TAPE_DATA'
+export const DELETE_WHOLE_TAPE = 'DELETE_WHOLE_TAPE'
 
 
 
@@ -44,4 +45,12 @@ export const replaceWholeTapeData = (newTapeArray) => ({
     payload: {
         newTapeArray
     }
+})
+
+
+
+
+
+export const deleteWholeTape = () => ({
+    type: DELETE_WHOLE_TAPE
 })

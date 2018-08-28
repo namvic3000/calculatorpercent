@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet , Dimensions, TouchableOpacity, ScrollView, Button} from 'react-native'
+import { Clipboard,Text, View, StyleSheet , Dimensions, TouchableOpacity, ScrollView, Button} from 'react-native'
 import uuid from 'uuid/v4'
 import { connect  } from "react-redux";
 import  * as helpers from "../helpers";
-import {updateShowTapeStatus, removeRecordFromTape} from "../../../actions/tapeActions";
+import {updateShowTapeStatus, removeRecordFromTape, deleteWholeTape} from "../../../actions/tapeActions";
 
 
 class Tape extends Component {
@@ -19,14 +19,36 @@ class Tape extends Component {
 
 
 
+    deleteAllEntriesFromTape = () => {
+
+        this.props.dispatch(deleteWholeTape())
+    }
+
+
+
+
+    copyTapeToClipBoard = () => {
+        if(this.arrayOfWholeCalculationStrings.length<=0) {
+            alert('No content to copy')
+        }
+        else {
+            alert('Copied to clipboard')
+            Clipboard.setString(JSON.stringify(this.arrayOfWholeCalculationStrings))
+        }
+    }
+
+
+
+
 
 
 
     render() {
 
+        
         let {arrayOfRecords, showTapeStatus} = this.props
  
-        //arrayOfRecords is: array of segments arrays
+        //DATA STRUCTURE: arrayOfRecords is: array of segments arrays
         //[ 
             //one segmentsArray is [{stringValue: '2'},{stringValue: 'x'},{stringValue: '7'},{stringValue: ' = 14'}],
             //[{stringValue: '17'},{stringValue: 'x'},{stringValue: '18'},{stringValue: ' = 556'}]
@@ -34,33 +56,43 @@ class Tape extends Component {
 
 
         //convert array of segment arrays into array of strings
-        let arrayOfWholeCalculationStrings = arrayOfRecords.map( segmentsArray => {
+        this.arrayOfWholeCalculationStrings = arrayOfRecords.map( segmentsArray => {
             console.log('^^^^ AT TAPE: ONE SEGMENTS ARRAY IS: ',segmentsArray)
             //collates string from all segments of one segments arry
             return helpers.collateStringsIntoOneString(segmentsArray)
         })
 
-        console.log('^^^^^^^^ AT TAPE: ARRAY OF WHOLESTRINGCALCULATOINS IS; ', arrayOfWholeCalculationStrings)
+        console.log('^^^^^^^^ AT TAPE: ARRAY OF WHOLESTRINGCALCULATOINS IS; ', this.arrayOfWholeCalculationStrings)
 
-
+        ///bug fix
+        if( ! arrayOfRecords) {
+            return null
+        }
+         
 
         return(  
                 showTapeStatus ? (
-                    // <View style={styles.scrollView}>
-                    <ScrollView style={styles.scrollView}>
-                    {
-                        arrayOfWholeCalculationStrings.map( (oneWholeCalculationString, index) => (
-                            <View key={index} style={styles.oneSegmentContainer}>
-                                <View style={styles.calculationTextContainer}>
-                                    <Text style={styles.calculationText}>{oneWholeCalculationString}</Text>
-                                </View>
-                                <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}>
-                                    <Text style={styles.deleteButtonText}>Delete</Text>
-                                </TouchableOpacity>
-                            </View>))
-                        
-                    }
-                    </ScrollView>
+                    <View style={styles.outerContainer}>
+                        <View style={styles.topButtonsContainer}>
+                            <TouchableOpacity style={styles.deleteAllButton} onPress={this.deleteAllEntriesFromTape}><Text style={styles.buttonText}>Delete All</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.copyButton} onPress={this.copyTapeToClipBoard}><Text style={styles.buttonText}>Copy to Clipboard</Text></TouchableOpacity>
+                        </View>
+
+                        <ScrollView style={styles.scrollView}>
+                        {
+                            this.arrayOfWholeCalculationStrings.map( (oneWholeCalculationString, index) => (
+                                <View key={index} style={styles.oneSegmentContainer}>
+                                    <View style={styles.calculationTextContainer}>
+                                        <Text style={styles.calculationText}>{oneWholeCalculationString}</Text>
+                                    </View>
+                                    <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}>
+                                        <Text style={styles.deleteButtonText}>Delete</Text>
+                                    </TouchableOpacity>
+                                </View>))
+                            
+                        }
+                        </ScrollView>
+                    </View>
                     
                 ): (
                     null
@@ -101,16 +133,36 @@ class Tape extends Component {
 
 
 let styles = StyleSheet.create({
-    scrollView: {
+    outerContainer: {
         position: "absolute",
+        // flex: 1,
+        backgroundColor: "green",
+        width: "100%",
+        height: "94%",
+        top: 0,
+        paddingBottom: '0%'
+        // paddingTop: Dimensions.get('window').height/25,
+    },
+    scrollView: {
+        // position: "absolute",
         // flex: 1,
         backgroundColor: "lightyellow",
         width: "100%",
-        height: "94%",
+        height: "100%",
         top: 0,
         paddingBottom: '30%'
         // paddingTop: Dimensions.get('window').height/25,
     },
+    // ORIGINAL scrollView: {
+    //     position: "absolute",
+    //     // flex: 1,
+    //     backgroundColor: "lightyellow",
+    //     width: "100%",
+    //     height: "94%",
+    //     top: 0,
+    //     paddingBottom: '30%'
+    //     // paddingTop: Dimensions.get('window').height/25,
+    // },
     oneSegmentContainer: {
         flexDirection: "row",
         backgroundColor: "white",
@@ -126,7 +178,10 @@ let styles = StyleSheet.create({
         // width: "80%",
         flex: 4,
         backgroundColor: 'white',
-        padding: '2% 2%',
+        paddingTop: '2%',
+        paddingBottom: '2%',
+        paddingLeft: '2%',
+        paddingRight: '2%',
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
@@ -157,6 +212,31 @@ let styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: Dimensions.get('window').height/25,
         fontSize: Dimensions.get('window').height/33,
+    },
+    topButtonsContainer: {
+        flexDirection: 'row',
+        height: '3.5%',
+        width: '100%',
+        backgroundColor: 'yellow'
+    },
+    deleteAllButton: {
+        flex: 1,
+        backgroundColor: 'red',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white'
+    },
+    copyButton: {
+        flex: 1,
+        backgroundColor: 'blue',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: Dimensions.get('window').height*0.027,
     }
 })
 
@@ -166,7 +246,9 @@ let styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     arrayOfRecords: state.tape.arrayOfRecords,
-    showTapeStatus: state.tape.showTapeStatus
+    showTapeStatus: state.tape.showTapeStatus,
+    segmentsArray: state.calculatorStateData.segmentsArray,
+    currentSegmentIndex: state.calculatorStateData.currentSegmentIndex
 })
 
 
