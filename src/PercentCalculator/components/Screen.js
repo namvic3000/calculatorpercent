@@ -53,10 +53,12 @@ class Screen extends Component {
 
     //insert thousands separators, for display to screen only, 
     //dont alter the segments array[].stingvalue which created the screenMainTextLine1.
-    screenMainTextLine1 = helpers.insertThousandsSeparatorsForWholeCalculation(segmentsArray)
     screenLiveAnswerLine = helpers.insertThousandsSeparatorsForOneSingleNumberString(screenLiveAnswerLine)
-
-
+    screenMainTextLine1 = helpers.insertThousandsSeparatorsForWholeCalculation(segmentsArray)
+    
+    //add currency symbol if it is a quantity amount, not a percentage
+    screenLiveAnswerLine = helpers.addCurrencySymbolToAnswerIfAppropriate(screenLiveAnswerLine, helpers.collateStringsIntoOneString(segmentsArray), this.props.currentCurrency)
+    
 
 
     console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY AFTER ALTERING FOR USER DISPLAY IS: ',segmentsArray)
@@ -199,7 +201,8 @@ const mapStateToProps = (state) => ({
   screenLiveAnswerLine: state.calculatorStateData.screenLiveAnswerLine,
   screenMidScreenMessage: state.calculatorStateData.screenMidScreenMessage,
   segmentsArray: state.calculatorStateData.segmentsArray,
-  currentSegmentIndex: state.calculatorStateData.currentSegmentIndex
+  currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
+  currentCurrency: state.currency.currentCurrency
 })
 
 

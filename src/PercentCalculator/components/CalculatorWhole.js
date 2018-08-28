@@ -104,8 +104,8 @@ class CalculatorWhole extends React.Component {
             else {//exists
                 console.log('MEMORY DATA DOES EXISWT, SO NOW UPDATING STORE')
                 console.log('RESULT RECEIVED FROM READIN MEMORYDATA FROM STORAGE IS: ', result)
-                let memory1Value = result.memory1Value
-                let memory2Value = result.memory2Value
+                let memory1Value = result.memory1Value || 'empty'
+                let memory2Value = result.memory2Value || 'empty'
                 let currentActiveMemory = result.currentActiveMemory
                 
                 this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))

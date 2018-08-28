@@ -119,6 +119,9 @@ class ButtonIfPercentIs extends React.Component {
             //rmove all spaces if any
             tempStr = tempStr.replace(/[ ]+/, '')
             
+            //rmove all currency symbols if any
+            tempStr = tempStr.replace(/[\$|£|¥|€]/g, '')
+            
 
             //reset
             segmentsArray = []
@@ -332,7 +335,7 @@ class ButtonIfPercentIs extends React.Component {
                     for( let i=indexOfSegmentWithFirstOpenBracket + 1; i<=currentSegmentIndex; i++) {
                         segmentsArray[i].stringValue = segmentsArray[i].stringValue.replace(/\$|£|¥|€/g, '')
                     }
-                    
+
                 }
                 
                 //add the % sign at end of this segmnt and 'of' in the next segment

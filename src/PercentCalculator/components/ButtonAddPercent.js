@@ -120,6 +120,9 @@ class ButtonAddPercent extends React.Component {
             //rmove all spaces if any
             tempStr = tempStr.replace(/[ ]+/, '')
             
+            //rmove all currency symbols if any
+            tempStr = tempStr.replace(/[\$|£|¥|€]/g, '')
+            
 
             //reset
             segmentsArray = []

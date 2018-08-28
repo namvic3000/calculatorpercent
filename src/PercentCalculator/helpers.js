@@ -1047,3 +1047,69 @@ export const addExtraDetailsTextToAnswer = (passedInAnswerString, wholeCalculati
     return stringToReturn
                  
 }
+
+
+
+
+
+
+
+
+export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, passedInWholeString, currentCurrency) => {
+    
+    //add currency symbol if it is a quantity amount, not a percentage
+    //only add currency to answer if calculation has at least one currcy
+    //symbol in it
+
+
+    //if not defined or null, return
+    if( ! passedInAnswerString) {
+        return ''
+    }
+    //if empty string, dont add currency symbol
+    if(passedInAnswerString.length<=0) {
+        //return as is
+        return passedInAnswerString
+    }
+
+    let wholeStringHasPercentCalculation = /(of|add|deduct|to|added|deducted|if)/.test(passedInWholeString)
+    let wholeStringHasCurrencySign = /\$|£|¥|€/.test(passedInWholeString)
+
+
+    if(wholeStringHasCurrencySign) {//only add currency if calclation has
+    //at leat a currency symbol
+            
+        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 1')
+        if(wholeStringHasPercentCalculation) {
+            if(/out|from/.test(passedInWholeString)) {//if outof and 'from to' then leave as is, dont add currency
+                //%change and outof, leave answer as is, no adding currncy
+        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 2')
+                return passedInAnswerString
+            }
+            else { //all other percent calculations, add currnecy
+                let indexOfFirstNumeral = passedInAnswerString.search(/[0-9]/)
+                let str = passedInAnswerString.slice(0, indexOfFirstNumeral) + 
+                                currentCurrency + passedInAnswerString.slice(indexOfFirstNumeral)
+        console.log('I¢¢¢¢¢¢¢¢¢¢¢¢  INSERT CURENCY TO ANSWER: AT POINT 3')
+
+                return str //no need to process code below
+            
+            }
+        }
+        else {//has no percent calculation, 
+            let indexOfFirstNumeral = passedInAnswerString.search(/[0-9]/)
+            let str = passedInAnswerString.slice(0, indexOfFirstNumeral) + 
+                            currentCurrency + passedInAnswerString.slice(indexOfFirstNumeral)
+        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 4')
+
+            return str //no need to process code below
+        }
+
+    }
+    else {//no currency sign in whole calcullation stirng, no dont add currency
+        //return as is
+        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 5')
+        return passedInAnswerString
+    }
+
+}

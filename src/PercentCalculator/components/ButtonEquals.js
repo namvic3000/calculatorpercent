@@ -140,7 +140,9 @@ class ButtonEquals extends React.Component {
         //add extra details, e.g 'originally was' or '%' to the answer
         // answer = helpers.addExtraDetailsTextToAnswer(answer, helpers.collateStringsIntoOneString(segmentsArray))
         
-
+        //add currency symbol if it is a quantity amount, not a percentage
+        answer = helpers.addCurrencySymbolToAnswerIfAppropriate(answer, helpers.collateStringsIntoOneString(segmentsArray), this.props.currentCurrency)
+         
 
         //add whole answer with extra details e.g 'origiallly was' 
         //as a segment to segments array, so a segment of
@@ -247,6 +249,7 @@ const mapStateToProps = (state) => ({
     timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots,
     arrayOfRecords: state.tape.arrayOfRecords,
     skinData: state.skinData,
+    currentCurrency: state.currency.currentCurrency
 })
 
 
