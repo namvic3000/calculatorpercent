@@ -26,15 +26,37 @@ class Tape extends Component {
 
         let {arrayOfRecords, showTapeStatus} = this.props
  
-        return(
+        //arrayOfRecords is: array of segments arrays
+        //[ 
+            //one segmentsArray is [{stringValue: '2'},{stringValue: 'x'},{stringValue: '7'},{stringValue: ' = 14'}],
+            //[{stringValue: '17'},{stringValue: 'x'},{stringValue: '18'},{stringValue: ' = 556'}]
+        //]
+
+
+        //convert array of segment arrays into array of strings
+        let arrayOfWholeCalculationStrings = arrayOfRecords.map( segmentsArray => {
+            console.log('^^^^ AT TAPE: ONE SEGMENTS ARRAY IS: ',segmentsArray)
+            //collates string from all segments of one segments arry
+            return helpers.collateStringsIntoOneString(segmentsArray)
+        })
+
+        console.log('^^^^^^^^ AT TAPE: ARRAY OF WHOLESTRINGCALCULATOINS IS; ', arrayOfWholeCalculationStrings)
+
+
+
+        return(  
                 showTapeStatus ? (
                     // <View style={styles.scrollView}>
                     <ScrollView style={styles.scrollView}>
                     {
-                        arrayOfRecords.map( (string, index) => (
+                        arrayOfWholeCalculationStrings.map( (oneWholeCalculationString, index) => (
                             <View key={index} style={styles.oneSegmentContainer}>
-                                <View style={styles.calculationTextContainer}><Text style={styles.calculationText}>{string}</Text></View>
-                                <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}><Text style={styles.deleteButtonText}>Delete</Text></TouchableOpacity>
+                                <View style={styles.calculationTextContainer}>
+                                    <Text style={styles.calculationText}>{oneWholeCalculationString}</Text>
+                                </View>
+                                <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}>
+                                    <Text style={styles.deleteButtonText}>Delete</Text>
+                                </TouchableOpacity>
                             </View>))
                         
                     }

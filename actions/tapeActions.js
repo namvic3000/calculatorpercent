@@ -5,11 +5,11 @@ export const REPLACE_WHOLE_TAPE_DATA = 'REPLACE_WHOLE_TAPE_DATA'
 
 
 
-export const addRecordToTape = (oneWholeCalculationString) => ({
+export const addRecordToTape = (segmentsArray) => ({
 
     type: ADD_RECORD_TO_TAPE,
     payload: {
-        oneWholeCalculationString
+        segmentsArray
     }
 })
 

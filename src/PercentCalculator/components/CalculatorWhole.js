@@ -72,12 +72,15 @@ class CalculatorWhole extends React.Component {
         .then( result => {
             // console.log('RESULT FROM READING IN LOCALSTROAGE IS : ', result)
             if ( ! result) { //if not exist
+                let result = []//empty array if not exist in storage
+                this.props.dispatch(replaceWholeTapeData(result))
                 console.log('TAPE DATA NOT EXIST, SO NO UPDATE OF STORE')
             }
             else {
                 console.log('TAPE DATA DOES EXIST, SO NOW UPDATIN GSTORE')
                 this.props.dispatch(replaceWholeTapeData(result))
             }
+            console.log('TAPE OBJECT FROM STORAGE REEAD IN IS: ', result)
         })
 
 

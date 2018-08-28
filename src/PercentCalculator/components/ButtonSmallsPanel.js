@@ -23,7 +23,7 @@ class ButtonSmallsPanel extends React.Component {
                 && ( ! this.props.skinSelectionModeActiveStatus) 
                 &&(( ! this.props.showAboutPageStatus)) )//####ADD MORE SCREENS LATER
                 this.props.dispatch(updateShowButtonSmallsPanelStatus(false))
-        }, 3000)
+        }, 2000)
 
     }
 

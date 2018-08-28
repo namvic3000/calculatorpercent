@@ -170,14 +170,19 @@ class ButtonEquals extends React.Component {
         //get a copy so wont point to and alter the original array
         let tempArr = JSON.parse(JSON.stringify(segmentsArray))
 
+        //at Screen.js,, will insert separators to display, real segments
+        //array has no separators inserted.
+
         //add separators to each segment, before savving to tape
         for(let i = 0; i <= tempArr.length - 2; i++) {//dont do the last segment which is the answer
             tempArr[i].stringValue = helpers.insertThousandsSeparatorsForOneSingleNumberString(tempArr[i].stringValue)
         }
          
-        //save the finished calculation, ie the whole calculation stirng to the Tape
-        let wholeCalculationString = 
-        this.props.dispatch(addRecordToTape(helpers.collateStringsIntoOneString(segmentsArray)))
+        //save the finished calculation, ie the whole segments array which holds the 
+        //one whole calculation
+
+        // let wholeCalculationString = 
+        this.props.dispatch(addRecordToTape(tempArr))
 
   
 

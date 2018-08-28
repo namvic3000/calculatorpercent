@@ -12,12 +12,14 @@ import { ADD_RECORD_TO_TAPE, REMOVE_RECORD_FROM_TAPE,
 
 
 let initialState = {
-    arrayOfRecords: [], //array of whhole calclation strings
+    arrayOfRecords: [], //array of segments arrays
     showTapeStatus: false 
 }
 
 
 const tapeReducer = (state = initialState, action) => {
+
+    // saveTapeToLocalStorage([])
 
     switch(action.type) {
         case ADD_RECORD_TO_TAPE: 
@@ -26,7 +28,7 @@ const tapeReducer = (state = initialState, action) => {
             let updatedArrayOfRecords = JSON.parse(JSON.stringify(state.arrayOfRecords))
             
 
-            let newRecord = action.payload.oneWholeCalculationString
+            let newRecord = action.payload.segmentsArray
             
             //push new record onto state array, push at start
             //so use  unshift
@@ -114,6 +116,10 @@ saveTapeToLocalStorage = async (tapeArray) => {
 
     //if data is an array or object, must stringify it
      
+     
+
+
+
     try {
         await AsyncStorage.setItem('storedTapeObject', JSON.stringify(tapeArray))
     }
