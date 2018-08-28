@@ -74,6 +74,14 @@ class ButtonSmallSkin extends Component {
         else {////skinselectionmodestatus is false, so enable it
             console.log( 'GOT TO SKINBUTTON WHEN SELECTON STATUS IS FALSE')
 
+            //if one of the other buttonsmalls is active, then no action,
+            //just return
+            if( (this.props.showAboutPageStatus == true) || (this.props.showTapeStatus == true) ) {
+                //no action
+                return 
+            }
+
+            //if gets here, no other buttonsmalls is active
 
             //leave everything same, except change skinseletionactivestatus to false
             let dataObject = {
@@ -187,7 +195,9 @@ class ButtonSmallSkin extends Component {
 const mapStateToProps = (state) => ({
     skinData: state.skinData,
     calculatorStateData: state.calculatorStateData,
-    showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus
+    showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus,
+    showTapeStatus: state.tape.showTapeStatus,
+    showAboutPageStatus: state.aboutPage.showAboutPageStatus,
 })
 
 

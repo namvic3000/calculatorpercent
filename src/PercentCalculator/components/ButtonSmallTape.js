@@ -63,6 +63,19 @@ class ButtonSmallTape extends Component {
 
 
 
+        //if one of the other buttonsmalls is active, then no action,
+        //just return
+        ///the skinselectionmodeactivestatus test is redundant, already done above,
+        //but leave for redundancy
+        if( (this.props.skinSelectionModeActiveStatus == true) || (this.props.showAboutPageStatus == true) ) {
+            //no action
+            return 
+        }
+
+        //if gets here, no other buttonsmalls is active
+
+
+
         
         //if not currently showing tape, then show it
         if( ! this.props.showTapeStatus ) {
@@ -144,7 +157,8 @@ class ButtonSmallTape extends Component {
 
 const mapStateToProps = (state) => ({
     showTapeStatus: state.tape.showTapeStatus,
-    skinData: state.skinData
+    skinData: state.skinData,
+    showAboutPageStatus: state.aboutPage.showAboutPageStatus,
 })
 
 export default connect(mapStateToProps)(ButtonSmallTape)

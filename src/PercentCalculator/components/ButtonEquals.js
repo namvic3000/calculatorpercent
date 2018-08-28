@@ -179,11 +179,9 @@ class ButtonEquals extends React.Component {
         let wholeCalculationString = 
         this.props.dispatch(addRecordToTape(helpers.collateStringsIntoOneString(segmentsArray)))
 
- 
-        // //now add the extra 
-        // answer = helpers.addExtraDetailsTextToAnswer(answer)
-      
+  
 
+        
         //collate stirng from all segments and update store
         let screenMainTextLine1 = ""//WILL GET REFILLED AT SCREEN.JS 
         let screenLiveAnswerLine = ""//WILL GET REFILLED AT SCREEN.JS 
