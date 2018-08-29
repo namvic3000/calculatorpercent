@@ -159,7 +159,7 @@ class ButtonMemPlus extends React.Component {
                 memory1Value = Number(memory1Value) + (Number(tempStr))
                 //truncate dediplaces and store, but dont insert separators because
                 //want to store a pure number without seoparators or text
-                memory1Value = helpers.truncateDecimalPlacesOfString(memory1Value)
+                memory1Value = helpers.truncateDecimalPlacesOfString(memory1Value, this.props.currentNumberOfDeciPoints)
                 memory2Value = this.props.memory2Value
             }
             else {//memory2 is active
@@ -176,7 +176,7 @@ class ButtonMemPlus extends React.Component {
                 memory2Value = Number(memory2Value) + (Number(tempStr))
                 //truncate dediplaces and store, but dont insert separators because
                 //want to store a pure number without seoparators or text
-                memory2Value = helpers.truncateDecimalPlacesOfString(memory2Value)
+                memory2Value = helpers.truncateDecimalPlacesOfString(memory2Value, this.props.currentNumberOfDeciPoints)
 
             }
  
@@ -242,7 +242,8 @@ const mapStateToProps = (state) => ({
     currentActiveMemory: state.memory.memoryData.currentActiveMemory,
     segmentsArray: state.calculatorStateData.segmentsArray,
     currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
-    skinData: state.skinData
+    skinData: state.skinData,
+    currentNumberOfDeciPoints: state.deciPoints.currentNumberOfDeciPoints
 })
 
 

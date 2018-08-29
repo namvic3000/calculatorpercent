@@ -119,7 +119,7 @@ class ButtonEquals extends React.Component {
         let answer = helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))//this.props.screenLiveAnswerLine//gets number only, no extra details text
         
         //truncate decipooints
-        answer = helpers.truncateDecimalPlacesOfString(answer)
+        answer = helpers.truncateDecimalPlacesOfString(answer, this.props.currentNumberOfDeciPoints)
         //dont insert thousand separators because this is the reeal string, not 
         //user mirror string for user to see only
         
@@ -252,7 +252,9 @@ const mapStateToProps = (state) => ({
     timeMachineArrayOfSegmentsArraySnapShots: state.calculatorStateData.timeMachineArrayOfSegmentsArraySnapShots,
     arrayOfRecords: state.tape.arrayOfRecords,
     skinData: state.skinData,
-    currentCurrency: state.currency.currentCurrency
+    currentCurrency: state.currency.currentCurrency,
+    currentNumberOfDeciPoints: state.deciPoints.currentNumberOfDeciPoints
+
 })
 
 

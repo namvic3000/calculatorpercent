@@ -884,7 +884,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
 
 
 
-export const truncateDecimalPlacesOfString = (passedInString) => {
+export const truncateDecimalPlacesOfString = (passedInString, numberOfDeciPlacesString) => {
     
     console.log('AT TRUNCATE DECPOINTS: PASSEDINSTRING IS: ' + passedInString)
 
@@ -923,17 +923,61 @@ export const truncateDecimalPlacesOfString = (passedInString) => {
     // console.log('FLOAT VLUE OF PASSE')
     // console.log('AT TRUNCATEDECIMALPLACES, FLOATVALUE OF  IS: ',passedInString)
 
-    if(floatValue <= 0.05 && floatValue >= -0.05) {
-        stringToReturn = floatValue.toFixed(5)
-    }
-    else 
-        if(floatValue <= 10000000000000) {//10tr
-            stringToReturn = floatValue.toFixed(2)
-        }
-        else {//>10tr
-            stringToReturn = floatValue.toFixed(0)
-        }
+    //if on auto, then do as follows:
+    
+    switch(numberOfDeciPlacesString) {
+        case 'auto': 
+            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS AUTO')
 
+            if(floatValue <= 0.05 && floatValue >= -0.05) {
+                stringToReturn = floatValue.toFixed(5)
+            }
+            else 
+            if(floatValue <= 1000000) {//1m
+                stringToReturn = floatValue.toFixed(3)
+            }
+            else
+                if(floatValue <= 10000000000000) {//10tr
+                    stringToReturn = floatValue.toFixed(2)
+                }
+                else {//>10tr
+                    stringToReturn = floatValue.toFixed(0)
+                }
+
+            break 
+
+        case 0: 
+            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 0')
+            stringToReturn = floatValue.toFixed(0)
+            break 
+        case 1: 
+            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 1')
+            stringToReturn = floatValue.toFixed(1)
+            break
+        case 2: 
+            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 2')
+            stringToReturn = floatValue.toFixed(2)
+            break
+        case 3: 
+            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 3')
+            stringToReturn = floatValue.toFixed(3)
+            break
+        case 4: 
+            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 4')
+            stringToReturn = floatValue.toFixed(4)
+            break
+
+        default: stringToReturn = floatValue.toFixed(2)//never gets here
+            
+    }//switch
+     
+
+
+
+    //if greater than 10tr, forceably do 0 decipoints
+    if(floatValue >= 10000000000000) {//10tr
+        stringToReturn = floatValue.toFixed(0)
+    }
 
     console.log('TRUNCATE DECIOINTS: STRINGTO RETURN IS: ' + stringToReturn)
 
@@ -941,6 +985,9 @@ export const truncateDecimalPlacesOfString = (passedInString) => {
     return stringToReturn
 
 }
+
+
+
 
 
 
@@ -1079,7 +1126,6 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
     if(wholeStringHasCurrencySign) {//only add currency if calclation has
     //at leat a currency symbol
             
-        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 1')
         if(wholeStringHasPercentCalculation) {
             if(/out|from/.test(passedInWholeString)) {//if outof and 'from to' then leave as is, dont add currency
                 //%change and outof, leave answer as is, no adding currncy
@@ -1090,8 +1136,6 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
                 let indexOfFirstNumeral = passedInAnswerString.search(/[0-9]/)
                 let str = passedInAnswerString.slice(0, indexOfFirstNumeral) + 
                                 currentCurrency + passedInAnswerString.slice(indexOfFirstNumeral)
-        console.log('I¢¢¢¢¢¢¢¢¢¢¢¢  INSERT CURENCY TO ANSWER: AT POINT 3')
-
                 return str //no need to process code below
             
             }
@@ -1100,15 +1144,12 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
             let indexOfFirstNumeral = passedInAnswerString.search(/[0-9]/)
             let str = passedInAnswerString.slice(0, indexOfFirstNumeral) + 
                             currentCurrency + passedInAnswerString.slice(indexOfFirstNumeral)
-        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 4')
-
             return str //no need to process code below
         }
 
     }
     else {//no currency sign in whole calcullation stirng, no dont add currency
         //return as is
-        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 5')
         return passedInAnswerString
     }
 

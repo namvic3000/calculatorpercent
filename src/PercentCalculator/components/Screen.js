@@ -42,7 +42,7 @@ class Screen extends Component {
     //truncate the decimal places, for user display only, internally not truncated
     //for keeping precision
     //do this first before inserting thousands separators which would error
-    screenLiveAnswerLine = helpers.truncateDecimalPlacesOfString(screenLiveAnswerLine) 
+    screenLiveAnswerLine = helpers.truncateDecimalPlacesOfString(screenLiveAnswerLine, this.props.currentNumberOfDeciPoints) 
 
 
     ////MUST ADD EXTRA DETAILS BEFORE ADDING SEPARATORS. WONT WORK IF HAVE
@@ -200,7 +200,8 @@ const mapStateToProps = (state) => ({
   screenMidScreenMessage: state.calculatorStateData.screenMidScreenMessage,
   segmentsArray: state.calculatorStateData.segmentsArray,
   currentSegmentIndex: state.calculatorStateData.currentSegmentIndex,
-  currentCurrency: state.currency.currentCurrency
+  currentCurrency: state.currency.currentCurrency,
+  currentNumberOfDeciPoints: state.deciPoints.currentNumberOfDeciPoints
 })
 
 

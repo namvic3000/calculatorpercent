@@ -1,14 +1,34 @@
 import React, { Component } from 'react'
-import { Clipboard,Text, View, StyleSheet , Dimensions, TouchableOpacity, ScrollView, Button} from 'react-native'
+import {Clipboard,Text, View, StyleSheet , Dimensions, TouchableOpacity, ScrollView} from 'react-native'
+import {Button} from 'react-native-elements'
 import uuid from 'uuid/v4'
 import { connect  } from "react-redux";
 import  * as helpers from "../helpers";
 import {updateShowTapeStatus, removeRecordFromTape, deleteWholeTape} from "../../../actions/tapeActions";
+import AddNoteTextEntryModal from "./AddNoteTextEntryModal";
 
 
 class Tape extends Component {
  
     
+    state = {
+        showTextEntryModal: false,
+    }
+
+
+
+    closeModal = () => {
+        this.setState({showTextEntryModal: false})
+    }
+
+
+    showModal = () => {
+        this.setState({showTextEntryModal: true})
+    }
+
+
+
+
 
     deleteOneCalculation = (index) => {
 
@@ -37,6 +57,11 @@ class Tape extends Component {
         }
     }
 
+
+
+    addNoteButtonClicked = (tapeRecordIndex) => {
+        this.setState({showTextEntryModal: true})
+    }
 
 
 
@@ -74,9 +99,10 @@ class Tape extends Component {
                 showTapeStatus ? (
                     <View style={styles.outerContainer}>
                         <View style={styles.topButtonsContainer}>
-                            <TouchableOpacity style={styles.deleteAllButton} onPress={this.deleteAllEntriesFromTape}><Text style={styles.buttonText}>Delete All</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.copyButton} onPress={this.copyTapeToClipBoard}><Text style={styles.buttonText}>Copy to Clipboard</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.deleteAllButtonContainer} onPress={this.deleteAllEntriesFromTape}><Text style={styles.deleteAllButtonText}>Delete All</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.copyButtonContainer} onPress={this.copyTapeToClipBoard}><Text style={styles.copyButtonText}>Copy to Clipboard</Text></TouchableOpacity>
                         </View>
+
 
                         <ScrollView style={styles.scrollView}>
                         {
@@ -85,13 +111,26 @@ class Tape extends Component {
                                     <View style={styles.calculationTextContainer}>
                                         <Text style={styles.calculationText}>{oneWholeCalculationString}</Text>
                                     </View>
-                                    <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}>
-                                        <Text style={styles.deleteButtonText}>Delete</Text>
+                                    {/* need to store index in this.currentTapeRecordIndex so can pass it to ADDNOTEMODAL outside of this block */}
+                                    <TouchableOpacity style={styles.sideAddNoteButtonContainer} onPress={() => {this.currentTapeRecordIndex = index; this.addNoteButtonClicked(index)}}>
+                                        <Text style={styles.sideAddNoteButtonText}>+Note</Text>
                                     </TouchableOpacity>
+                                    <TouchableOpacity style={styles.sideDeleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}>
+                                        <Text style={styles.sideDeleteButtonText}>Delete</Text>
+                                    </TouchableOpacity>
+
+                                    {/* <Button  title="+Note" buttonStyle={styles.sideDeleteButtonContainer} textStyle={styles.sideDeleteButtonText} onPress={() => this.deleteOneCalculation(index)}/>
+                                    <Button title="Delete" buttonStyle={styles.sideDeleteButtonContainer} textStyle={{color: 'blue'}} onPress={() => this.deleteOneCalculation(index)}/> */}
                                 </View>))
                             
                         }
+
                         </ScrollView>
+
+                        <AddNoteTextEntryModal isShowing={this.state.showTextEntryModal} 
+                                                closeModal={this.closeModal}
+                                                forTapeRecordIndex={this.currentTapeRecordIndex}/>
+
                     </View>
                     
                 ): (
@@ -108,7 +147,7 @@ class Tape extends Component {
         //             arrayOfRecords.map( (string, index) => (
         //                 <View key={index} style={styles.oneSegmentContainer}>
         //                     <View><Text style={styles.calculationTextContainer} key={uuid()}>{string}</Text></View>
-        //                     <Button style={styles.deleteButtonContainer} title="delete"/>
+        //                     <Button style={styles.sideDeleteButtonContainer} title="delete"/>
         //                 </View>))
                     
         //         }
@@ -186,56 +225,93 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     calculationText: {
-        fontSize: 20
-    },
-    deleteButtonContainer: {
-        backgroundColor: "orange",
-        flex: 1,
-        height: Dimensions.get('window').height*0.04,
-    },
-    deleteButtonText: {
-        lineHeight: Dimensions.get('window').height*0.04,
-        textAlign: 'center',
-        color: 'white',
         fontSize: Dimensions.get('window').height*0.025,
     },
-    deleteAllButtonContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        height: Dimensions.get('window').height/25,
-        color: 'white',
-        backgroundColor: 'red',
-        width: '100%'
-    },
-    deleteAllButtonText: {
-        textAlign: 'center',
-        lineHeight: Dimensions.get('window').height/25,
-        fontSize: Dimensions.get('window').height/33,
-    },
-    topButtonsContainer: {
-        flexDirection: 'row',
-        height: '3.5%',
-        width: '100%',
-        backgroundColor: 'yellow'
-    },
-    deleteAllButton: {
-        flex: 1,
-        backgroundColor: 'red',
-        height: '100%',
+    sideDeleteButtonContainer: {//delte button on the side of calculation
+        // backgroundColor: "orange",
+        // flex: 0.5,
+        // width: '10%',
+        backgroundColor: 'transparent',
+        margin: '1.5%',
+        height: Dimensions.get('window').height*0.035,
         justifyContent: 'center',
         alignItems: 'center',
-        color: 'white'
     },
-    copyButton: {
+    sideDeleteButtonText: {
+        lineHeight: Dimensions.get('window').height*0.035,
+        textAlign: 'center',
+        color: 'orange',
+        fontSize: Dimensions.get('window').height*0.025,
+    },
+    sideAddNoteButtonContainer: {//delte button on the side of calculation
+        // backgroundColor: "orange",
+        // flex: 0.5,
+        // width: '10%',
+        backgroundColor: 'transparent',
+        margin: '1.5%',
+        marginRight: '2.5%',
+        height: Dimensions.get('window').height*0.035,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    sideAddNoteButtonText: {
+        lineHeight: Dimensions.get('window').height*0.035,
+        textAlign: 'center',
+        color: 'blue',
+        fontSize: Dimensions.get('window').height*0.025,
+    },
+
+    topButtonsContainer: {//contains the deletealll and copy buttons at top
+        flexDirection: 'row',
+        height: Dimensions.get('window').height*0.035,//'3.5%',
+        width: '100%',
+        backgroundColor: 'white'
+    },
+    
+
+    deleteAllButtonContainer: {
         flex: 1,
-        backgroundColor: 'blue',
+        backgroundColor: 'white',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+        // position: 'absolute',
+        // top: 0,
+        // left: 0,
+        // height: Dimensions.get('window').height/25,
+        // color: 'white',
+        // backgroundColor: 'red',
+        // width: '100%'
+    },
+    deleteAllButtonText: {
+        // textAlign: 'center',
+        // lineHeight: Dimensions.get('window').height/25,
+        // fontSize: Dimensions.get('window').height/33,
+        fontSize: Dimensions.get('window').height*0.027,
+        color: 'darkred'
+    },
+   
+    // deleteAllButton: {
+    //     flex: 1,
+    //     backgroundColor: 'white',
+    //     height: '100%',
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     color: 'red'
+    // },
+    copyButtonContainer: {
+        flex: 1,
+        backgroundColor: 'white',
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    buttonText: {
-        color: 'white',
+    // deleteAllButtonText: {
+    //     color: 'darkred',
+    //     fontSize: Dimensions.get('window').height*0.027,
+    // },
+    copyButtonText: {
+        color: 'green',
         fontSize: Dimensions.get('window').height*0.027,
     }
 })
