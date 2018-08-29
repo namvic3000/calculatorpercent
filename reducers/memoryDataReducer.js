@@ -35,6 +35,7 @@ const memoryDataReducer = (state = initialState, action) => {
                 ...state,
                 memoryData: {...obj}
             }
+            break
 
         
         default: return state 

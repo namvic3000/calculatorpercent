@@ -47,6 +47,7 @@ const tapeReducer = (state = initialState, action) => {
                 ...state,
                 arrayOfRecords: updatedArrayOfRecords
             }
+            break
 
 
 
@@ -68,6 +69,7 @@ const tapeReducer = (state = initialState, action) => {
                 arrayOfRecords: updatedArrayOfRecords
             }
 
+            break
 
             
         case DELETE_WHOLE_TAPE: //note: there is no corresponding action coz so simple
@@ -79,6 +81,7 @@ const tapeReducer = (state = initialState, action) => {
                 arrayOfRecords: []//empty array
             }
 
+            break
 
 
         case UPDATE_SHOW_TAPE_STATUS: 
@@ -88,6 +91,7 @@ const tapeReducer = (state = initialState, action) => {
                 showTapeStatus: action.payload.status
             }
             
+            break
             
 
         case REPLACE_WHOLE_TAPE_DATA: 
@@ -96,6 +100,7 @@ const tapeReducer = (state = initialState, action) => {
                 arrayOfRecords: action.payload.newTapeArray  
             }
 
+            break
 
 
         default: return state

@@ -6,6 +6,7 @@ import buttonSmallsPanelReducer   from '../reducers/buttonSmallsPanelReducer'
 import skinDataReducer   from '../reducers/skinDataReducer'
 import aboutPageReducer from './aboutPageReducer';
 import currencyReducer from './currencyReducer';
+import {deciPointsReducer} from './deciPointsReducer';
 
 const rootReducer = combineReducers({
         calculatorStateData: calculatorDataReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
         skinData: skinDataReducer,
         aboutPage: aboutPageReducer,
         currency: currencyReducer,
+        deciPoints: deciPointsReducer
 })
 
 

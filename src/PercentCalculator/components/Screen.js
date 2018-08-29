@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import {StyleSheet,View, Text, Dimensions} from 'react-native'
+import {ScrollView, StyleSheet,View, Text, Dimensions} from 'react-native'
 import { connect } from "react-redux";
 import * as helpers from '../helpers.js'
 import IconOfTape  from "./IconOfTape";
+import IconCurrencySign from './IconCurrencySign.js';
+import IconDeciPoints from './IconDeciPoints.js';
 
 
 
@@ -179,15 +181,11 @@ class Screen extends Component {
 
 
 
-
+    // onTouchEnd={() => {alert('touched'); return}}
 
     return(
-      <View style={styles.screen}>
-        <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
-        <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
-        <View style={styles.midScreenMsgContainer}>
-          <Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text>
-        </View>
+      <View style={styles.screen}><Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text><Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text><View style={styles.midScreenMsgContainer}><Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text></View>
+      <IconCurrencySign/><IconDeciPoints/>
       </View>
     )
   }

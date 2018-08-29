@@ -15,7 +15,7 @@ const aboutPageReducer = (state = initialState, action) => {
                 ...state,
                 showAboutPageStatus: action.payload.status 
             }
-
+            break
         default: return state 
     }
 }

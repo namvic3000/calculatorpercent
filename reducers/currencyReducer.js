@@ -11,6 +11,7 @@ const  currencyReducer = (state = initialState, action) => {
             return {
                 currentCurrency: action.payload.currency
             }
+            break
     
         default: return state
     }

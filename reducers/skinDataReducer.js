@@ -39,6 +39,7 @@ const skinDataReducer = (state = initialState, action) => {
                 // buttonSmallsColor: action.payload.buttonSmallsColor
             }
 
+            break
 
 
  

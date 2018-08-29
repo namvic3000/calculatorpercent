@@ -15,6 +15,7 @@ const buttonSmallsPanelReducer = (state = initialState, action) => {
             return {
                 showButtonSmallsPanelStatus: action.payload.status
             }
+            break
 
 
         default: return state 

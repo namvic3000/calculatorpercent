@@ -327,7 +327,7 @@ class ButtonCurrency extends React.Component {
 
         return(
             <TouchableOpacity style={styles.standardButtonContainer} value="+" onPress={ () => {this.handleCalcButtonClicked("currency")}}>
-                            <Text style={styles.calcButtonTextForCurrency}>$</Text>
+                            <Text style={styles.calcButtonTextForCurrency}>{this.props.currentCurrency}</Text>
             </TouchableOpacity>
         )
     }
