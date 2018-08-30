@@ -134,7 +134,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
      ////REMOVE CURRENCY SIGNS
      console.log('CALCULATEWHOLERESULT: PASSEDINSTRING STRING BEFORE REPLACE CURRENCY SYMBOL IS ' + passedInString)
-     passedInString = passedInString.replace(/\$/g, '')
+     passedInString = passedInString.replace(/[\$|£|¥|€]/g, '')
      console.log('CALCULATEWHOLERESULT: PASSEDIN STRING AFTER REPLACE CURRENCY SYMBOL IS ' + passedInString)
 
      
@@ -946,23 +946,23 @@ export const truncateDecimalPlacesOfString = (passedInString, numberOfDeciPlaces
 
             break 
 
-        case 0: 
+        case '0': 
             console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 0')
             stringToReturn = floatValue.toFixed(0)
             break 
-        case 1: 
+        case '1': 
             console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 1')
             stringToReturn = floatValue.toFixed(1)
             break
-        case 2: 
+        case '2': 
             console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 2')
             stringToReturn = floatValue.toFixed(2)
             break
-        case 3: 
+        case '3': 
             console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 3')
             stringToReturn = floatValue.toFixed(3)
             break
-        case 4: 
+        case '4': 
             console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 4')
             stringToReturn = floatValue.toFixed(4)
             break

@@ -13,7 +13,7 @@ class IconDeciPoints extends React.Component {
 
         let indexOfCurrentDeciPoints = 0//default
 
-        let deciPointsArr = ['auto', 0, 1, 2, 3, 4]
+        let deciPointsArr = ['auto', '0', '1', '2', '3', '4']
 
         //get index of current number of decipoints in the array
         deciPointsArr.forEach( (numberOfDeciPoints, index) => {

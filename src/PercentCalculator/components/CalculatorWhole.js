@@ -9,8 +9,8 @@ import { connect } from "react-redux"
 import { replaceWholeTapeData } from "../../../actions/tapeActions";
 import { updateSkinData } from "../../../actions/skinDataActions";
 import { updateMemoryData } from "../../../actions/memoryActions";
-
-
+import { updateCurrentCurrency } from "../../../actions/currencyActions";
+import { updateNumberOfDeciPoints } from "../../../actions/deciPointsActions";
 
 
 
@@ -62,6 +62,42 @@ class CalculatorWhole extends React.Component {
         }
 
     }
+
+
+
+    readCurrencyDataFromLocalStorage = async () => {
+
+        try {
+            result = await AsyncStorage.getItem('currency')
+            return result //no need to parse, was not stringified , cos is a simple string
+        }
+        catch(error) {
+            console.log(error)
+        }
+
+    }
+
+
+
+
+
+
+    readDeciPointsStatusFromLocalStorage = async () => {
+        try {
+            let result = await AsyncStorage.getItem('deciPointsStatus')
+            return JSON.parse(result) 
+        }
+        catch(error) {
+            console.log(error)
+        }
+    }
+
+
+
+
+
+
+
 
 
     render() {
@@ -135,6 +171,29 @@ class CalculatorWhole extends React.Component {
                 
                 this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
             }
+        })
+
+
+
+        this.readCurrencyDataFromLocalStorage()
+        .then( result => {
+            if( ! result ) {//if not exist
+                result = '$'//default
+            }
+            console.log('$$$$$$  CURRENCY read in from storage is ' + result)
+            this.props.dispatch(updateCurrentCurrency(result))
+        })
+
+
+
+
+        this.readDeciPointsStatusFromLocalStorage()
+        .then( result => {
+            if( ! result ) {
+                result = 'auto'//default
+            }
+
+            this.props.dispatch(updateNumberOfDeciPoints(result))
         })
 
         //buttonsmallpanel and thin strip have diferent height, and cant 
@@ -219,6 +278,10 @@ let styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+
 })
 
 

@@ -220,7 +220,13 @@ class ButtonCurrency extends React.Component {
                         let noCurrencyOperand2CalculationFlag = /add|deduct|added|deducted|then/.test(helpers.collateStringsIntoOneString(segmentsArray))
                         if(noCurrencyOperand2CalculationFlag) {
                             allowCurrencySymbol = false 
+                            //dont take timemachine snapshot if input is ignored,
+                            //cos user would press backspace and see no change 
+                            //eventhough been rewound 1 step, but user doesnt know it
+                            allowToTakeSnapShotOfState = false
                         }
+
+                        
                     }
                      
                      

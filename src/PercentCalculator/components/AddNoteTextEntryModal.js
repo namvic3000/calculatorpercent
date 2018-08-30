@@ -1,8 +1,8 @@
 import React from 'react'
 import {TouchableOpacity ,Dimensions,StyleSheet,TextInput, View, Text } from "react-native"
 import {Button} from 'native-base'
-
-
+import { connect } from "react-redux";
+import {  } from "../../../actions/calculatorDataActions";
 
 
 
@@ -15,6 +15,9 @@ class AddNoteTextEntryModal extends React.Component {
     }
 
 
+
+
+
     handleTextInput = (textFromInput) => {
         console.log('AT ADDNOTEMODAL, TEXT RECEIVED INTO HANDLEINPUT METHOD IS ' + textFromInput)
     
@@ -25,8 +28,15 @@ class AddNoteTextEntryModal extends React.Component {
 
 
     okButtonPressed = () => {
-
+        console.log('ADDNOTEMODAL: OK BUTTON ON MODAL BEEN CLICKED')
+        //close modal
+        this.props.closeModal()
     }
+
+
+
+
+
 
     render() {
 
@@ -89,4 +99,18 @@ let styles = StyleSheet.create({
     }
 
 })
-export default AddNoteTextEntryModal
+
+
+mapStateToProps = (state) => ({
+    segmentsArray: state.calculatorStateData.segmentsArray,
+    currentSegmentIndex: state.calculatorStateData.currentSegmentIndex
+})
+
+
+mapDispatchToProps = (dispatch) => ({
+})
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddNoteTextEntryModal)
