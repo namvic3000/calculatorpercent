@@ -95,12 +95,16 @@ const tapeReducer = (state = initialState, action) => {
             
 
         case REPLACE_WHOLE_TAPE_DATA: 
+
+            saveTapeToLocalStorage(action.payload.newTapeArray)//
+            
             return {
                 ...state,
                 arrayOfRecords: action.payload.newTapeArray  
             }
 
             break
+
 
 
         default: return state
