@@ -63,14 +63,14 @@ class MemoryValuesPanel extends React.Component {
 
 
 
-        console.log('MEMORY PRESSED, MEMORY NUMER: ' + memoryNumber)
+     //console.log('MEMORY PRESSED, MEMORY NUMER: ' + memoryNumber)
 
         //update memory status to correct memory number
         let memory1Value = this.props.memory1Value
         let memory2Value = this.props.memory2Value
         let currentActiveMemory = memoryNumber
 
-        console.log('AT MEMORY VALUES PANEL, mem1value, mem2val, currntactivemem are: ', + memory1Value, memory2Value, currentActiveMemory)
+     //console.log('AT MEMORY VALUES PANEL, mem1value, mem2val, currntactivemem are: ', + memory1Value, memory2Value, currentActiveMemory)
         
         this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
     }
@@ -96,13 +96,13 @@ class MemoryValuesPanel extends React.Component {
           mem2Excess = 0
         }
     
-        console.log('MEMVALUES PANEL: MEM1 AND MEM2 EXCESSES AREE: '+mem1Excess, mem2Excess)
+     //console.log('MEMVALUES PANEL: MEM1 AND MEM2 EXCESSES AREE: '+mem1Excess, mem2Excess)
         let fontSizeOfMem1Value = Dimensions.get('window').width/21 - ((mem1Excess * 0.4))
         let fontSizeOfMem2Value = Dimensions.get('window').width/21 - ((mem2Excess * 0.4))
 
         
 
-        console.log('MEMVALUES CONTAINER, BGCOLORS ARE: ' + this.props.skinData.memoryBoxesColor)
+     //console.log('MEMVALUES CONTAINER, BGCOLORS ARE: ' + this.props.skinData.memoryBoxesColor)
 
         let styles = StyleSheet.create( {
             container: {
@@ -167,7 +167,7 @@ class MemoryValuesPanel extends React.Component {
         // let mem2ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory2Value)
         let mem2ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory2Value)
 
-        console.log('AT MEMVALUESPANEL, MEM1VALUE TO DISPLAY IS: ' + mem1ValueWithSeparators)
+     //console.log('AT MEMVALUESPANEL, MEM1VALUE TO DISPLAY IS: ' + mem1ValueWithSeparators)
         return(
             <View style={styles.container}>
                     <TouchableOpacity style={styles.memory1ValueContainer} onPress={() => {this.handleMemoryValuePress(1)}}>

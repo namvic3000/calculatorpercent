@@ -161,19 +161,19 @@ class ButtonAfterDeductedPercent extends React.Component {
 
         
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
+     //console.log('AT %OF INPUT, CURRENTSEGMENTISANUMBER FLAG IS :' + currentSegmentIsANumberFlag)
 
         let currentSegmentHasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT %OF INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
+     //console.log('AT %OF INPUT, CURRENTSEGMENTHAS OPENBRACKET FLAG IS :' + currentSegmentHasAnOpenBracketFlag)
 
         let currentSegmentHasACloseBracketFlag = /\)/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT %OF INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
+     //console.log('AT %OF INPUT, CURRENTSEGMENTHASCLOSEBRACKET FLAG IS :' + currentSegmentHasACloseBracketFlag)
         
         let currentSegmentHasNoOpenOrCloseBracketFlag = ! /(\(|\))/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT %OF INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
+     //console.log('AT %OF INPUT, CURRENTSEGMENTHAS NO OPEN OR CLOSE BRACKET FLAG IS :' + currentSegmentHasNoOpenOrCloseBracketFlag)
         
         let currentSegmentHasPriorArithOperator = /(\+|-|x|÷)/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT %OF INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
+     //console.log('AT %OF INPUT, currentSegmentHasPriorArithOperator FLAG IS :' + currentSegmentHasPriorArithOperator)
         
 
         //first make sure that there has been no previous percentage related
@@ -201,7 +201,7 @@ class ButtonAfterDeductedPercent extends React.Component {
                 if( ! currentSegmentHasPriorArithOperator) {//no prior arith operator.
                     //25 x ((23 + 10% ... becomes 25 x ((23 + [10% of ...
                     //or 25 becomes 25% of ...
-                    console.log('AT %OF, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
+                 //console.log('AT %OF, GOT TO NUMBER HAS NO OPEN OR CLOSE BRACKET, NO PRIOR ARITH OPERATOR')                
                     //no priior arith operator, no closing or open bracket,
                     // so we  just proceed to add '% of' portion
                     
@@ -217,7 +217,7 @@ class ButtonAfterDeductedPercent extends React.Component {
                     segmentsArray[currentSegmentIndex].stringValue = '%'
                 }
                 else {//has prior arith operator.
-                    console.log('AT %OF, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
+                 //console.log('AT %OF, GOT TO NUMBER HAS NO BRACKETS, BUT HAS PRIOR ARITH OPERATOR')
                     //e.g 5 x 20, so we put open brack in front of 20, 
                     //becomes 5 x (20% of ...
         
@@ -236,7 +236,7 @@ class ButtonAfterDeductedPercent extends React.Component {
 
             else
             if(currentSegmentHasAnOpenBracketFlag) {//has an open bracket. 
-                console.log('AT %OF, GOT TO SEGMENT HAS OPEN BRACKT')
+             //console.log('AT %OF, GOT TO SEGMENT HAS OPEN BRACKT')
                 //if has open bracket at start of segment, means user 
                 //typed it in, e.g 5 x (20 , or ((20% of ...
                 //if it is 5 x (20 , ie has prior arith operator, then we insert
@@ -273,7 +273,7 @@ class ButtonAfterDeductedPercent extends React.Component {
             }
             else 
             if(currentSegmentHasACloseBracketFlag) {//has a close bracket.
-                console.log('AT %OF, GOT TO SEGMENT HAS CLOSE BRACKT')
+             //console.log('AT %OF, GOT TO SEGMENT HAS CLOSE BRACKT')
                 //if has a close bracket, means user just entered a bracketed caluculation,
                 //e.g (5 x 20)% of ... or 25 x (30 + 20)% of ...
                 //if it is (5 x 20)%, ie no prior arith outside of unit, 

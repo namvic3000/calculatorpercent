@@ -21,7 +21,7 @@ class CalculatorWhole extends React.Component {
 
 
     readTapeFromLocalStorage = async () => {
-
+        
         //input is array of strings
         try {
             let result = await AsyncStorage.getItem('storedTapeObject')
@@ -29,8 +29,10 @@ class CalculatorWhole extends React.Component {
             // console.log('DATA GOT FROM LOCALSTORAGE IS  ', result)
             return result
         }
-        catch(error) {
-            console.log(error)
+        catch(error) {//if error, probably coz not exist, then return default values
+        //console.log('ERROR, SO RETURNING DEFAULT [] TAPE')
+            let defaultTape = []
+            return defaultTape
         }
     }
 
@@ -44,7 +46,21 @@ class CalculatorWhole extends React.Component {
             return result
         }
         catch(error) {
-            console.log('ERROR IN FETCHING SKIN DATA FROM LOCAL STORGE',error)
+        //console.log('ERROR IN FETCHING SKIN DATA FROM LOCAL STORGE SO RETRUNING DEFAULT VALUES')
+            let defaultSkinData = {
+                showColorPickerStatus: false,
+                skinSelectionModeActiveStatus: false,
+                currentComponentSkinToBeChanged: "",
+                memoryBoxesColor: '#000000',
+                memoryButtonsColor: '#000000',
+                percentButtonsColor: '#000000',
+                keysSet1Color: '#000000',
+                keysSet2Color: '#000000',
+                buttonSmallsColor: '#0d47a5',
+            } 
+            
+            return defaultSkinData
+        
         }
 
     }
@@ -59,10 +75,20 @@ class CalculatorWhole extends React.Component {
             return result
         }
         catch(error) {
-            console.log('ERROR IN FETCHING MEMORY DATA FROM LOCAL STORGE',error)
+     //console.log('ERROR IN FETCHING MEMORY DATA FROM LOCAL STORGE SO RETURNING DEFAULT VALUES')
+         let  defaultMemory = {
+            memory1Value: 'empty',
+            memory2Value: 'empty',
+            currentActiveMemory: 1
+         }
+
+         return defaultMemory
         }
 
+
     }
+
+
 
 
 
@@ -73,7 +99,8 @@ class CalculatorWhole extends React.Component {
             return result //no need to parse, was not stringified , cos is a simple string
         }
         catch(error) {
-            console.log(error)
+     //console.log('ERROR: CURRENCY NOT EXIST, SO RETURNING DEFAULT')
+         return '$'
         }
 
     }
@@ -86,10 +113,11 @@ class CalculatorWhole extends React.Component {
     readDeciPointsStatusFromLocalStorage = async () => {
         try {
             let result = await AsyncStorage.getItem('deciPointsStatus')
-            return JSON.parse(result) 
+            return JSON.parse(result)
         }
         catch(error) {
-            console.log(error)
+     //console.log('ERROR IN FETCHING DECIPOINTS, SO RETURNING DEFAULT')
+         return 'auto'
         }
     }
 
@@ -101,6 +129,11 @@ class CalculatorWhole extends React.Component {
 
 
 
+
+
+
+    
+
     render() {
 
 
@@ -109,27 +142,27 @@ class CalculatorWhole extends React.Component {
         .then( result => {
             // console.log('RESULT FROM READING IN LOCALSTROAGE IS : ', result)
             if ( ! result) { //if not exist
-                let defaultTapeState = {
-                    arrayOfRecords: [], //array of segments arrays
-                    showTapeStatus: false 
-                }
-                this.props.dispatch(replaceWholeTapeData(defaultTapeState))
-                console.log('TAPE DATA NOT EXIST, SO NO UPDATE OF STORE')
+                //NEVER GETS HERE, SINCE RESULT RETURNED ALWAYS 
+                //IS VALID FROM READ FROM LOCAL STORAGE METHODS
+                this.props.dispatch(replaceWholeTapeData([]))
+            //console.log('TAPE DATA NOT EXIST, SO NO UPDATE OF STORE')
             }
             else {
-                console.log('TAPE DATA DOES EXIST, SO NOW UPDATIN GSTORE')
+            //console.log('TAPE DATA DOES EXIST, SO NOW UPDATIN GSTORE')
                 this.props.dispatch(replaceWholeTapeData(result))
             }
-            console.log('TAPE OBJECT FROM STORAGE REEAD IN IS: ', result)
+         //console.log('TAPE OBJECT FROM STORAGE REEAD IN IS: ', result)
         })
 
 
         //read in saved skin data
         this.readSkinDataFromLocalStorage()
         .then( result => {
-            console.log('SKIN DATA READ FROM LOCAL STORAGE, IS ', result )
+         //console.log('SKIN DATA READ FROM LOCAL STORAGE, IS ', result )
             if( ! result) {//if NOT exists
-                console.log('SKKIN DATA NOT EXISWT, NOT UPDATING STORE')
+                //NEVER GETS HERE, SINCE RESULT RETURNED ALWAYS 
+                //IS VALID FROM READ FROM LOCAL STORAGE METHODS
+            //console.log('SKKIN DATA NOT EXISWT, NOT UPDATING STORE')
                 let defaultSkinData = {
                     showColorPickerStatus: false,
                     skinSelectionModeActiveStatus: false,
@@ -139,24 +172,27 @@ class CalculatorWhole extends React.Component {
                     percentButtonsColor: '#000000',
                     keysSet1Color: '#000000',
                     keysSet2Color: '#000000',
-                    buttonSmallsColor: '#000000',
+                    buttonSmallsColor: '#0d47a5',
                 } 
-                this.props.updateSkinData(defaultSkinData)
+                this.props.dispatch(updateSkinData(defaultSkinData))
             }
             else {//exists
-                console.log('SKKIN DATA DOES EXISWT, SO NOW UPDATING STORE')
+         //console.log('SKKIN DATA DOES EXISWT, SO NOW UPDATING STORE')
                 this.props.dispatch(updateSkinData(result))
             }
         })
 
 
 
+
         //read in saved mememory data
         this.readMemoryDataFromLocalStorage()
         .then( result => {
-            console.log('MEMORY DATA READ FROM LOCAL STORAGE, IS ', result )
+         //console.log('MEMORY DATA READ FROM LOCAL STORAGE, IS ', result )
             if( ! result) {//if NOT exists
-                console.log('MEMORY DATA NOT EXISWT, NOT UPDATING STORE')
+                //NEVER GETS HERE, SINCE RESULT RETURNED ALWAYS 
+                //IS VALID FROM READ FROM LOCAL STORAGE METHODS
+         //console.log('MEMORY DATA NOT EXISWT, NOT UPDATING STORE')
                 let memory1Value = 'empty'
                 let memory2Value = 'empty'
                 let currentActiveMemory = 1
@@ -164,8 +200,8 @@ class CalculatorWhole extends React.Component {
                 this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
             }
             else {//exists
-                console.log('MEMORY DATA DOES EXISWT, SO NOW UPDATING STORE')
-                console.log('RESULT RECEIVED FROM READIN MEMORYDATA FROM STORAGE IS: ', result)
+         //console.log('MEMORY DATA DOES EXISWT, SO NOW UPDATING STORE')
+             //console.log('RESULT RECEIVED FROM READIN MEMORYDATA FROM STORAGE IS: ', result)
                 let memory1Value = result.memory1Value
                 let memory2Value = result.memory2Value
                 let currentActiveMemory = result.currentActiveMemory
@@ -179,10 +215,17 @@ class CalculatorWhole extends React.Component {
         this.readCurrencyDataFromLocalStorage()
         .then( result => {
             if( ! result ) {//if not exist
+                //NEVER GETS HERE, SINCE RESULT RETURNED ALWAYS 
+                //IS VALID FROM READ FROM LOCAL STORAGE METHODS
+            //console.log('CURRENCY DATA NOT EXIST, ASSIGNN $ DEFAULT')
                 result = '$'//default
+                this.props.dispatch(updateCurrentCurrency(result))
             }
-            console.log('$$$$$$  CURRENCY read in from storage is ' + result)
-            this.props.dispatch(updateCurrentCurrency(result))
+            else {
+            //console.log('CURRENCY DATA DOES EXIST, SO UPDATE')
+
+                this.props.dispatch(updateCurrentCurrency(result))
+            }
         })
 
 
@@ -191,10 +234,14 @@ class CalculatorWhole extends React.Component {
         this.readDeciPointsStatusFromLocalStorage()
         .then( result => {
             if( ! result ) {
+            //console.log('DECIP0IINT DATA NOT EXIST, ASSIGNN "AUTO" DEFAULT')
                 result = 'auto'//default
+                this.props.dispatch(updateNumberOfDeciPoints(result))
             }
-
-            this.props.dispatch(updateNumberOfDeciPoints(result))
+            else {
+            //console.log('DECIPOINT DATA DOES EXIST, NOW UPDATING')
+                this.props.dispatch(updateNumberOfDeciPoints(result))
+            }
         })
 
         //buttonsmallpanel and thin strip have diferent height, and cant 
@@ -219,6 +266,8 @@ class CalculatorWhole extends React.Component {
         return(
             <View style={styles.containerOfWholeCalculator}>
                 
+                <View style={styles.gapFiller}></View>
+
                 <View style={styles.screenContainer}>
                     <Screen />
                 </View>
@@ -230,6 +279,7 @@ class CalculatorWhole extends React.Component {
                 <View style={buttonSmallsPanelOrThinStripStyle}>
                     <ButtonSmallsPanel/>
                 </View>
+                
                 
                 <Tape/>
                  
@@ -247,15 +297,22 @@ class CalculatorWhole extends React.Component {
 
 
 let styles = StyleSheet.create({
+    gapFiller: {
+        height: '0.25%',
+        backgroundColor: 'white',
+        color: 'white'
+    },
     containerOfWholeCalculator: {
         flex: 1,
-        backgroundColor: "white"
+        backgroundColor: "black"
     },
     screenContainer: {
         flex: 1.2
+        // height: '28%',
     },
     wholeKeypadSectionContainer: {
         flex: 3
+        // height: '70%',
     },
     buttonSmallsPanelContainer: {
         // position: 'absolute',
@@ -264,17 +321,19 @@ let styles = StyleSheet.create({
         width: '100%',
         // flex: 0.3,
         height: '6%',
-        backgroundColor: 'transparent'
+        backgroundColor: 'black'
     },
     thinStripContainer: {
         // position: 'absolute',
         // bottom: 0,
-        // height:10,
+        // height: '2%',
         flex:0.1,
         width: '100%',
-        backgroundColor: 'blue'
+        backgroundColor: 'black'
     },
 })
+
+
 
 
 
@@ -282,6 +341,7 @@ let styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     showButtonSmallsPanelStatus: state.buttonSmallsPanel.showButtonSmallsPanelStatus,
 })
+
 
 const mapDispatchToProps = (dispatch) => ({
 

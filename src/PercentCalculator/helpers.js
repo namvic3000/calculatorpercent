@@ -5,7 +5,7 @@ import currencyReducer from "../../reducers/currencyReducer";
 export const collateStringsIntoOneString = (arr) => {//arr is array of objects
 
     //TO DLETE
-    console.log('AT COLLATEINTOSTRING: SEGMENTS ARRAY IS ', arr)
+ //console.log('AT COLLATEINTOSTRING: SEGMENTS ARRAY IS ', arr)
     //colate all the string values of all the segments together to send to 
     //calculate method
     let collatedString = "";
@@ -14,7 +14,7 @@ export const collateStringsIntoOneString = (arr) => {//arr is array of objects
         collatedString = collatedString + obj.stringValue + ' '
     })
 
-    console.log('AT COLLATEINTOSTRING: STRING TO RETURN IS'+collatedString)
+ //console.log('AT COLLATEINTOSTRING: STRING TO RETURN IS'+collatedString)
 
     return collatedString
 }
@@ -30,17 +30,17 @@ export const collateStringsIntoOneString = (arr) => {//arr is array of objects
 
 export const getParenthesesNetValueFromString = (passedInString) => {
 
-    console.log('AT GETPARENTHESIS NETTVALUE, PASSED IN STRING IS '  + passedInString)
+ //console.log('AT GETPARENTHESIS NETTVALUE, PASSED IN STRING IS '  + passedInString)
 
     let nettValue = 0
     for( let i = passedInString.length-1; i>=0; i--) {
         if(passedInString[i] === '(') {
             nettValue--
-            console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
+         //console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
         }
         if(passedInString[i] === ')') {
             nettValue++
-            console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
+         //console.log('INSIDE LOOP, NETVALUE IS ' + nettValue)
              
         }
         
@@ -62,7 +62,7 @@ export const getParenthesesNetValueFromString = (passedInString) => {
 
 
 export const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (arr) => {
-    console.log(' GOT TO START OF FINDINDXOFSEGMENT')
+ //console.log(' GOT TO START OF FINDINDXOFSEGMENT')
 
     //passed in string must have close bracket at/near end of string.
     //, must be before open bracket, counting backwards from eostring.
@@ -84,11 +84,11 @@ export const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (a
            
             if(tempStr.charAt(stringIndex) === ')') {
                 nettBracketValue++
-                console.log('NETVALUE COUNT IS ' + nettBracketValue)
+             //console.log('NETVALUE COUNT IS ' + nettBracketValue)
             }
             if(tempStr.charAt(stringIndex) === '(') {
                 nettBracketValue--
-                console.log('NETVALUE COUNT IS ' + nettBracketValue)
+             //console.log('NETVALUE COUNT IS ' + nettBracketValue)
                 //if found equal number ) and ( brackets, then
                 //found the segment, save the index of the segment
                 if(nettBracketValue === 0) {
@@ -123,7 +123,7 @@ export const findIndexOfSegmentAndCharWhichHasFirstOpenBracketOfCurrentUnit = (a
 
 export const calculateResultOfWholeCalculation = (passedInString) => {
 
-    console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
+ //console.log('******GOT TO CALCULALTRESULT OF WHOLE CALCULATION')
 
 
     //if empty string, return, no action
@@ -133,9 +133,9 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
 
      ////REMOVE CURRENCY SIGNS
-     console.log('CALCULATEWHOLERESULT: PASSEDINSTRING STRING BEFORE REPLACE CURRENCY SYMBOL IS ' + passedInString)
+  //console.log('CALCULATEWHOLERESULT: PASSEDINSTRING STRING BEFORE REPLACE CURRENCY SYMBOL IS ' + passedInString)
      passedInString = passedInString.replace(/[\$|£|¥|€]/g, '')
-     console.log('CALCULATEWHOLERESULT: PASSEDIN STRING AFTER REPLACE CURRENCY SYMBOL IS ' + passedInString)
+  //console.log('CALCULATEWHOLERESULT: PASSEDIN STRING AFTER REPLACE CURRENCY SYMBOL IS ' + passedInString)
 
      
    
@@ -146,25 +146,25 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
     let wholeString = JSON.parse(JSON.stringify(passedInString))
 
     let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted|if)/.test(wholeString)
-    console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
+ //console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
     
     let stringHasOpenSquareBracketFlag = /\[/.test(wholeString)
-    console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)
+ //console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)
     
     let stringHasCloseSquareBracketFlag = /\]/.test(wholeString)
-    console.log('STRING HAS CLOSE SQUARE BRACKET ] FLAG IS : ' + stringHasCloseSquareBracketFlag)
+ //console.log('STRING HAS CLOSE SQUARE BRACKET ] FLAG IS : ' + stringHasCloseSquareBracketFlag)
     
 
     //if parenthesis open and close dont equal, means calculation incomplete
     if(getParenthesesNetValueFromString(wholeString) !== 0) {
-        console.log('AT CALCULATERESULT, BRACKETS INCOMPLETE')
+     //console.log('AT CALCULATERESULT, BRACKETS INCOMPLETE')
         return "incomplete"
     }
 
 
     //if string has open square bracket [ but not close ssquare bracket ], means incomplete
     if(stringHasOpenSquareBracketFlag && (! stringHasCloseSquareBracketFlag)) {
-        console.log('AT CALCULATERESULT, SQUARE BRACKETS INCOMPLETE')
+     //console.log('AT CALCULATERESULT, SQUARE BRACKETS INCOMPLETE')
         return "incomplete"
     }
     
@@ -201,10 +201,10 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
             //get content of square brackets, exclude the square brackets themselves
             let contentOfSquareBrackets = wholeString.slice(indexOfOpenSquareBracket+1, indexOfCloseSquareBracket)
-            console.log('CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
+         //console.log('CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
             //now reduce any parenthesis content to single values e.g ((23 + 5) x 2) becomes 56
             contentOfSquareBrackets = reduceBracketsPairContentsIntoSingleValues(contentOfSquareBrackets)
-            console.log('****AFTER REDUCED PARENTHESIS, CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
+         //console.log('****AFTER REDUCED PARENTHESIS, CONTENT OF SQUARE BRACKETS IS ' + contentOfSquareBrackets)
             
             //now calculate the percentage calculation and get a single number result
             contentOfSquareBrackets = calculateResultOfPercentCalculation(contentOfSquareBrackets)
@@ -294,14 +294,14 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
 
     let arrayOfOperands = (wholeString.match(/(\-[0-9|.]+)|([0-9|.]+)/g) || []) 
     let numberOfOperands = arrayOfOperands.length
-    console.log('** CALULATEWHOLESTRING: ARRAY OF OPERANDS IS: ', arrayOfOperands)
+ //console.log('** CALULATEWHOLESTRING: ARRAY OF OPERANDS IS: ', arrayOfOperands)
     
     //dont include the -NEGSIGN as a arith operator, so -5 is not
     ///an arith ooperator, use the ^ special character
     // let numberOfArithOperators = (wholeString.match(/(\+|x|÷)|(-[^0-9])/g) || []).length
     let numberOfArithOperators = (wholeString.match(/(\+|x|÷)|(-\s)/g) || []).length
-    console.log('** CALULATEWHOLESTRING: NUMBEROF OPERANDS ARE: ', numberOfOperands)
-    console.log('** CALULATEWHOLESTRING: NUMBEROF ARITH OPERATORS ARE: ', numberOfArithOperators)
+ //console.log('** CALULATEWHOLESTRING: NUMBEROF OPERANDS ARE: ', numberOfOperands)
+ //console.log('** CALULATEWHOLESTRING: NUMBEROF ARITH OPERATORS ARE: ', numberOfArithOperators)
     //if string has percent calculation, process thaat first
 
     if(numberOfArithOperators === numberOfOperands) {
@@ -318,11 +318,11 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
         let textOfLastArithOperator = arrayOfArithOperators[arrayOfArithOperators.length-1]
         //get index of last operator, there may be many same operators e.g many x's
         let indexOfLastArithOperator = wholeString.lastIndexOf(textOfLastArithOperator)
-        console.log('TEXT OF LAST OPERATOR IS, AND ITS INDEX IS: ', textOfLastArithOperator, indexOfLastArithOperator)
+     //console.log('TEXT OF LAST OPERATOR IS, AND ITS INDEX IS: ', textOfLastArithOperator, indexOfLastArithOperator)
         //remove the operator, so 5 x 2 x 15 x   becomes 5 x 2 x 15 so valid for 
         //passing into eval() js method
         wholeString = wholeString.slice(0,indexOfLastArithOperator)//remove last operator
-        console.log('AFTER REMOVING LAST OPERATOR STRING IS: ', wholeString)
+     //console.log('AFTER REMOVING LAST OPERATOR STRING IS: ', wholeString)
 
     }
 
@@ -351,7 +351,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
      //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
      wholeString = wholeString.replace(/x/g, '*')
      wholeString = wholeString.replace(/÷/g, '/')
-     console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
+  //console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
   
 
     // //if whole string has text in it, dont evaluate, just return the text
@@ -382,7 +382,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
                 return '0 (rounded)'
             }
 
-    console.log('*** RESULT OF WHOLE STRING TO RETURN, GOT FROM EVAL() IS ' + resultToReturn)
+ //console.log('*** RESULT OF WHOLE STRING TO RETURN, GOT FROM EVAL() IS ' + resultToReturn)
 
 
     return resultToReturn
@@ -433,21 +433,21 @@ export const reduceBracketsPairContentsIntoSingleValues = (passedInString) => {
 
         //now slice the portion of found paren pair to send to evaluation
         let stringOfParenthesisPairContent = tempStr.slice(indexOfMatchingOpenParen, indexOfFirstCloseParen +1)
-        console.log('*****FOUND FIRST PAIR OF PAREN, CONTENT IS ' + stringOfParenthesisPairContent)
+     //console.log('*****FOUND FIRST PAIR OF PAREN, CONTENT IS ' + stringOfParenthesisPairContent)
          
         //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
         stringOfParenthesisPairContent = stringOfParenthesisPairContent.replace(/x/g, '*')
         stringOfParenthesisPairContent = stringOfParenthesisPairContent.replace(/÷/g, '/')
-        console.log('AFTER OPERATOR REPLACEMTNS, STIRNG IS ' + stringOfParenthesisPairContent)
+     //console.log('AFTER OPERATOR REPLACEMTNS, STIRNG IS ' + stringOfParenthesisPairContent)
         //auto javascript evaluation via eval
         let resultOfParensContent = eval(stringOfParenthesisPairContent)
-        console.log('***RESULT OF PAREN PAIR CONTENT IS' + stringOfParenthesisPairContent + '=' + resultOfParensContent)
+     //console.log('***RESULT OF PAREN PAIR CONTENT IS' + stringOfParenthesisPairContent + '=' + resultOfParensContent)
         //get the string without the portion of the brackets pair
         let portion1 = tempStr.slice(0, indexOfMatchingOpenParen)//excludes the open bracket
         let portion2 = tempStr.slice(indexOfFirstCloseParen+1)//excludes the closig bracket
         //now put the string back, with the brackets pair portion replaced by a single result
         let updatedStr = portion1 + resultOfParensContent + portion2
-        console.log('UPDATED STRING AFTER SUSTITUTE BRACKETS PAIR FOR ITS RESULT IS ' + updatedStr)
+     //console.log('UPDATED STRING AFTER SUSTITUTE BRACKETS PAIR FOR ITS RESULT IS ' + updatedStr)
         
         //copy back to real string
         tempStr = updatedStr
@@ -480,7 +480,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     //passed in string in syntax of eg. 23% of 50, there are on () brackets in the string,
     //they have been removed prior to callng this method
 
-    console.log('STRING PASSED INTO CALCULATE PERCENTAGE IS ' + passedInString)
+ //console.log('STRING PASSED INTO CALCULATE PERCENTAGE IS ' + passedInString)
 
 
     let currentCalculationType;
@@ -498,31 +498,31 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     //end of operand1 is the first space, counting from the first numeral of operand1
     let endIndexOfOperand1 = tempStr.search(/ |\%/)
     let operand1ValueString = tempStr.slice(0, endIndexOfOperand1)
-    console.log('*** ##OPERAND1 STRING EXTRACTED IS ' + operand1ValueString)
+ //console.log('*** ##OPERAND1 STRING EXTRACTED IS ' + operand1ValueString)
    
     //find operand 2
     tempStr = tempStr.slice(endIndexOfOperand1+1)//remove opeerand1 from string
     let startIndexOfOperand2 = tempStr.search(/([0-9]|\-[0-9])/) 
     tempStr = tempStr.slice(startIndexOfOperand2)
-    console.log('AT EXTRACTION OF OPERAND2, TEMPSTR IS:' + tempStr)
+ //console.log('AT EXTRACTION OF OPERAND2, TEMPSTR IS:' + tempStr)
     //if there is a space or % after opereand2, e.g if operand3 exists, then eooperand2 is 
     //0-indexofendoperand2
     let endIndexOfOperand2;
 
     //string is now eg either 175   no space after, or 175% nospaceafter, of 175 then ... if operand3 exists
     if(/ |\%/.test(tempStr)) {
-        console.log('FOUND A SPACE OR % SIGN AFTER OPERAND2')
+     //console.log('FOUND A SPACE OR % SIGN AFTER OPERAND2')
         endIndexOfOperand2 = tempStr.search(/( |\%)/)//$ means to the eoline
     }
     else {//no % or space, just endof line, so we add an extra char to cover the last char of opeand2
-        console.log('NO SPACE OR % FOUND AFTER OPEREND2')
+     //console.log('NO SPACE OR % FOUND AFTER OPEREND2')
         endIndexOfOperand2 = tempStr.length
     }
 
 
-    console.log('INDEX OF EOOPEAND2 IS '+endIndexOfOperand2)
+ //console.log('INDEX OF EOOPEAND2 IS '+endIndexOfOperand2)
     let operand2ValueString = tempStr.slice(0, endIndexOfOperand2)
-    console.log('*** ##OPERAND2 STRING EXTRACTED IS ' + operand2ValueString)
+ //console.log('*** ##OPERAND2 STRING EXTRACTED IS ' + operand2ValueString)
 
 
     //if no operand2 entered yet, return as is, so to avoid incorrect result
@@ -539,24 +539,24 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     tempStr = tempStr.slice(endIndexOfOperand2+1)//remove opeerand1 from string
     let startIndexOfOperand3 = tempStr.search(/([0-9]|\-[0-9])/) 
     tempStr = tempStr.slice(startIndexOfOperand3)
-    console.log('AT EXTRACTION OF OPERAND3, TEMPSTR IS:' + tempStr)
+ //console.log('AT EXTRACTION OF OPERAND3, TEMPSTR IS:' + tempStr)
     //if there is a space or % after opereand3, 
     let endIndexOfOperand3;
 
     //string is now eg either 175   no space after, or 175% nospaceafter, 
     if(/ |\%/.test(tempStr)) {
-        console.log('FOUND A SPACE OR % SIGN AFTER OPERAND3')
+     //console.log('FOUND A SPACE OR % SIGN AFTER OPERAND3')
         endIndexOfOperand3 = tempStr.search(/( |\%)/)//$ means to the eoline
     }
     else {//no % or space, just endof line, so we add an extra char to cover the last char of opeand2
-        console.log('NO SPACE OR % FOUND AFTER OPEREND3')
+     //console.log('NO SPACE OR % FOUND AFTER OPEREND3')
         endIndexOfOperand3 = tempStr.length
     }
 
 
-    console.log('INDEX OF EOOPEAND3 IS '+endIndexOfOperand3)
+ //console.log('INDEX OF EOOPEAND3 IS '+endIndexOfOperand3)
     let operand3ValueString = tempStr.slice(0, endIndexOfOperand3) || ""
-    console.log('*** ##OPERAND3 STRING EXTRACTED IS ' + operand3ValueString)
+ //console.log('*** ##OPERAND3 STRING EXTRACTED IS ' + operand3ValueString)
 
 
     
@@ -573,45 +573,45 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
 
     //% of calculation type
     if(/\%/.test(passedInString) && (/of/i.test(passedInString))) {
-        console.log('AT PERCENTOF, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT PERCENTOF, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         result = (Number(operand1ValueString)/100) * Number(operand2ValueString) 
     }
     else
     //out of , calculation type
     if(/out/i.test(passedInString) && (/of/i.test(passedInString))) {
-        console.log('AT OUTOF, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT OUTOF, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         result = (Number(operand1ValueString)/Number(operand2ValueString)) * 100
     }
     else
     //add % , calculation type
     if(/ add /i.test(passedInString)) {//must have space around 'add' so regex wont confuse with 'after added'
-        console.log('AT ADDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT ADDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         result = Number(operand1ValueString) + ( (Number(operand2ValueString)/100) * Number(operand1ValueString) )
     }
     else
     //add % , calculation type
     if(/ deduct /i.test(passedInString)) {//must have space after deduct so regex wont confuse with deducted
-        console.log('AT DEDUCTPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT DEDUCTPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         result = Number(operand1ValueString) - ( (Number(operand2ValueString)/100) * Number(operand1ValueString) )
     }
     else
     //% change, calculation type
     if(/to/i.test(passedInString)) {//% change
-        console.log('AT PERCENTCHANGE, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT PERCENTCHANGE, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         let difference = Number(operand2ValueString) - Number(operand1ValueString)
         result = (difference/Number(operand1ValueString)) * 100
     }
     else
     //after added %, calculation type
     if(/after/i.test(passedInString) && /added /i.test(passedInString)) {
-        console.log('AT AFTERADDEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT AFTERADDEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         let factor = 1 + (Number(operand2ValueString)/100)
         result = Number(operand1ValueString)/factor
     }
     else
     //after deducted %, calculation type
     if(/after/i.test(passedInString) && /deducted /i.test(passedInString)) {
-        console.log('AT AFTERDEDUCTEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
+     //console.log('AT AFTERDEDUCTEDPERCENT, OPERAND1 AND 2 ARE:',operand1ValueString,operand2ValueString)
         //if after deducted 100% or more, error
         if( (Number(operand1ValueString) == 0) && (Number(operand2ValueString) == 100)) {
             return 'Any >= 0 Value'
@@ -634,7 +634,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
     //if % is, calculation type
     if(/if/i.test(passedInString)) {
 
-        console.log('AT IFPERCENTIS, OPERAND1 AND 2 AND 3 ARE:',operand1ValueString,operand2ValueString,operand3ValueString)
+     //console.log('AT IFPERCENTIS, OPERAND1 AND 2 AND 3 ARE:',operand1ValueString,operand2ValueString,operand3ValueString)
         result = (Number(operand3ValueString)/Number(operand1ValueString)) * Number(operand2ValueString)
         if(operand3ValueString == "") {
             return 'incomplete'
@@ -643,7 +643,7 @@ export const calculateResultOfPercentCalculation = (passedInString) => {
 
 
 
-    console.log('PERCENT CALCUATION: RESULT TO RETURN IS: ' + result)
+ //console.log('PERCENT CALCUATION: RESULT TO RETURN IS: ' + result)
     return result.toString()  //return type is string, not number
 }
 
@@ -668,7 +668,7 @@ export const cleanUpAllTrailingDeciPoints = (segmentsArray) => {
     segmentsArray.forEach( (segment, index) => {
         //find index of decipoint if it exists in the segment
         let indexOfDeciPoint = segment.stringValue.search(/\./)
-        console.log('********** SEGMENT NUMBER:' + index + ' INDEXOFDECIPOINT IS:'+indexOfDeciPoint)
+     //console.log('********** SEGMENT NUMBER:' + index + ' INDEXOFDECIPOINT IS:'+indexOfDeciPoint)
         
         if( indexOfDeciPoint >=0) {//it exists
             '*** AT DECIPOIINT DOES EXIST'
@@ -677,16 +677,16 @@ export const cleanUpAllTrailingDeciPoints = (segmentsArray) => {
                 //char after deci is not a numeral, so remove the decipoint
                 let portion1 = segment.stringValue.slice(0, indexOfDeciPoint) || ""//exlude the decipoint
                 let portion2 = segment.stringValue.slice(indexOfDeciPoint+1) || ""//exclude the decipoint
-                console.log('***** THERE IS A TRAILING DECIPOINT')
-                console.log('PORTION1 IS:' + portion1)
-                console.log('PORTION2 IS:' + portion2)
+             //console.log('***** THERE IS A TRAILING DECIPOINT')
+             //console.log('PORTION1 IS:' + portion1)
+             //console.log('PORTION2 IS:' + portion2)
                 
                 //copy back to real string
                 segment.stringValue = portion1 + portion2//will change real array, since it is passed by reference
                 //pass by reference, so is same as segmentsArray[index]= portion1 + portion2
             }
             else {
-                console.log('***NO TRAILING DECIPOINT FOR THIS SEGMENT')
+             //console.log('***NO TRAILING DECIPOINT FOR THIS SEGMENT')
             }
 
         }
@@ -710,7 +710,7 @@ export const takeASnapShotOfCurrentCalculationState = (segmentsArray, timeMachin
     timeMachineArrayOfSegmentsArraySnapShots[currentIndex] = {} //create
     //copy
     timeMachineArrayOfSegmentsArraySnapShots[currentIndex].segmentsArraySnapShot = JSON.parse(JSON.stringify(segmentsArray))
-    console.log('###### TIMEMACHINEARRAYOFSEGMENTSARRAY IS:',timeMachineArrayOfSegmentsArraySnapShots)
+ //console.log('###### TIMEMACHINEARRAYOFSEGMENTSARRAY IS:',timeMachineArrayOfSegmentsArraySnapShots)
 
     return timeMachineArrayOfSegmentsArraySnapShots
 }
@@ -780,18 +780,18 @@ export const insertThousandsSeparatorsForWholeCalculation = (passedInArray = [])
     
     // let localArrayOfSegments = []
     let localArrayOfSegments = JSON.parse(JSON.stringify(passedInArray))
-    console.log('AT INSERT THOSAND SEPARATORS, AFTER STRINGIFY, PASSED IN ARRAY IS: ', passedInArray)
+ //console.log('AT INSERT THOSAND SEPARATORS, AFTER STRINGIFY, PASSED IN ARRAY IS: ', passedInArray)
  
 
     localArrayOfSegments.forEach( segment => {
-        console.log('THOUSANDS SEPARATOR, ONE SEGMENT IS: '+segment.stringValue)
+     //console.log('THOUSANDS SEPARATOR, ONE SEGMENT IS: '+segment.stringValue)
         segment.stringValue = insertThousandsSeparatorsForOneSingleNumberString(segment.stringValue)
     })
 
     let collatedString = collateStringsIntoOneString(localArrayOfSegments)
-    console.log('STRING TO RETURN FROM INSERTTHOUSAND SEPARATORS IS: '+collatedString)
-    console.log('LOCAL COPIED ARRAY IS: ',localArrayOfSegments)
-    console.log('ORIGINAL ARRAY PASSED IN IS: ',passedInArray)
+ //console.log('STRING TO RETURN FROM INSERTTHOUSAND SEPARATORS IS: '+collatedString)
+ //console.log('LOCAL COPIED ARRAY IS: ',localArrayOfSegments)
+ //console.log('ORIGINAL ARRAY PASSED IN IS: ',passedInArray)
     return collatedString
 }
 
@@ -818,7 +818,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
     // //exlude test for alpha x because the multiply sign x will get interpreted as an alpha
     // //dont know how to exclude it using regex yet
     // if(/[a-w]/i.test(passedInString)) {
-    //     console.log('AT INSRT SEPARATOR, PASSED IN STRING HAS ALPHA, SO RETURN AS IS')
+    //  //console.log('AT INSRT SEPARATOR, PASSED IN STRING HAS ALPHA, SO RETURN AS IS')
     //     return passedInString
     // }
 
@@ -886,7 +886,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
 
 export const truncateDecimalPlacesOfString = (passedInString, numberOfDeciPlacesString) => {
     
-    console.log('AT TRUNCATE DECPOINTS: PASSEDINSTRING IS: ' + passedInString)
+ //console.log('AT TRUNCATE DECPOINTS: PASSEDINSTRING IS: ' + passedInString)
 
     //if empty stirng return it, coz if process below, toFix would insert 
     //0.000000 into an empty string, ie "".toFix(6) would give 0.000000
@@ -927,7 +927,7 @@ export const truncateDecimalPlacesOfString = (passedInString, numberOfDeciPlaces
     
     switch(numberOfDeciPlacesString) {
         case 'auto': 
-            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS AUTO')
+         //console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS AUTO')
 
             if(floatValue <= 0.05 && floatValue >= -0.05) {
                 stringToReturn = floatValue.toFixed(5)
@@ -947,23 +947,23 @@ export const truncateDecimalPlacesOfString = (passedInString, numberOfDeciPlaces
             break 
 
         case '0': 
-            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 0')
+         //console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 0')
             stringToReturn = floatValue.toFixed(0)
             break 
         case '1': 
-            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 1')
+         //console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 1')
             stringToReturn = floatValue.toFixed(1)
             break
         case '2': 
-            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 2')
+         //console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 2')
             stringToReturn = floatValue.toFixed(2)
             break
         case '3': 
-            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 3')
+         //console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 3')
             stringToReturn = floatValue.toFixed(3)
             break
         case '4': 
-            console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 4')
+         //console.log('AT TRUNCATEDECIMALPLACES, DECIPLACES  IS 4')
             stringToReturn = floatValue.toFixed(4)
             break
 
@@ -979,7 +979,7 @@ export const truncateDecimalPlacesOfString = (passedInString, numberOfDeciPlaces
         stringToReturn = floatValue.toFixed(0)
     }
 
-    console.log('TRUNCATE DECIOINTS: STRINGTO RETURN IS: ' + stringToReturn)
+ //console.log('TRUNCATE DECIOINTS: STRINGTO RETURN IS: ' + stringToReturn)
 
 
     return stringToReturn
@@ -1036,7 +1036,7 @@ export const addExtraDetailsTextToAnswer = (passedInAnswerString, wholeCalculati
     if((/out /.test(wholeCalculationString))) {
         //e.g 25 out of 27 = 95%,  need to add % to answer
         stringToReturn = passedInAnswerString + '%'
-        console.log('ADD EXTRA DETAILS: GOT TO OUTOF PORTION, AFTER ADDED %, STRING TO RETURN IS: ',stringToReturn)
+     //console.log('ADD EXTRA DETAILS: GOT TO OUTOF PORTION, AFTER ADDED %, STRING TO RETURN IS: ',stringToReturn)
     }
     else
     //add %
@@ -1129,7 +1129,7 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
         if(wholeStringHasPercentCalculation) {
             if(/out|from/.test(passedInWholeString)) {//if outof and 'from to' then leave as is, dont add currency
                 //%change and outof, leave answer as is, no adding currncy
-        console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 2')
+     //console.log('¢¢¢¢¢¢¢¢¢¢¢¢  IINSERT CURENCY TO ANSWER: AT POINT 2')
                 return passedInAnswerString
             }
             else { //all other percent calculations, add currnecy

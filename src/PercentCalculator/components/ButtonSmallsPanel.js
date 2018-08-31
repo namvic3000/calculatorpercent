@@ -31,7 +31,7 @@ class ButtonSmallsPanel extends React.Component {
     buttonSmallsPanelOrThinStrip = () => {
 
         if(this.props.showButtonSmallsPanelStatus) {
-            console.log('***AT BUTTONSMALLSPANEL, COMPONENT TO RETURN IS BUTTONSMALLSPANEL')
+         //console.log('***AT BUTTONSMALLSPANEL, COMPONENT TO RETURN IS BUTTONSMALLSPANEL')
             return (
                 <View style={styles.container}>
                     <ButtonSmallSkin/>
@@ -41,7 +41,7 @@ class ButtonSmallsPanel extends React.Component {
             )
         }
         else {
-            console.log('***AT BUTTONSMALLSPANEL, COMPONENT TO RETURN IS THIN STRIP')
+         //console.log('***AT BUTTONSMALLSPANEL, COMPONENT TO RETURN IS THIN STRIP')
             return <TouchableOpacity onPress={this.thinStripClicked} style={styles.container}><Text></Text></TouchableOpacity>
         }
     }

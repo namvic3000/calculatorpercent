@@ -126,22 +126,22 @@ class ButtonCloseBracket extends React.Component {
         //must be a number, can already have a closing bracket , ok
         //but cant have a open bracket
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
+     //console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT IS A NUMBER FLAG IS ' + currentSegmentIsANumberFlag)
         
         let hasAnOpenBracketFlag = /\(/.test(segmentsArray[currentSegmentIndex].stringValue)
-        console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT HASOPENBRACKET FLAG IS ' + hasAnOpenBracketFlag)
+     //console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT HASOPENBRACKET FLAG IS ' + hasAnOpenBracketFlag)
     
         let hasPriorOpenSquareBracketFlag = /\[/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT HAS PRIOR [ SQUARE BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
+     //console.log('AT PROCESS BRACKET CLOSE, CURENTSEGENT HAS PRIOR [ SQUARE BRACKET FLAG IS ' + hasPriorOpenSquareBracketFlag)
 
         let hasPriorPercentSign = /\%/.test(helpers.collateStringsIntoOneString(segmentsArray))
 
         //first scan array and determine nett value of brackets
         let nettValue = helpers.getParenthesesNetValueFromString(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('AT PROCESS BRACKET CLOSE, NETTVALUE OF BRACKETS IS  ' + nettValue)
+     //console.log('AT PROCESS BRACKET CLOSE, NETTVALUE OF BRACKETS IS  ' + nettValue)
         
         let hasPriorPercentCalculationNeedingPercentSignInOperand2 = /add|deduct|added|deducted|then|if/.test(helpers.collateStringsIntoOneString(segmentsArray))
-        console.log('NEEDS PERCNT SIGN IN OPERAND2 FLAG IS:', hasPriorPercentCalculationNeedingPercentSignInOperand2)
+     //console.log('NEEDS PERCNT SIGN IN OPERAND2 FLAG IS:', hasPriorPercentCalculationNeedingPercentSignInOperand2)
         
         //if segment has a number,segment has no open brackets, and -1 or less nett bracket,
         //then ok to proceed and add close bracket
@@ -151,7 +151,7 @@ class ButtonCloseBracket extends React.Component {
 
 
         if(hasPriorOpenSquareBracketFlag) {
-            console.log('*******GOT TO HASOPENSQUAREBRACKET')
+         //console.log('*******GOT TO HASOPENSQUAREBRACKET')
             //has open square bracket e.g 23 x [(25 x 3)% of (23 x 30)]
             //once the last close parenthesis is input, completing the unit
             //, need to add the closng square bracktt
@@ -166,7 +166,7 @@ class ButtonCloseBracket extends React.Component {
             if(indexOfOpenSquareBracket === -1) indexOfOpenSquareBracket = 0
             tempStr = tempStr.slice(indexOfOpenSquareBracket)//get the portion from [ only
             let nettValueOfParenthesis = helpers.getParenthesesNetValueFromString(tempStr)
-            console.log('******AT HASOPENSQUAREBRACKET, PARENTHESIS NET VALUE IS ' + nettValueOfParenthesis)
+         //console.log('******AT HASOPENSQUAREBRACKET, PARENTHESIS NET VALUE IS ' + nettValueOfParenthesis)
             
             if(nettValueOfParenthesis === 0) {//all open bracketss within open square bracket are now closed
                 //now add the ] closing square bracket if not already exists
@@ -199,7 +199,7 @@ class ButtonCloseBracket extends React.Component {
             //if gets here, means no prior square bracket, if is a percent calc, then it is a simpleone
             //without square brackets, ie without arith operators existing
             if(hasPriorPercentCalculationNeedingPercentSignInOperand2 && (helpers.getParenthesesNetValueFromString(helpers.collateStringsIntoOneString(segmentsArray))===0)) {
-                console.log('GOT TO ADDING PERCENT SIGN FOR NEEDING PERCENT SIGN')
+             //console.log('GOT TO ADDING PERCENT SIGN FOR NEEDING PERCENT SIGN')
                 //add the % sign , bracket close added with nett value of 0
                 //add if not already exist
                 

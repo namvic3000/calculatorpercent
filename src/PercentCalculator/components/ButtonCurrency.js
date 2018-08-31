@@ -131,7 +131,7 @@ class ButtonCurrency extends React.Component {
 
         let hasPriorArithOperator = /(\+|x|÷)|(-\s)/g.test(helpers.collateStringsIntoOneString(segmentsArray))
 
-        console.log('GOT TO PROCESS CURRENCY BUTTON-------------------------------')
+     //console.log('GOT TO PROCESS CURRENCY BUTTON-------------------------------')
 
     
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
@@ -145,7 +145,7 @@ class ButtonCurrency extends React.Component {
     
     
         let allowCurrencySymbol = true 
-        console.log('CURREN CURRRENCY IS ' + currentCurrency)
+     //console.log('CURREN CURRRENCY IS ' + currentCurrency)
 
         //if segment is a number, ok, can toggle sign,
         //if is ooperator, then ignore key input
@@ -158,7 +158,7 @@ class ButtonCurrency extends React.Component {
 
 
             if(/\$|£|¥|€/.test(segmentsArray[currentSegmentIndex].stringValue)) {//-sign exists
-                console.log('FOUNND CURRENCY, NOW REMOVING IT ')
+             //console.log('FOUNND CURRENCY, NOW REMOVING IT ')
                 //remove the - sign, in real string
                 segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(currentCurrency,'')
             }
@@ -169,13 +169,13 @@ class ButtonCurrency extends React.Component {
                     //get index of start of percent calculation
                     let str = helpers.collateStringsIntoOneString(segmentsArray)
                     let indexOfStartOfPercentCalculation = str.search(/of|add|deduct|to|added|deducted|is|then/)
-                    console.log('BUTTONCURRENCY: INDEX OF START OF PERCENT CALCLATION IS: '+indexOfStartOfPercentCalculation)
+                 //console.log('BUTTONCURRENCY: INDEX OF START OF PERCENT CALCLATION IS: '+indexOfStartOfPercentCalculation)
 
                     //need to search upto the start of percent calculation see
                     //if there is an operator sign
                     let hasPriorArithOperatorBeforePercentCalculation = 
                         /(\+|x|÷)|(-\s)/g.test(str.slice(0,indexOfStartOfPercentCalculation))
-                    console.log('BUTTONCURRENCY: HAS ARITH BEFORE START OF PERCENT CALCLATION IS: '+hasPriorArithOperatorBeforePercentCalculation)
+                 //console.log('BUTTONCURRENCY: HAS ARITH BEFORE START OF PERCENT CALCLATION IS: '+hasPriorArithOperatorBeforePercentCalculation)
 
 
 
@@ -192,24 +192,24 @@ class ButtonCurrency extends React.Component {
 
                         //no close square brack, no open squre bracket, must be a 
                         //standalone % calculation
-                        console.log('$$$$$%%%%% BUTTONCURRENCY: STANDALONE % CALCULATION, NEITHER []')
+                     //console.log('$$$$$%%%%% BUTTONCURRENCY: STANDALONE % CALCULATION, NEITHER []')
                         insidePercentageCalculationFlag = true 
                     }
                     else
                     if(hasPriorOpenSquareBracket && (! hasPriorCloseSquareBracket)){
                         //open square bracket , no close square bracket, in middle of percent 
                         //calclation, opeand2
-                        console.log('$$$$$%%%%% BUTTONCURRENCY: INSIDE PERCENT CALC, HAS OPEN [, NO ]')
+                     //console.log('$$$$$%%%%% BUTTONCURRENCY: INSIDE PERCENT CALC, HAS OPEN [, NO ]')
                         insidePercentageCalculationFlag = true                         
                     }
                     else 
                     if(currentSegmentHasCloseSquareBracket) {
-                        console.log('$$$$$%%%%%% BUTTONCURRENCY: INSIDE PERCENT CALC, CURRENTSEGMENT HAS ]')
+                     //console.log('$$$$$%%%%%% BUTTONCURRENCY: INSIDE PERCENT CALC, CURRENTSEGMENT HAS ]')
                         insidePercentageCalculationFlag = true 
                     }
                     else
                     if( hasPriorOpenSquareBracket && (hasPriorCloseSquareBracket)){
-                        console.log('$$$$$%%%%%%%% BUTTONCURRENCY: OUTSIDE OF, AFTER PERCENT CALC, HAS BOTH []')
+                     //console.log('$$$$$%%%%%%%% BUTTONCURRENCY: OUTSIDE OF, AFTER PERCENT CALC, HAS BOTH []')
                         insidePercentageCalculationFlag = false//outside of percentcalculaton, allowcurrency 
                     }
 
@@ -235,7 +235,7 @@ class ButtonCurrency extends React.Component {
 
 
 
-                console.log('ALLOWCURRENCY FLAG IS ' + allowCurrencySymbol)
+             //console.log('ALLOWCURRENCY FLAG IS ' + allowCurrencySymbol)
                 //when gets here, either has no percent calculation in whole calculation,
                 //or already passed thru percntcalculation checks above
 

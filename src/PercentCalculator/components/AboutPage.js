@@ -20,8 +20,9 @@ class AboutPage extends React.Component {
                         <Text style={styles.appTitleText}>Advanced Percent Calculator</Text>
                         <Text style={styles.appTitleText}>Version 18.1</Text>
                         <Text style={styles.appTitleText}></Text>
-                        <Text style={styles.copyRightText}>© Copyright LeisureMob 2010 - present</Text>
-                        <Text style={styles.copyRightText}>feedback: leisuremob@gmail.com</Text>
+                        <Text style={styles.feedbackText}>feedback: leisuremob@gmail.com</Text>
+                        <Text style={styles.feedbackText}></Text>
+                        <Text style={styles.copyrightText}>© Copyright LeisureMob 2010 - present</Text>
                     </View>
                 </View>
             ): (
@@ -53,6 +54,16 @@ let styles = StyleSheet.create({
     appTitleText: {
         fontSize: Dimensions.get('window').height * 0.025,
         color: 'blue'
+
+    },
+    feedbackText: {
+        fontSize: Dimensions.get('window').height * 0.025,
+        color: 'brown'
+
+    },
+    copyrightText: {
+        fontSize: Dimensions.get('window').height * 0.025,
+        color: 'black'
 
     }
 })

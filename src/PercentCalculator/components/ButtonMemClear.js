@@ -66,7 +66,7 @@ class ButtonMemClear extends React.Component {
         }
 
         
-       console.log('MEMORYCLEAR PRESSED')
+    //console.log('MEMORYCLEAR PRESSED')
 
         //now update store, with new memory data, react UI will auto update
 

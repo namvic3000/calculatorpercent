@@ -15,7 +15,7 @@ const calculatorDataReducer = (state = initialState, action) => {
 
     switch(action.type) {
         case UPDATE_CALCULATOR_DATA: 
-            console.log('GOT TO CALC DATA REDUCER, ACTIOIN AND PAYLOAD IS: ',action.type, action.payload)
+         //console.log('GOT TO CALC DATA REDUCER, ACTIOIN AND PAYLOAD IS: ',action.type, action.payload)
            
 
             

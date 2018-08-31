@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements'
 import uuid from 'uuid/v4'
 import { connect  } from "react-redux";
 import  * as helpers from "../helpers";
-import {updateShowTapeStatus, removeRecordFromTape, deleteWholeTape} from "../../../actions/tapeActions";
+import {updateShowTapeStatus, removeRecordFromTape, deleteWholeTape, replaceWholeTapeData} from "../../../actions/tapeActions";
 import AddNoteTextEntryModal from "./AddNoteTextEntryModal";
 
 
@@ -41,7 +41,7 @@ class Tape extends Component {
 
     deleteAllEntriesFromTape = () => {
 
-        this.props.dispatch(deleteWholeTape())
+        this.props.dispatch(replaceWholeTapeData([]))
     }
 
 
@@ -53,7 +53,7 @@ class Tape extends Component {
         }
         else {
             alert('Copied to clipboard')
-            Clipboard.setString(JSON.stringify(this.arrayOfWholeCalculationStrings))
+            Clipboard.setString(this.arrayOfWholeCalculationStrings)
         }
     }
 
@@ -80,17 +80,28 @@ class Tape extends Component {
         //]
 
 
-        //convert array of segment arrays into array of strings
-        this.arrayOfWholeCalculationStrings = arrayOfRecords.map( segmentsArray => {
-            //collates string from all segments of one segments arry
-            return helpers.collateStringsIntoOneString(segmentsArray)
-        })
-
+    //console.log('**** AT TAPE: ARRAY OF RECORDS IS: ', arrayOfRecords)
+        
+        // ///bug fix
+        // if( ! arrayOfRecords) {
+        // //console.log('AT TAPE: INSIDE RETURN NULL')
+        //     return null
+        // }
 
         ///bug fix
-        if( ! arrayOfRecords) {
-            return null
+        if( arrayOfRecords.length <= 0) {
+        //console.log('ARRAYOFRECORDS IS EMPTY ARRAY, ASSIGNING STRINGARAY AN EMPTYARRAY')
+            this.arrayOfWholeCalculationStrings = []
         }
+        else {
+        //console.log('ARRAYOFRECORDS DOES EXIST, CONVERTIN TO ARRAY OF STRINGS')
+            //convert array of segment arrays into array of strings
+            this.arrayOfWholeCalculationStrings = arrayOfRecords.map( segmentsArray => {
+                //collates string from all segments of one segments arry
+                return helpers.collateStringsIntoOneString(segmentsArray)
+            })
+        }
+
          
 
         return(  
@@ -98,7 +109,7 @@ class Tape extends Component {
                     <View style={styles.outerContainer}>
                         <View style={styles.topButtonsContainer}>
                             <TouchableOpacity style={styles.deleteAllButtonContainer} onPress={this.deleteAllEntriesFromTape}><Text style={styles.deleteAllButtonText}>Delete All</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.copyButtonContainer} onPress={this.copyTapeToClipBoard}><Text style={styles.copyButtonText}>Copy to Clipboard</Text></TouchableOpacity>
+                            {/* <TouchableOpacity style={styles.copyButtonContainer} onPress={this.copyTapeToClipBoard}><Text style={styles.copyButtonText}>Copy to Clipboard</Text></TouchableOpacity> */}
                         </View>
 
 
@@ -240,6 +251,8 @@ let styles = StyleSheet.create({
         textAlign: 'center',
         color: 'orange',
         fontSize: Dimensions.get('window').height*0.025,
+        position: 'relative',
+        bottom: '12%',
     },
     sideAddNoteButtonContainer: {//delte button on the side of calculation
         // backgroundColor: "orange",
@@ -253,6 +266,8 @@ let styles = StyleSheet.create({
         alignItems: 'center',
     },
     sideAddNoteButtonText: {
+        position: 'relative',
+        bottom: '12%',
         lineHeight: Dimensions.get('window').height*0.035,
         textAlign: 'center',
         color: 'blue',

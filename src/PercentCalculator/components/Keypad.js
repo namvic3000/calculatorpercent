@@ -63,7 +63,7 @@ class Keypad extends React.Component {
             wholeKeypadContainer: {
                 // flex of 1 fills all space in parent container
                 flex: 1,
-                backgroundColor: "lightgray",
+                backgroundColor: "black",
                 width: "100%",
                 // justifyContent: "center"
             },

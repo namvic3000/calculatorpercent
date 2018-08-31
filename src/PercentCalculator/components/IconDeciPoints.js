@@ -22,7 +22,7 @@ class IconDeciPoints extends React.Component {
             }
         })
 
-        console.log('AT DECIPONTS: INDEX IS :' + indexOfCurrentDeciPoints)
+     //console.log('AT DECIPONTS: INDEX IS :' + indexOfCurrentDeciPoints)
 
         let indexOfNextDeciPoints = indexOfCurrentDeciPoints + 1
 
@@ -32,7 +32,7 @@ class IconDeciPoints extends React.Component {
 
         let nextDeciPointsValue = deciPointsArr[indexOfNextDeciPoints]// || 'auto'
 
-        console.log('AT DECIPONTS: NEXT DECIPONT VALUE  IS :' + nextDeciPointsValue)
+     //console.log('AT DECIPONTS: NEXT DECIPONT VALUE  IS :' + nextDeciPointsValue)
 
         this.props.dispatch(updateNumberOfDeciPoints(nextDeciPointsValue))
 

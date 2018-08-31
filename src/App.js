@@ -43,6 +43,7 @@ class App extends Component {//<Props> {
                     {/* padding to move below status bar */}
               </View>
 
+              
               <PercentCalculator />
           </View>
        </Provider>

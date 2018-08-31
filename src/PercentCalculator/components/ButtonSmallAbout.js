@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import { updateSkinData } from "../../../actions/skinDataActions";
 import { updateShowAboutPageStatus } from "../../../actions/aboutPageActions";
+import {updateShowButtonSmallsPanelStatus} from '../../../actions/buttonSmallsPanelActions'
 
 
 class ButtonSmallAbout extends Component {
@@ -73,12 +74,17 @@ class ButtonSmallAbout extends Component {
         //if gets here, no other buttonsmalls is active
 
 
-        //toggle showaboutpage status
+        //if currently showing thenn hide it , and hide the buttonsmalls
+        //panel
         if(this.props.showAboutPageStatus) {
             this.props.dispatch(updateShowAboutPageStatus(false))
+            //dismiss the buttonsmalls panel also
+            this.props.dispatch(updateShowButtonSmallsPanelStatus(false))
         }
-        else {
+        else {//not currently shwing, so show it
             this.props.dispatch(updateShowAboutPageStatus(true))
+            //buttonsmalls panell will not autodismiss if any buttonsmalls
+            //is active, so no need for any action on it
         }
 
 

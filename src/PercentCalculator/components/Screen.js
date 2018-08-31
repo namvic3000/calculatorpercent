@@ -35,8 +35,8 @@ class Screen extends Component {
 
 
 
-    console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY BEFORE ALTERING FOR USER DISPLAY IS: ',segmentsArray)
-    console.log('AT SCREEN.JS: LIVEANSWERLINE BEFORE ALTERING FOR USER DISPLAY IS: ',screenLiveAnswerLine)
+ //console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY BEFORE ALTERING FOR USER DISPLAY IS: ',segmentsArray)
+ //console.log('AT SCREEN.JS: LIVEANSWERLINE BEFORE ALTERING FOR USER DISPLAY IS: ',screenLiveAnswerLine)
 
 
     //truncate the decimal places, for user display only, internally not truncated
@@ -63,8 +63,8 @@ class Screen extends Component {
     
 
 
-    console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY AFTER ALTERING FOR USER DISPLAY IS: ',segmentsArray)
-    console.log('AT SCREEN.JS: LIVEANSWERLINE AFTER ALTERING FOR USER DISPLAY IS: ',screenLiveAnswerLine)
+ //console.log('AT SCREEN.JS: REAL SEGMENTS ARRAY AFTER ALTERING FOR USER DISPLAY IS: ',segmentsArray)
+ //console.log('AT SCREEN.JS: LIVEANSWERLINE AFTER ALTERING FOR USER DISPLAY IS: ',screenLiveAnswerLine)
 
 
 

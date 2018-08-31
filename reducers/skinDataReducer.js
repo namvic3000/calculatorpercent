@@ -10,7 +10,7 @@ let initialState = {
     percentButtonsColor: '#000000',
     keysSet1Color: '#000000',
     keysSet2Color: '#000000',
-    buttonSmallsColor: '#000000',
+    buttonSmallsColor: '#0d47a5',
 } 
 
 
@@ -71,13 +71,13 @@ const saveSkinDataToLocalStorage = async (passedInObject) => {
     }
  
 
-    console.log('AT SKIN REDUCER, OBJECT TO SAVE IS: ',objToSave)
+ //console.log('AT SKIN REDUCER, OBJECT TO SAVE IS: ',objToSave)
 
     try {
         await AsyncStorage.setItem('skinData', JSON.stringify(objToSave))
     }
     catch(error) {
-        console.log(error)
+     //console.log(error)
     }
 }
 

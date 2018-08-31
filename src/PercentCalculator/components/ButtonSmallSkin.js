@@ -14,7 +14,7 @@ class ButtonSmallSkin extends Component {
 
     handleClick = () => {
 
-        console.log('SKINBUTTONSMALL PRESSED')
+     //console.log('SKINBUTTONSMALL PRESSED')
         //if in skin selection mode and usr presses skin button small,
         //close the buttonsmall panel, and go back to normal calculation 
         //mode
@@ -25,9 +25,9 @@ class ButtonSmallSkin extends Component {
         //if skin slection status is on, and user presses skinbuttonsmall,
         //turn secletionmode off, so normal calculaion mode resumes
 
-        console.log('AT BUTTONSMALLL SKIN, THIS.PROPS.SKINDATA IS ', this.props.skinData)
+     //console.log('AT BUTTONSMALLL SKIN, THIS.PROPS.SKINDATA IS ', this.props.skinData)
         if(this.props.skinData.skinSelectionModeActiveStatus) {
-            console.log( 'GOT TO SKINBUTTON WHEN SELECTON STATUS IS TRUE')
+         //console.log( 'GOT TO SKINBUTTON WHEN SELECTON STATUS IS TRUE')
             //leave everything same, except change skinseletionactivestatus to false
             let dataObject = {
                 ...this.props.skinData,
@@ -72,7 +72,7 @@ class ButtonSmallSkin extends Component {
 
         
         else {////skinselectionmodestatus is false, so enable it
-            console.log( 'GOT TO SKINBUTTON WHEN SELECTON STATUS IS FALSE')
+         //console.log( 'GOT TO SKINBUTTON WHEN SELECTON STATUS IS FALSE')
 
             //if one of the other buttonsmalls is active, then no action,
             //just return

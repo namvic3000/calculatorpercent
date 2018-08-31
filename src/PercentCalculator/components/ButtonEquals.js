@@ -113,7 +113,7 @@ class ButtonEquals extends React.Component {
 
 
     
-        console.log('AT EQUALSBUTON START: SCREENLIVEANSWER IS: ' + this.props.screenLiveAnswerLine)
+     //console.log('AT EQUALSBUTON START: SCREENLIVEANSWER IS: ' + this.props.screenLiveAnswerLine)
         
         //get result of whole calculation
         let answer = helpers.calculateResultOfWholeCalculation(helpers.collateStringsIntoOneString(segmentsArray))//this.props.screenLiveAnswerLine//gets number only, no extra details text
@@ -156,7 +156,7 @@ class ButtonEquals extends React.Component {
 
 
         
-        console.log('AT EQUALS BUTTON: AFTER ADDED ANSWER TO SEGMENTS ARRAY, SEGMENTS ARRAY IS NOW: ', segmentsArray)
+     //console.log('AT EQUALS BUTTON: AFTER ADDED ANSWER TO SEGMENTS ARRAY, SEGMENTS ARRAY IS NOW: ', segmentsArray)
 
         //save to timemachine
         if(allowToTakeSnapShotOfState) {

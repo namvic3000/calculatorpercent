@@ -70,7 +70,7 @@ class ButtonClearAll extends React.Component {
 
 
 
-        console.log('GOT TO PROCESS CA KEYS')
+     //console.log('GOT TO PROCESS CA KEYS')
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
           

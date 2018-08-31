@@ -38,7 +38,7 @@ const saveCurrencyTypeToLocalStorage = async (passedInCurrency) => {
         await AsyncStorage.setItem('currency', passedInCurrency)
     }
     catch(error) {
-        console.log(error)
+     //console.log(error)
     }
 
 }

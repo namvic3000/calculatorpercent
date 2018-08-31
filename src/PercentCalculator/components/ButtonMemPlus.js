@@ -80,7 +80,7 @@ class ButtonMemPlus extends React.Component {
                 
 
         
-       console.log('MEMORYPLUS PRESSED')
+    //console.log('MEMORYPLUS PRESSED')
 
         //get value of number of current segment if it is a number segment
 
@@ -94,7 +94,7 @@ class ButtonMemPlus extends React.Component {
             //if has 'error' or 'invalid' or 'range' means error
             if(/error/i.test(tempStr)) {//checks for the 'Error: must be less than 100%' msg
             //which has 100% numeral in it, which would give 100
-                console.log('MEMPLUS: SEGMENT HAS ERROR, INVLAID, RANGE , TEXT')
+             //console.log('MEMPLUS: SEGMENT HAS ERROR, INVLAID, RANGE , TEXT')
                 return//no action
             }
 
@@ -119,7 +119,7 @@ class ButtonMemPlus extends React.Component {
             
 
             
-            console.log('MEMPLUS: NUMBER EXTRACTED FROM SEGMENT IS: ', + tempStr)
+         //console.log('MEMPLUS: NUMBER EXTRACTED FROM SEGMENT IS: ', + tempStr)
 
             //now update store, with new memory data, react UI will auto update
 
@@ -127,24 +127,24 @@ class ButtonMemPlus extends React.Component {
             let memory2Value = this.props.memory2Value 
             let currentActiveMemory = this.props.currentActiveMemory
 
-            console.log('AT MEMPLUS: BEFORE CONVERT TO 0, MEM1 VLUE IS: ' + memory1Value)
+         //console.log('AT MEMPLUS: BEFORE CONVERT TO 0, MEM1 VLUE IS: ' + memory1Value)
 
 
 
             //if mem value is 'empty', make it a 0
             if(/empty/i.test(memory1Value)) {//if has 'empty', make value = 0
-                console.log('MEMPLLUS: MEMVALUE1 INSIDE IF')
+             //console.log('MEMPLLUS: MEMVALUE1 INSIDE IF')
                  memory1Value = 0
             }
 
             if(/empty/i.test(memory2Value)) {//if has 'empty',
-                console.log('MEMPLLUS: MEMVALUE2 INSIDE IF')
+             //console.log('MEMPLLUS: MEMVALUE2 INSIDE IF')
                  memory2Value = 0
             }
 
 
 
-            console.log('AT MEMPLUS: AFTER CONVERT TO 0, BEFORE ADDING MORE, MEM1 VLUE IS: ' + memory1Value)
+         //console.log('AT MEMPLUS: AFTER CONVERT TO 0, BEFORE ADDING MORE, MEM1 VLUE IS: ' + memory1Value)
             if(currentActiveMemory === 1) {
 
                 //forward look to see if exceeds limit, if so dont add to memory
@@ -180,14 +180,14 @@ class ButtonMemPlus extends React.Component {
 
             }
  
-            console.log('AT MEMPLUS: AFTER ADDING MORE, MEM1 VLUE IS: ' + memory1Value)
+         //console.log('AT MEMPLUS: AFTER ADDING MORE, MEM1 VLUE IS: ' + memory1Value)
 
             this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
         
         }
         else {
             //is an operator, cant store it, ignore
-            console.log('MEMPLUS: SEGGMENT IS NOT A NUMBER')
+         //console.log('MEMPLUS: SEGGMENT IS NOT A NUMBER')
             return
         }
     }//handlecalcbuttonclick

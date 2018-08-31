@@ -343,7 +343,7 @@ class ButtonMemRecall extends React.Component {
         }
         else {//curr segent is ann operator
             //move to next segment, and put input value there
-            console.log('AT 0-9 KEYS, CURRENTLY AT OPERATOR , SO MOVE TO NEXT SEGMENT')
+         //console.log('AT 0-9 KEYS, CURRENTLY AT OPERATOR , SO MOVE TO NEXT SEGMENT')
             currentSegmentIndex++
             segmentsArray[currentSegmentIndex] = {}//create new object for  next array element
             segmentsArray[currentSegmentIndex].stringValue = buttonValue

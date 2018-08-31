@@ -19,10 +19,10 @@ class AddNoteTextEntryModal extends React.Component {
     handleTextInput = (textFromInput, tapeRecordIndex) => {
         
         
-        console.log('AT ADDNOTEMODAL, TEXT RECEIVED INTO HANDLEINPUT METHOD IS ' + textFromInput)
+     //console.log('AT ADDNOTEMODAL, TEXT RECEIVED INTO HANDLEINPUT METHOD IS ' + textFromInput)
         let thisSegmentsArray = this.props.arrayOfRecords[tapeRecordIndex]
  
-        console.log('ADDNOTEMODAL: SGMENTSARRAY IS : ', thisSegmentsArray)
+     //console.log('ADDNOTEMODAL: SGMENTSARRAY IS : ', thisSegmentsArray)
         
         let indexOfSegmentWithAnswer;
         thisSegmentsArray.forEach( (segment, index) => {
@@ -31,8 +31,8 @@ class AddNoteTextEntryModal extends React.Component {
             }
         })
 
-        console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, INDEX IS: ' + indexOfSegmentWithAnswer)
-        console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, ANSER STRING VALUE IS: ' , thisSegmentsArray[indexOfSegmentWithAnswer])
+     //console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, INDEX IS: ' + indexOfSegmentWithAnswer)
+     //console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, ANSER STRING VALUE IS: ' , thisSegmentsArray[indexOfSegmentWithAnswer])
 
         //add note to the segment after the segment with thte answer
 
@@ -51,11 +51,8 @@ class AddNoteTextEntryModal extends React.Component {
         //update store with whole tape array
         this.props.dispatch(replaceWholeTapeData(updatedTapeArray))
         
-        // let segmentWithNoteContent = 
         this.setState({textInputValue: textFromInput})
     }
-
-
 
 
 
@@ -75,7 +72,7 @@ class AddNoteTextEntryModal extends React.Component {
         //appear, and user knows to tap onthe placeholder to enter text.
 
 
-        console.log('ADDNOTEMODAL: OK BUTTON ON MODAL BEEN CLICKED')
+     //console.log('ADDNOTEMODAL: OK BUTTON ON MODAL BEEN CLICKED')
 
         //add the note to the segment after the = segment
  
@@ -108,7 +105,7 @@ class AddNoteTextEntryModal extends React.Component {
         let hasText = /[a-z]|[0-9]/i.test(thisSegmentsArray[indexOfSegmentWithNote].stringValue)
         
         if( ! hasText) {
-            console.log('OKBUTTON, NOTESEGMENT BEEN POPPED')
+         //console.log('OKBUTTON, NOTESEGMENT BEEN POPPED')
             //no text in note, delete the note segment
             thisSegmentsArray.pop()//remove last segment, ie segment with note
         }
@@ -160,8 +157,8 @@ class AddNoteTextEntryModal extends React.Component {
         //segment with note is after segment with answer
         let indexOfNoteSegment = indexOfSegmentWithAnswer + 1
 
-        console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, INDEX IS: ' + indexOfSegmentWithAnswer)
-        console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, ANSER STRING VALUE IS: ' , thisSegmentsArray[indexOfSegmentWithAnswer])
+     //console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, INDEX IS: ' + indexOfSegmentWithAnswer)
+     //console.log('$$$$ ADDNOTE: SEGMENT WITH ANSWER, ANSER STRING VALUE IS: ' , thisSegmentsArray[indexOfSegmentWithAnswer])
 
         //if nnote segment does not yet exist, set initial text to blank
         if( ! thisSegmentsArray[indexOfNoteSegment]) {
@@ -182,8 +179,8 @@ class AddNoteTextEntryModal extends React.Component {
 
     render() {
 
-        console.log('AT ADDNOTEMODAL, THIS.PROPS.ISSHOWING RECEIVED IS: ' + this.props.isShowing)
-        console.log('AT ADDNOTEMODAL, THIS.PROPS.FORRECORDNUMBER RECEIVED IS: ' + this.props.forTapeRecordIndex)
+     //console.log('AT ADDNOTEMODAL, THIS.PROPS.ISSHOWING RECEIVED IS: ' + this.props.isShowing)
+     //console.log('AT ADDNOTEMODAL, THIS.PROPS.FORRECORDNUMBER RECEIVED IS: ' + this.props.forTapeRecordIndex)
         return(
             this.props.isShowing ? (
                 <View style={styles.container}>
@@ -215,7 +212,7 @@ let styles = StyleSheet.create({
         zIndex: 1000,
         height: '25%',
         width: '100%',
-        top: '35%',
+        top: '20%',
         backgroundColor: 'lightyellow',
         justifyContent: 'center',
         alignItems: 'center'

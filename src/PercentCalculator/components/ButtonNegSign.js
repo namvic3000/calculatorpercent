@@ -112,7 +112,7 @@ class ButtonNegSign extends React.Component {
 
 
 
-        console.log('GOT TO PROCESS OPERATOR -SIGN')
+     //console.log('GOT TO PROCESS OPERATOR -SIGN')
 
     
         let currentSegmentIsANumberFlag = /[0-9]/.test(segmentsArray[currentSegmentIndex].stringValue)
@@ -137,8 +137,8 @@ class ButtonNegSign extends React.Component {
                 segmentsArray[currentSegmentIndex].stringValue = segmentsArray[currentSegmentIndex].stringValue.replace(/\-/,'')
             }
             else {//no -sign present, add it
-                //need to find start index of numeral, coz could be ((5 , to become ((-5
-                let indexOfFirstNumeral = segmentsArray[currentSegmentIndex].stringValue.search(/[0-9]/)
+                //need to find start index of numeral or $sign, coz could be ((5 , to become ((-5
+                let indexOfFirstNumeral = segmentsArray[currentSegmentIndex].stringValue.search(/[0-9]|\$|¥|£|€/)
                 let tempStr = segmentsArray[currentSegmentIndex].stringValue
                 segmentsArray[currentSegmentIndex].stringValue = tempStr.slice(0, indexOfFirstNumeral) 
                     + '-' + tempStr.slice(indexOfFirstNumeral)

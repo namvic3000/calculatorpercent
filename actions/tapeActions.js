@@ -51,6 +51,9 @@ export const replaceWholeTapeData = (newTapeArray) => ({
 
 
 
-export const deleteWholeTape = () => ({
-    type: DELETE_WHOLE_TAPE
-})
+// export const deleteWholeTape = () => ({
+//     type: DELETE_WHOLE_TAPE,
+//     payload: {
+//         newTapeArray: []
+//     }
+// })

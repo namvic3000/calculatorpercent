@@ -70,7 +70,7 @@ class ButtonBackSpace extends React.Component {
 
 
 
-        console.log('GOT TO PROCESS BKSPCE KEYS')
+     //console.log('GOT TO PROCESS BKSPCE KEYS')
         
         let {segmentsArray, currentSegmentIndex, timeMachineArrayOfSegmentsArraySnapShots} = this.props 
         
@@ -116,13 +116,13 @@ class ButtonBackSpace extends React.Component {
         //copy snapshot of previous state into segments array
     
         timeMachineArrayOfSegmentsArraySnapShots.pop()//remove current snapshot
-        console.log('**AT BACKSPACE KEY: AFTER POPPING LAST SNAPSHOT, THE TIMEMACHINEARRAY IS ',timeMachineArrayOfSegmentsArraySnapShots)
+     //console.log('**AT BACKSPACE KEY: AFTER POPPING LAST SNAPSHOT, THE TIMEMACHINEARRAY IS ',timeMachineArrayOfSegmentsArraySnapShots)
         let indexOfLastSnapShot = timeMachineArrayOfSegmentsArraySnapShots.length -1
-        console.log('**AT BACKSPACE KEY: INDEXOFLASTSNAPSHOT IS:',indexOfLastSnapShot)
+     //console.log('**AT BACKSPACE KEY: INDEXOFLASTSNAPSHOT IS:',indexOfLastSnapShot)
         
         //copy snapshot into segmnts array, do deep copy so wont point to original
         segmentsArray = JSON.parse(JSON.stringify(timeMachineArrayOfSegmentsArraySnapShots[indexOfLastSnapShot].segmentsArraySnapShot))
-        console.log('**AT BACKSPACE KEY: AFTER COPYING FROM SNAPSHOT, THE SEGMENTS ARRAY IS ',segmentsArray)
+     //console.log('**AT BACKSPACE KEY: AFTER COPYING FROM SNAPSHOT, THE SEGMENTS ARRAY IS ',segmentsArray)
     
         //update the index of new segmentsarray to the last segment in that array
         //ready for next input

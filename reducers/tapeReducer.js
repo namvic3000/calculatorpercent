@@ -72,16 +72,16 @@ const tapeReducer = (state = initialState, action) => {
             break
 
             
-        case DELETE_WHOLE_TAPE: //note: there is no corresponding action coz so simple
+        // case DELETE_WHOLE_TAPE: //note: there is no corresponding action coz so simple
 
-            saveTapeToLocalStorage([])//empty array
+        //     saveTapeToLocalStorage([])//empty array
             
-            return {
-                ...state,
-                arrayOfRecords: []//empty array
-            }
+        //     return {
+        //         ...state,
+        //         arrayOfRecords: []//empty array
+        //     }
 
-            break
+        //     break
 
 
         case UPDATE_SHOW_TAPE_STATUS: 
@@ -123,11 +123,11 @@ saveTapeToLocalStorage = async (tapeArray) => {
 
     // //first remove the existing so we can replac it
     // try {
-    //     console.log('ABOUT TO REMOVE LOCALSTORAGE ITEM')
+    //  //console.log('ABOUT TO REMOVE LOCALSTORAGE ITEM')
     //     await AsyncStorage.removeItem('storedTapeObject')
     // }
     // catch(error) {
-    //     console.log(error)
+    //  //console.log(error)
     // }
 
     // //if anything other than simple stirng, must convert it to 
@@ -144,7 +144,7 @@ saveTapeToLocalStorage = async (tapeArray) => {
         await AsyncStorage.setItem('storedTapeObject', JSON.stringify(tapeArray))
     }
     catch(error) {
-        console.log(error)
+     //console.log(error)
     }
 
 
