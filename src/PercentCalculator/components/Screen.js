@@ -100,6 +100,8 @@ class Screen extends Component {
     fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((excess * 0.1))
 
 
+
+
     let styles = StyleSheet.create({
       screen: {
         flex: 1,
@@ -155,9 +157,13 @@ class Screen extends Component {
         alignItems: "center",
         backgroundColor: "transparent"
       },
-      midScreenMessageText: {
+      midScreenMessageTextReady: {
         fontSize: fontSizeOfScreenMainLine1,
         color: "black"
+      },
+      midScreenMessageTextSkinChangePrompts: {
+        fontSize: fontSizeOfScreenMainLine1*0.7,
+        color: "darkorange"
       },
       iconsContainer: {
         flex: 1,
@@ -181,10 +187,23 @@ class Screen extends Component {
 
 
 
+
+
+    //change midscreen message style accordin to message content
+
+    let midScreenMessageStyle;
+    if(screenMidScreenMessage == 'Ready') {
+      midScreenMessageStyle = styles.midScreenMessageTextReady
+    }
+    else {//skin change propmts
+      midScreenMessageStyle = styles.midScreenMessageTextSkinChangePrompts
+    }
+
     // onTouchEnd={() => {alert('touched'); return}}
 
+
     return(
-      <View style={styles.screen}><Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text><Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text><View style={styles.midScreenMsgContainer}><Text style={styles.midScreenMessageText}>{screenMidScreenMessage}</Text></View>
+      <View style={styles.screen}><Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text><Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text><View style={styles.midScreenMsgContainer}><Text style={midScreenMessageStyle}>{screenMidScreenMessage}</Text></View>
       <IconCurrencySign/><IconDeciPoints/>
       </View>
     )

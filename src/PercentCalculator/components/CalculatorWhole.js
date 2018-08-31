@@ -263,10 +263,34 @@ class CalculatorWhole extends React.Component {
 
 
 
+
+
+
+
+        let gapFillerStyle;
+        if(Platform.OS == 'ios') {
+            console.log('GAPFILLER: PLATFORM IS IOS')
+            gapFillerStyle = {
+                height: '0%',
+                backgroundColor: 'white',
+                color: 'white'
+            }
+        }
+        else {
+            console.log('GAPFILLER: PLATFORM IS ANDROID')
+            gapFillerStyle = {
+                height: '0.25%',
+                backgroundColor: 'white',
+                color: 'white'
+            }
+        }
+
+
+
         return(
             <View style={styles.containerOfWholeCalculator}>
                 
-                <View style={styles.gapFiller}></View>
+                <View style={gapFillerStyle}></View>
 
                 <View style={styles.screenContainer}>
                     <Screen />
@@ -298,7 +322,7 @@ class CalculatorWhole extends React.Component {
 
 let styles = StyleSheet.create({
     gapFiller: {
-        height: '0.25%',
+        height: '0%',
         backgroundColor: 'white',
         color: 'white'
     },

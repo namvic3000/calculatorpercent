@@ -110,7 +110,7 @@ class ButtonSmallSkin extends Component {
             //collate stirng from all segments     
             let screenMainTextLine1 = ""
             let screenLiveAnswerLine = ""
-            let screenMidScreenMessage = "select a section"
+            let screenMidScreenMessage = "tap on a section to change"
             segmentsArray = []
             currentSegmentIndex = 0
             timeMachineArrayOfSegmentsArraySnapShots = []

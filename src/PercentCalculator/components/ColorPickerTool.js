@@ -114,7 +114,7 @@ class ColorPickerTool extends React.Component {
             //collate stirng from all segments     
             let screenMainTextLine1 = ""
             let screenLiveAnswerLine = ""
-            let screenMidScreenMessage = "select a section"
+            let screenMidScreenMessage = "tap on a section to change"
             segmentsArray = []
             currentSegmentIndex = 0
             timeMachineArrayOfSegmentsArraySnapShots = []
@@ -150,7 +150,7 @@ class ColorPickerTool extends React.Component {
                                 onColorChange={color => { this.colorPicked(color) }}
                                 hideSliders={true}/>
                         <TouchableOpacity style={styles.buttonContainer} onPress={this.dismissColorPicker}>
-                            <Text style={styles.buttonText}>Done</Text>
+                            <Text style={styles.buttonText}>Set</Text>
                         </TouchableOpacity>
                     </View>
                     </View>
@@ -176,8 +176,8 @@ let styles = StyleSheet.create({
     },
     colorPickerContainer: {
         // position: 'absolute',
-        height: '50%',
-        width: '60%',
+        height: '60%',
+        width: '75%',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
@@ -190,15 +190,15 @@ let styles = StyleSheet.create({
     },
     buttonContainer: {
         backgroundColor: 'green',
-        width: '40%',
-        height: Dimensions.get('window').height*0.04,
+        width: '35%',
+        height: Dimensions.get('window').height*0.045,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '10%'
     },
     buttonText: {
         // textAlign: 'center', NO NEED IF CONTAINER HAS CENTERED IT
-        // lineHeight: Dimensions.get('window').height*0.04,
+        lineHeight: Dimensions.get('window').height*0.045,
         fontSize: Dimensions.get('window').height*0.03,
         color: 'white'
     }

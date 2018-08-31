@@ -49,7 +49,7 @@ class ButtonMemRecall extends React.Component {
             //collate stirng from all segments     
             let screenMainTextLine1 = ""
             let screenLiveAnswerLine = ""
-            let screenMidScreenMessage = "set the color"
+            let screenMidScreenMessage = "use picker to choose color"
             segmentsArray = []
             currentSegmentIndex = 0
             timeMachineArrayOfSegmentsArraySnapShots = []
