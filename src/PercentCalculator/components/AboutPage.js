@@ -20,9 +20,8 @@ class AboutPage extends React.Component {
                         <Text style={styles.appTitleText}>Advanced Percent Calculator</Text>
                         <Text style={styles.appTitleText}>Version 18.1</Text>
                         <Text style={styles.appTitleText}></Text>
-                        <Text style={styles.copyRightText}>© CopyRight LeisureMob 2010 - present</Text>
+                        <Text style={styles.copyRightText}>© Copyright LeisureMob 2010 - present</Text>
                         <Text style={styles.copyRightText}>feedback: leisuremob@gmail.com</Text>
-
                     </View>
                 </View>
             ): (
@@ -59,11 +58,12 @@ let styles = StyleSheet.create({
 })
 
 
+
+
+
 const mapStateToProps = (state) => ({
     showAboutPageStatus: state.aboutPage.showAboutPageStatus
 })
-
-
 
 
 export default connect(mapStateToProps)(AboutPage)

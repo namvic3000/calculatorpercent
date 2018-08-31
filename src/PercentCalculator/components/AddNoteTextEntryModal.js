@@ -58,11 +58,70 @@ class AddNoteTextEntryModal extends React.Component {
 
 
 
-    okButtonPressed = () => {
+
+
+
+
+    okButtonPressed = (tapeRecordIndex) => {
+
+        //bug fix: below code is to fix circumstance where no placeholder appears,
+        //and  user doesnt know what to do.
+        ///When user deletes everything, if there is a white space or space
+        //left on the note, it is treated as a note, so when user presses on
+        //addnote again, no placeholder appears, user does  not know to tap
+        //on the input. So if there is no a-z char on the note, the note
+        //segment will be removed, so when user adds note again to the same
+        //calculation, no nnote exists, an empty note with placeholder will
+        //appear, and user knows to tap onthe placeholder to enter text.
+
+
         console.log('ADDNOTEMODAL: OK BUTTON ON MODAL BEEN CLICKED')
 
         //add the note to the segment after the = segment
  
+        //if note segment is empty, eg if user deletes all chars, then 
+        //remove the note segment
+
+        let thisSegmentsArray = this.props.arrayOfRecords[tapeRecordIndex]
+ 
+        let indexOfSegmentWithAnswer;
+        thisSegmentsArray.forEach( (segment, index) => {
+            if(/\=/.test(segment.stringValue)) {
+                indexOfSegmentWithAnswer = index
+            }
+        })
+ 
+        
+        let indexOfSegmentWithNote = indexOfSegmentWithAnswer + 1 
+        
+
+        //bug fix, error prevention
+        if ( ! thisSegmentsArray[indexOfSegmentWithNote]) { //if  not exist
+            //close modal
+            this.props.closeModal()
+            return
+        }
+        
+        
+        //if gets here, note segment does exist
+        //see if any text in the note, if no text, delete the note segment
+        let hasText = /[a-z]/i.test(thisSegmentsArray[indexOfSegmentWithNote].stringValue)
+        
+        if( ! hasText) {
+            console.log('OKBUTTON, NOTESEGMENT BEEN POPPED')
+            //no text in note, delete the note segment
+            thisSegmentsArray.pop()//remove last segment, ie segment with note
+        }
+
+
+        //update array of records of tape
+        let updatedTapeArray = this.props.arrayOfRecords
+        //update the record for which note is being added
+        updatedTapeArray[tapeRecordIndex] = thisSegmentsArray
+        //update store with whole tape array
+        this.props.dispatch(replaceWholeTapeData(updatedTapeArray))
+         
+        
         //close modal
         this.props.closeModal()
     }
@@ -70,17 +129,14 @@ class AddNoteTextEntryModal extends React.Component {
 
 
 
-
-    cancelButtonPressed = () => {
-
-    }
-
-
  
 
     //use tis method to prefill input with existin note if exists
     //. the cwm method does not work for this.
     componentWillReceiveProps = (props) => {
+
+        //this metod will populate note input field with existing note for 
+        //user to edit, if already exists.
 
 
         // console.log('ADDNOTEMODAL: CWRP, RECORDINDEX IS : ', props.forTapeRecordIndex)
@@ -137,7 +193,7 @@ class AddNoteTextEntryModal extends React.Component {
                                 placeholder="enter note here"
                                 maxLength={100}
                     />
-                    <TouchableOpacity onPress={this.okButtonPressed} style={styles.okButton}>
+                    <TouchableOpacity onPress={ () => this.okButtonPressed(this.props.forTapeRecordIndex)} style={styles.okButton}>
                         <Text style={styles.okButtonText}>OK</Text>
                     </TouchableOpacity>
                 </View>

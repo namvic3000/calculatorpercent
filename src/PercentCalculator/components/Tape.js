@@ -82,12 +82,10 @@ class Tape extends Component {
 
         //convert array of segment arrays into array of strings
         this.arrayOfWholeCalculationStrings = arrayOfRecords.map( segmentsArray => {
-            console.log('^^^^ AT TAPE: ONE SEGMENTS ARRAY IS: ',segmentsArray)
             //collates string from all segments of one segments arry
             return helpers.collateStringsIntoOneString(segmentsArray)
         })
 
-        console.log('^^^^^^^^ AT TAPE: ARRAY OF WHOLESTRINGCALCULATOINS IS; ', this.arrayOfWholeCalculationStrings)
 
         ///bug fix
         if( ! arrayOfRecords) {
