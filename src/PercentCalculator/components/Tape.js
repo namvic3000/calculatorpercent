@@ -113,7 +113,7 @@ class Tape extends Component {
                                     </View>
                                     {/* need to store index in this.currentTapeRecordIndex so can pass it to ADDNOTEMODAL outside of this block */}
                                     <TouchableOpacity style={styles.sideAddNoteButtonContainer} onPress={() => {this.currentTapeRecordIndex = index; this.addNoteButtonClicked(index)}}>
-                                        <Text style={styles.sideAddNoteButtonText}>+Note</Text>
+                                        <Text style={styles.sideAddNoteButtonText}>Note</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.sideDeleteButtonContainer} onPress={() => this.deleteOneCalculation(index)}>
                                         <Text style={styles.sideDeleteButtonText}>Delete</Text>

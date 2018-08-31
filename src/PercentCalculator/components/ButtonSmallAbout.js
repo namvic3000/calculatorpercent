@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { Dimensions,View, Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
-import {updateShowTapeStatus} from '../../../actions/tapeActions'
 import { connect } from 'react-redux'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import { updateSkinData } from "../../../actions/skinDataActions";
 import { updateShowAboutPageStatus } from "../../../actions/aboutPageActions";
-
 
 
 class ButtonSmallAbout extends Component {

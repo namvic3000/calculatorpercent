@@ -2,7 +2,8 @@ import React from 'react'
 import {AsyncStorage,View, StyleSheet, Platform, NativeModules, Text, TouchableOpacity} from 'react-native'
 import Screen from './Screen'
 import Keypad from './Keypad'
-import Tape from "./Tape";
+import Tape from "./Tape"
+import AboutPage from "./AboutPage"
 import ColorPickerTool from "./ColorPickerTool";
 import ButtonSmallsPanel from "./ButtonSmallsPanel";
 import { connect } from "react-redux"
@@ -233,6 +234,8 @@ class CalculatorWhole extends React.Component {
                 <Tape/>
                  
                 <ColorPickerTool/>
+
+                <AboutPage/>
             
             </View>
 

@@ -1,8 +1,6 @@
 import React from 'react'
 import {TouchableOpacity ,Dimensions,StyleSheet,TextInput, View, Text } from "react-native"
-import {Button} from 'native-base'
 import { connect } from "react-redux";
-import { updateCalculatorData } from "../../../actions/calculatorDataActions";
 import { replaceWholeTapeData } from "../../../actions/tapeActions";
 
 
@@ -133,9 +131,10 @@ class AddNoteTextEntryModal extends React.Component {
         return(
             this.props.isShowing ? (
                 <View style={styles.container}>
+                    <Text style={styles.addNoteTitle}>Add/Edit Note</Text>
                     <TextInput style={styles.textInput} onChangeText={ text => this.handleTextInput(text, this.props.forTapeRecordIndex)}
                                 value={this.state.textInputValue}
-                                placeholder="100 chars limit"
+                                placeholder="enter note here"
                                 maxLength={100}
                     />
                     <TouchableOpacity onPress={this.okButtonPressed} style={styles.okButton}>
@@ -158,18 +157,18 @@ let styles = StyleSheet.create({
         display: 'flex',
         position: 'absolute',
         zIndex: 1000,
-        height: '30%',
+        height: '25%',
         width: '100%',
         top: '35%',
-        backgroundColor: 'transparent',
+        backgroundColor: 'lightyellow',
         justifyContent: 'center',
         alignItems: 'center'
     },
     textInput: {
         paddingLeft: '5%',
         paddingRight: '5%',
-        backgroundColor: 'white',
-        height: '45%',
+        backgroundColor: 'lightyellow',
+        height: '35%',
         width: '100%'
     },
     okButton: {
@@ -184,6 +183,10 @@ let styles = StyleSheet.create({
         // textAlign: 'center',
         color: 'white',
         fontSize: Dimensions.get('window').height * 0.025
+    },
+    addNoteTitle: {
+        color: 'darkblue',
+        fontSize: Dimensions.get('window').height * 0.03
     }
 
 })
