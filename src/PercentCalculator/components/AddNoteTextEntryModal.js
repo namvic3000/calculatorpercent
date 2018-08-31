@@ -105,7 +105,7 @@ class AddNoteTextEntryModal extends React.Component {
         
         //if gets here, note segment does exist
         //see if any text in the note, if no text, delete the note segment
-        let hasText = /[a-z]/i.test(thisSegmentsArray[indexOfSegmentWithNote].stringValue)
+        let hasText = /[a-z]|[0-9]/i.test(thisSegmentsArray[indexOfSegmentWithNote].stringValue)
         
         if( ! hasText) {
             console.log('OKBUTTON, NOTESEGMENT BEEN POPPED')
