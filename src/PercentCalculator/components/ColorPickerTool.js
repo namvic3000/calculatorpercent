@@ -137,10 +137,6 @@ class ColorPickerTool extends React.Component {
     render() {
 
  
-
- 
-
-
         return(
                 this.props.skinData.showColorPickerStatus ? (
                     <View style={styles.colorPickerOuterMostContainer}>
@@ -187,6 +183,7 @@ let styles = StyleSheet.create({
     colorPicker: {
         height: '100%',
         width: '100%',
+
     },
     buttonContainer: {
         backgroundColor: 'green',
