@@ -75,12 +75,12 @@ class ButtonMemClear extends React.Component {
         let currentActiveMemory = this.props.currentActiveMemory
 
         if(currentActiveMemory === 1) {
-            memory1Value = "empty"
+            memory1Value = 'memory empty'
             memory2Value = this.props.memory2Value
         }
         else {
             memory1Value = this.props.memory1Value
-            memory2Value = "empty"
+            memory2Value = 'memory empty'
         }
             
         this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
@@ -113,7 +113,7 @@ class ButtonMemClear extends React.Component {
                 height: "100%",
             },
             buttonText:{
-                fontSize: fontSizeOfStandardButton*0.7,
+                fontSize: fontSizeOfStandardButton*0.65,
                 color: "white",
             },
         })

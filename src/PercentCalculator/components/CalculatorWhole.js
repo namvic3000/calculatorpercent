@@ -77,8 +77,8 @@ class CalculatorWhole extends React.Component {
         catch(error) {
      //console.log('ERROR IN FETCHING MEMORY DATA FROM LOCAL STORGE SO RETURNING DEFAULT VALUES')
          let  defaultMemory = {
-            memory1Value: 'empty',
-            memory2Value: 'empty',
+            memory1Value: 'memory empty',
+            memory2Value: 'memory empty',
             currentActiveMemory: 1
          }
 
@@ -193,8 +193,8 @@ class CalculatorWhole extends React.Component {
                 //NEVER GETS HERE, SINCE RESULT RETURNED ALWAYS 
                 //IS VALID FROM READ FROM LOCAL STORAGE METHODS
          //console.log('MEMORY DATA NOT EXISWT, NOT UPDATING STORE')
-                let memory1Value = 'empty'
-                let memory2Value = 'empty'
+                let memory1Value = 'memory empty'
+                let memory2Value = 'memory empty'
                 let currentActiveMemory = 1
                 
                 this.props.dispatch(updateMemoryData(memory1Value, memory2Value, currentActiveMemory))
@@ -271,7 +271,7 @@ class CalculatorWhole extends React.Component {
         if(Platform.OS == 'ios') {
             console.log('GAPFILLER: PLATFORM IS IOS')
             gapFillerStyle = {
-                height: '0%',
+                height: '0.3%',
                 backgroundColor: 'white',
                 color: 'white'
             }
@@ -321,11 +321,6 @@ class CalculatorWhole extends React.Component {
 
 
 let styles = StyleSheet.create({
-    gapFiller: {
-        height: '0%',
-        backgroundColor: 'white',
-        color: 'white'
-    },
     containerOfWholeCalculator: {
         flex: 1,
         backgroundColor: "black"

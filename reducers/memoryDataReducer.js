@@ -4,8 +4,8 @@ import { AsyncStorage } from "react-native";
 
 let initialState = {
     memoryData: {
-        memory1Value: 'empty',
-        memory2Value: 'empty',
+        memory1Value: 'memory empty',
+        memory2Value: 'memory empty',
         currentActiveMemory: 1//1 or 2
     }
 }

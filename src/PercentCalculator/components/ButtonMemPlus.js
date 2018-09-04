@@ -131,13 +131,13 @@ class ButtonMemPlus extends React.Component {
 
 
 
-            //if mem value is 'empty', make it a 0
-            if(/empty/i.test(memory1Value)) {//if has 'empty', make value = 0
+            //if mem value is 'memory empty', make it a 0
+            if(/empty/i.test(memory1Value)) {//if has 'memory empty', make value = 0
              //console.log('MEMPLLUS: MEMVALUE1 INSIDE IF')
                  memory1Value = 0
             }
 
-            if(/empty/i.test(memory2Value)) {//if has 'empty',
+            if(/empty/i.test(memory2Value)) {//if has 'memory empty',
              //console.log('MEMPLLUS: MEMVALUE2 INSIDE IF')
                  memory2Value = 0
             }
@@ -218,7 +218,7 @@ class ButtonMemPlus extends React.Component {
                 height: "100%",
             },
             buttonText:{
-                fontSize: fontSizeOfStandardButton*0.7,
+                fontSize: fontSizeOfStandardButton*0.65,
                 color: "white",
             },
         })

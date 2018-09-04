@@ -262,7 +262,7 @@ class ButtonCloseBracket extends React.Component {
                 height: "100%",
             },
             buttonText:{
-                fontSize: fontSizeOfStandardButton*0.7,
+                fontSize: fontSizeOfStandardButton*0.65,
                 color: "white",
             },
         })

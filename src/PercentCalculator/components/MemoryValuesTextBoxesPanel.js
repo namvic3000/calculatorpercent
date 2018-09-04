@@ -131,13 +131,15 @@ class MemoryValuesPanel extends React.Component {
                 borderColor: "black"
             },
             memory1ValueTextStyle: {
-                alignItems: "center",
+                // alignItems: "center",
                 fontSize: fontSizeOfMem1Value,
-                backgroundColor: "transparent"
+                backgroundColor: "transparent",
+                lineHeight: fontSizeOfMem1Value*1.1
             },
             memory2ValueTextStyle: {
-                alignItems: "center",
+                // alignItems: "center",
                 fontSize: fontSizeOfMem2Value,
+                lineHeight: fontSizeOfMem2Value*1.1,                
                 backgroundColor: "transparent"
             },
             active: {

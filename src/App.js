@@ -13,7 +13,7 @@ class App extends Component {//<Props> {
 
     //status bar is enabled, so allow 20 for ios status bar, 
     //0 for android since app automatically is placed below status bar
-    let STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0//NativeModules.StatusBarManager.HEIGHT 
+    let STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 25 : 0//NativeModules.StatusBarManager.HEIGHT 
 
 
     const styles = StyleSheet.create({

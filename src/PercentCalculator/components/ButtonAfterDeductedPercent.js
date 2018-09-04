@@ -366,8 +366,8 @@ class ButtonAfterDeductedPercent extends React.Component {
             },
             afterPercentDeductedButtonText: {
                 fontSize: fontSizeOfStandardButton*0.7,
+                lineHeight: fontSizeOfStandardButton*0.65,
                 color: "white",
-                lineHeight: fontSizeOfStandardButton*0.7,
             },
         })
 
