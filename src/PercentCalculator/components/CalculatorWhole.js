@@ -290,19 +290,19 @@ class CalculatorWhole extends React.Component {
         return(
             <View style={styles.containerOfWholeCalculator}>
                 
-                <View style={gapFillerStyle}></View>
+                {/* <View style={gapFillerStyle}></View> */}
 
-                <View style={styles.screenContainer}>
+                {/* <View style={styles.screenContainer}>
                     <Screen />
-                </View>
+                </View> */}
 
                 <View style={styles.wholeKeypadSectionContainer}>
                     <Keypad />
                 </View>
  
-                <View style={buttonSmallsPanelOrThinStripStyle}>
+                {/* <View style={buttonSmallsPanelOrThinStripStyle}>
                     <ButtonSmallsPanel/>
-                </View>
+                </View> */}
                 
                 
                 <Tape/>
@@ -330,7 +330,7 @@ let styles = StyleSheet.create({
         // height: '28%',
     },
     wholeKeypadSectionContainer: {
-        flex: 3
+        flex: 1//3
         // height: '70%',
     },
     buttonSmallsPanelContainer: {

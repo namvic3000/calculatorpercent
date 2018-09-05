@@ -9,7 +9,6 @@ import IconDeciPoints from './IconDeciPoints.js';
 
 
 
-
 class Screen extends Component {
   
   
