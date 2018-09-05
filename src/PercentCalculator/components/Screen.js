@@ -72,7 +72,7 @@ class Screen extends Component {
     
     let fontSizeOfScreenMainLine1;//default
     ////////fontsize for mainline1
-    let allowedLengthBeforeShrinking = 69
+    let allowedLengthBeforeShrinking = 65
 
     let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
@@ -122,8 +122,8 @@ class Screen extends Component {
         paddingBottom: '1%',
         width: "100%",
         marginTop: fontSizeOfScreenMainLine1/6,
-        fontSize: fontSizeOfScreenMainLine1,//32,
-        lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/12),
+        fontSize: fontSizeOfScreenMainLine1,
+        lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/20),//originall was 12, good for ios but android needs 20
         color: "black",
         backgroundColor: "white",
         textAlign: "left",

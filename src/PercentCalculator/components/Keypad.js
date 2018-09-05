@@ -202,7 +202,7 @@ class Keypad extends React.Component {
                 </View>
 
                 <View style={styles.percentButtonsRowContainer}>
-                    <ButtonOutOf />
+                    <ButtonPercentChange />
                     <ButtonAfterAddedPercent />
                     <ButtonAfterDeductedPercent />
                     <ButtonIfPercentIs />
@@ -212,7 +212,7 @@ class Keypad extends React.Component {
                     <ButtonPercentOf />
                     <ButtonAddPercent />
                     <ButtonDeductPercent />
-                    <ButtonPercentChange />
+                    <ButtonOutOf />                    
                 </View>
 
                 <View style={styles.standardButtonRowContainer}>
