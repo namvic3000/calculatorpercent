@@ -67,125 +67,20 @@ class Keypad extends React.Component {
                 width: "100%",
                 // justifyContent: "center"
             },
-            
-            allMemoriesContainer: {
-                flex: 0.3,
-                flexDirection: "row",
-            },
-            memory1Container: {
-                flex: 1,
-                flexDirection: "row",
-                paddingLeft: "1%",
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "transparent",
-                borderWidth: 0,
-                // borderRightWidth: 1,
-                // borderColor: "gray"
-            },
-            memory2Container: {
-                flex: 1,
-                flexDirection: "row",
-                paddingRight: "1%",
-                // width: "49%",
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "transparent",
-                borderWidth: 0,
-                borderColor: "black"
-            },
-            memoryButtonText: {
-                fontSize: fontSizeOfStandardButton*0.75,
-                color: "white",
-            },
-            memoryContentText: {
-                alignItems: "center",
-                fontSize: fontSizeOfStandardButton*0.62,
-                color: "blue",
-            },
+         
             standardButtonRowContainer: {
                 // flex of 1 for each standard button row, results in equall height of row
                 flexDirection: "row",
                 flex: 0.9,
             },
-            standardButtonContainer: {
-                //container for each individual button
-                flex: 1,//each button has equal width, because the flexdir is now 'row'
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'blue',
-                backgroundColor: "darkblue",//"rgb(250,250,255)",
-                borderWidth: 0,
-                height: "100%",
-            },
-            calcButtonText: {
-                fontSize: fontSizeOfStandardButton,
-                color: "white",
-            },
-            calcButtonTextForCA: {
-                fontSize: fontSizeOfStandardButton*0.83,
-                color: "white",
-            },
-            calcButtonTextForBackArrow: {
-                fontSize: fontSizeOfStandardButton*1.2,
-                color: "white",
-            },
-            
-            calcButtonTextArithOperators: {
-                fontSize: fontSizeOfStandardButton*1.1,
-                color: "white",
-            },
-            calcButtonTextSubtractOperator: {
-                fontSize: fontSizeOfStandardButton*1.3,
-                color: "white",
-            },
-            calcButtonTextMultiplyOperator: {
-                fontSize: fontSizeOfStandardButton*1.1,
-                color: "white",
-                bottom: 2.5
-            },
+              
+               
             percentButtonsRowContainer: {
                 flexDirection: "row",
                 flex: 0.7,//row height is 0.7 compared to 1 of standard buttons
                 margin: 0
             },
-            percentButtonsRowContainerLast: {
-                flexDirection: "row",
-                position: "relative",
-                bottom: 15,
-                flex: 0.7,//row height is 0.7 compared to 1 of standard buttons
-                margin: 0
-            },
-            percentButtonContainer: {
-                //flex 1 means each button in row has equal width, because flexdir is set as 'row'
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: "center",
-                backgroundColor: "gray",
-                borderWidth: 0,
-                borderColor: "black",
-                height: "100%",
-            },
-            percentButtonText:{
-                fontSize: fontSizeOfStandardButton*0.7,
-                color: "white",
-            },
-            afterPercentAddedButtonText: {
-                fontSize: fontSizeOfStandardButton*0.7,
-                lineHeight: fontSizeOfStandardButton*0.7,
-                color: "white",
-            },
-            afterPercentDeductedButtonText: {
-                fontSize: fontSizeOfStandardButton*0.7,
-                color: "white",
-                lineHeight: fontSizeOfStandardButton*0.7,
-            },
-            buttonSmallsRowContainer: {
                 
-            }
         })
 
 
