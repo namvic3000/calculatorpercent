@@ -351,7 +351,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
      //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
      wholeString = wholeString.replace(/x/g, '*')
      wholeString = wholeString.replace(/÷/g, '/')
-  //console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
+  console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
   
 
     // //if whole string has text in it, dont evaluate, just return the text
@@ -812,7 +812,9 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
     //if empty stirng return it, coz if process below, toFix would insert 
     //0.000000 into an empty string, ie "".toFix(6) would give 0.000000
     ////instead of ""
-    if(passedInString == "") return passedInString
+    if( ! passedInString) return ''
+
+    if((passedInString == "") || (passedInString == 'null')) return passedInString
 
     // //also if passed in string is an error messsge, return as is
     // //exlude test for alpha x because the multiply sign x will get interpreted as an alpha
@@ -862,7 +864,8 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
                 // console.log('OK TO INSERT SEPARATOR, NOT START OF LINE, HAS PRIOR NUMERAL')
                 //if not at start of line, and preceding char is a numeral
                 //then insert a separator
-                let tempStr = passedInString.slice(0, i) + ',' + passedInString.slice(i)
+                let thousandsSeparatorChar = "'"//e.g 12'000'234.50
+                let tempStr = passedInString.slice(0, i) + thousandsSeparatorChar + passedInString.slice(i)
                 passedInString = tempStr
                 stringToReturn = passedInString
 
@@ -1151,6 +1154,126 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
     else {//no currency sign in whole calcullation stirng, no dont add currency
         //return as is
         return passedInAnswerString
+    }
+
+}
+
+
+
+
+
+
+
+
+
+export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => {
+    //portion1 is portion beore the [ bracket
+    //portion2 is portion from [ to ] brackets
+    //portion3 is portion after the ] bracket
+    //portionAnswer is portion with segment that has '=' sign. the answer
+    //is contained within this 1 segment
+    //portionNoten is the segment after the = segment is the note segment, which may or
+    //may not exist.
+
+    //returns ann object with 5 portion keys
+
+
+    //passed in string format is:
+    //eg 25 x [12% of 135] + (22 x $3) = $222,222.22
+    //or eg 25% of 150 = 38  //lone percentcalc, no square brackets
+    //portion1: 25 x
+    //portion2: [12% of 135]
+    //poriton3: + (22 x $3)
+    //portionAnswer: = $222,222.22
+    //portionNote: segment after segment with = sign
+
+
+    let objToReturn = {}
+
+
+    let portion1 = '' //before the square bracket
+    let portion2 = '' //content of square bracket inclusive of brackets
+    let portion3 = '' //after ] close square bracket
+    let portionAnswer = '' ///= segment
+    let portionNote = '' //segment after = segment
+
+
+    let wholeString = collateStringsIntoOneString(segmentsArray) || ''
+    
+    let hasOpenSquareBracket = /\[/.test(wholeString)
+    let hasEqualsSign = /\=/.test(wholeString)
+
+    let indexOfOpenSquareBracket = wholeString.search(/\[/) 
+    let indexOfCloseSquareBracket = wholeString.search(/\]/)  
+    let indexOfEqualsSign = wholeString.search(/\=/)  
+
+    let indexOfSegmentNumberWithEqualsSign = -100//not exist
+
+    segmentsArray.forEach( (segment, index) => {
+        if(segment.stringValue.search(/\=/) > -1 ) {//found
+            indexOfSegmentNumberWithEqualsSign = index
+        }
+    })
+
+
+
+    //if has open squre bracket but not close square bracket, 
+    ///treat it as it is at eostring
+    if((indexOfOpenSquareBracket >= 0) && (indexOfCloseSquareBracket < 0)) {
+        indexOfCloseSquareBracket = wholeString.length
+    }
+
+    //if no = sign present, treat it asif it is aat eostirng
+    if(indexOfEqualsSign < 0) {//not exist
+        indexOfEqualsSign = wholeString.length
+    }
+
+
+    //if no open squre brackt, means only 1 portion exists
+    //eg 12% of 25 = 3.2
+    if( ! hasOpenSquareBracket) {//no open [ braket
+        portion1 = wholeString.slice(0, indexOfEqualsSign -1 )//exclude space before =sign
+        portion2 = ''
+        portion3 = ''
+        if(segmentsArray[indexOfSegmentNumberWithEqualsSign]) {//if exists
+            portionAnswer = segmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
+        }
+        if(segmentsArray[indexOfSegmentNumberWithEqualsSign + 1]) {//exists
+            portionNote = segmentsArray[indexOfSegmentNumberWithEqualsSign + 1].stringValue || ''
+        }
+         
+        return {
+            portion1,
+            portion2,
+            portion3,
+            portionAnswer,
+            portionNote
+        }
+    }//no open square bracket, simple calculation
+    
+
+
+    //mixed calculation, completed or incomplete pecentage calculation
+    //eg 12 x [15% of 25] + 150  or 12 x [15% of 25  ... incomplete
+    if(hasOpenSquareBracket) {//has open square bracket, may or may not have close squre bracket
+        portion1 = wholeString.slice(0, indexOfOpenSquareBracket)//exclude open square bracket
+        portion2 = wholeString.slice(indexOfOpenSquareBracket, indexOfCloseSquareBracket + 1) || ''//include close square bracket
+        portion3 = wholeString.slice(indexOfCloseSquareBracket+1, indexOfEqualsSign - 1)//exclude equals sign and space before it
+        if(segmentsArray[indexOfSegmentNumberWithEqualsSign]) {//exists
+            portionAnswer = segmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
+        }
+
+        if(segmentsArray[indexOfSegmentNumberWithEqualsSign + 1]) {//exists
+            portionNote = segmentsArray[indexOfSegmentNumberWithEqualsSign + 1].stringValue || ''
+        }
+         
+        return {
+            portion1,
+            portion2,
+            portion3,
+            portionAnswer,
+            portionNote
+        }
     }
 
 }

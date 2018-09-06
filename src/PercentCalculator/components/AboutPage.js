@@ -13,6 +13,8 @@ class AboutPage extends React.Component {
     render() {
 
 
+    console.log('ABOUT PAGE WIDTH IS ' + Dimensions.get('window').width)
+
         return(
             this.props.showAboutPageStatus ? (
                 <View style={styles.outerContainer}>
@@ -20,7 +22,8 @@ class AboutPage extends React.Component {
                         <Text style={styles.appTitleText}>Advanced Percent Calculator</Text>
                         <Text style={styles.appTitleText}>Version 18.1</Text>
                         <Text style={styles.appTitleText}></Text>
-                        <Text style={styles.feedbackText}>feedback: leisuremob@gmail.com</Text>
+                        <Text style={styles.feedbackText}>contact and feedback:</Text>
+                        <Text style={styles.feedbackText}>leisuremob@gmail.com</Text>
                         <Text style={styles.feedbackText}></Text>
                         <Text style={styles.copyrightText}>© Copyright LeisureMob 2010 - present</Text>
                     </View>
@@ -52,17 +55,17 @@ let styles = StyleSheet.create({
         alignItems: 'center',
     },
     appTitleText: {
-        fontSize: Dimensions.get('window').height * 0.025,
+        fontSize: Dimensions.get('window').width * 0.045,
         color: 'blue'
 
     },
     feedbackText: {
-        fontSize: Dimensions.get('window').height * 0.025,
+        fontSize: Dimensions.get('window').width * 0.045,
         color: 'brown'
 
     },
     copyrightText: {
-        fontSize: Dimensions.get('window').height * 0.025,
+        fontSize: Dimensions.get('window').width * 0.045,
         color: 'black'
 
     }

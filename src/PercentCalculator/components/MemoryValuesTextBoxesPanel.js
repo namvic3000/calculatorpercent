@@ -106,11 +106,12 @@ class MemoryValuesPanel extends React.Component {
 
         let styles = StyleSheet.create( {
             container: {
-                flex: 0.3,
+                // flex: 0.3,
+                height: '3%',
                 flexDirection: "row",
             },
             memory1ValueContainer: {
-                flex: 1,
+                // flex: 1,
                 flexDirection: "row",
                 paddingLeft: "3%",
                 height: "100%",
@@ -120,7 +121,7 @@ class MemoryValuesPanel extends React.Component {
                 borderWidth: 0,
             },
             memory2ValueContainer: {
-                flex: 1,
+                // flex: 1,
                 flexDirection: "row",
                 paddingRight: "3%",
                 height: "100%",
@@ -133,13 +134,13 @@ class MemoryValuesPanel extends React.Component {
             memory1ValueTextStyle: {
                 // alignItems: "center",
                 fontSize: fontSizeOfMem1Value,
+                // lineHeight: fontSizeOfMem1Value,
                 backgroundColor: "transparent",
-                lineHeight: fontSizeOfMem1Value*1.1
             },
             memory2ValueTextStyle: {
                 // alignItems: "center",
                 fontSize: fontSizeOfMem2Value,
-                lineHeight: fontSizeOfMem2Value*1.1,                
+                // lineHeight: fontSizeOfMem2Value,                
                 backgroundColor: "transparent"
             },
             active: {

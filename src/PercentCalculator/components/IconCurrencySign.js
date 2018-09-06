@@ -75,7 +75,7 @@ let styles = StyleSheet.create({
     },
     iconText: {
         color: 'grey',
-        fontSize: Dimensions.get('window').height * 0.02,
+        fontSize: Dimensions.get('window').width * 0.035,
         textAlign: 'left'
     }
 })

@@ -235,11 +235,11 @@ let styles = StyleSheet.create({
     okButtonText: {
         // textAlign: 'center',
         color: 'white',
-        fontSize: Dimensions.get('window').height * 0.025
+        fontSize: Dimensions.get('window').width * 0.045
     },
     addNoteTitle: {
         color: 'darkblue',
-        fontSize: Dimensions.get('window').height * 0.03
+        fontSize: Dimensions.get('window').width * 0.05
     }
 
 })

@@ -107,7 +107,7 @@ class ButtonIfPercentIs extends React.Component {
 
             //since answer segment has separators and extra details added, 
             //need to remove the alphas and separators
-            tempStr = tempStr.replace(/[a-z]|\,|\)|\(|\=/ig,'')
+            tempStr = tempStr.replace(/[a-z]|\,|\'|\)|\(|\=/ig,'')
             //these % and \n dont work in regex, so find them as a string 
             tempStr = tempStr.replace('%', '')
             tempStr = tempStr.replace('\n', '')

@@ -256,7 +256,7 @@ class Keypad extends React.Component {
         fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12
     }
     else {//length is OVER allowed initial limit, now smaller font and start shrinking as length gets longer
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12.5 - ((overflow * 0.1))
+        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.1))
     }
     
     // //******TESTING , TO DELTE***** */
@@ -290,10 +290,10 @@ class Keypad extends React.Component {
 
  
     //insert separators to the mem value to be dipsplayed
-    // let mem1ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory1Value)
-    let mem1ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory1Value)
-    // let mem2ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory2Value)
-    let mem2ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory2Value)
+    let mem1ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory1Value)
+    mem1ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory1Value)
+    let mem2ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory2Value)
+    mem2ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory2Value)
 
 
 
@@ -301,12 +301,12 @@ class Keypad extends React.Component {
 
     let allowedLengthOfMemoryValueBeforeShrinking = 10
         
-    let mem1Excess = this.props.memory1Value.length - allowedLengthOfMemoryValueBeforeShrinking
+    let mem1Excess = (this.props.memory1Value||'').length - allowedLengthOfMemoryValueBeforeShrinking
     if (mem1Excess < 0) {
       mem1Excess = 0
     }
     
-    let mem2Excess = this.props.memory2Value.length - allowedLengthOfMemoryValueBeforeShrinking
+    let mem2Excess = (this.props.memory2Value||'').length - allowedLengthOfMemoryValueBeforeShrinking
     if (mem2Excess < 0) {
       mem2Excess = 0
     }
@@ -489,11 +489,29 @@ class Keypad extends React.Component {
                 lineHeight: fontSizeOfMem2Value*1.1,                
                 backgroundColor: "transparent"
             },
-            active: {
+            memoryContentActive: {
                 color: "white"
             },
-            inActive: {
+            memoryContentInActive: {
                 color: "darkgray"
+            },
+            line1Portions1and3Active: {
+                color: 'black',
+            },
+            line1Portions1and3InActive: {
+                color: 'darkgray',
+            },
+            line1PortionPercentActive: {
+                color: 'orange',
+            },
+            line1PortionPercentInActive: {
+                color: 'pink',
+            },
+            line1PortionAnswer: {
+                // lineHeight:
+                color: 'black',
+                lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/5),
+
             }
 
                 
@@ -521,15 +539,65 @@ class Keypad extends React.Component {
     let memory1ValueTextStyle, memory2ValueText;
     //make the correct mmory box turn into color of active box
     if(this.props.currentActiveMemory === 1) {//memory1 is active
-        memory1ValueText = [styles.memory1ValueTextStyle, styles.active]
-        memory2ValueText = [styles.memory2ValueTextStyle, styles.inActive]
+        memory1ValueText = [styles.memory1ValueTextStyle, styles.memoryContentActive]
+        memory2ValueText = [styles.memory2ValueTextStyle, styles.memoryContentInActive]
     }
     else {//memory2 is active
-        memory1ValueText = [styles.memory1ValueTextStyle, styles.inActive]
-        memory2ValueText = [styles.memory2ValueTextStyle, styles.active]
+        memory1ValueText = [styles.memory1ValueTextStyle, styles.memoryContentInActive]
+        memory2ValueText = [styles.memory2ValueTextStyle, styles.memoryContentActive]
     }
 
 
+    //portion1 is portion beore the [ bracket
+    //portion2 is portion from [ to ] brackets
+    //portion3 is portion after the ] bracket
+    //portionAnswer is portion with segment that has '=' sign. the answer
+    //is contained within this 1 segment
+    //portionNoten is the segment after the = segment is the note segment, which may or
+    //may not exist.
+
+
+    ///SPLIT SEGMENTS ARRAY INTO PORTIONS OF CALCULTIONS.
+    //SCREENMAINLINE1 STILL EXISTS, CAN STILL BE DISPLAYED AS
+    //1 COMBINED LINE, BUT WE USE MIRROR LINE HERE TO SPLIT 
+    //CALCULATION INTO PORTIONS FOR COLORING PURPOSES
+    let mirrorScreenMainLine1Object = helpers.splitScreenMainTextLine1IntoConstituents(segmentsArray)
+    console.log('RESULT OBJECT IS ', mirrorScreenMainLine1Object)
+
+
+    
+    //insert thousands separators into each portion, because these portions
+    //come from segments array, not screenmainline1, so separators
+    //not yet inserted
+    mirrorScreenMainLine1Object.portion1 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion1)
+    mirrorScreenMainLine1Object.portion2 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion2)
+    mirrorScreenMainLine1Object.portion3 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion3)
+    mirrorScreenMainLine1Object.portionAnswer = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portionAnswer)
+
+
+    //REPLACE SQUARE BRACKET IN PORTION2, THE PERCENT PORTION WITH
+    //ROUND BRACKETS
+    mirrorScreenMainLine1Object.portion2 = mirrorScreenMainLine1Object.portion2.replace('[', '(')
+    mirrorScreenMainLine1Object.portion2 = mirrorScreenMainLine1Object.portion2.replace(']', ')')
+ 
+
+    let portion1Style, portion2Style, portion3Style, portionAnswerStyle;
+    
+    // if answer exists
+    if( mirrorScreenMainLine1Object.portionAnswer && mirrorScreenMainLine1Object.portionAnswer.length > 0) {
+        portion1Style = [styles.screenMainTextLine1Style, styles.line1Portions1and3InActive ]
+        portion3Style = [styles.screenMainTextLine1Style, styles.line1Portions1and3InActive ]
+        portion2Style = [styles.screenMainTextLine1Style, styles.line1PortionPercentInActive ]
+    } 
+    else{//answer not exist, so portionns are active
+        portion1Style = [styles.screenMainTextLine1Style, styles.line1Portions1and3Active ]
+        portion3Style = [styles.screenMainTextLine1Style, styles.line1Portions1and3Active ]
+        portion2Style = [styles.screenMainTextLine1Style, styles.line1PortionPercentActive ]
+ 
+    }
+    
+    ///answer style is always same
+    portionAnswerStyle = [styles.screenMainTextLine1Style, styles.line1PortionAnswer ]
 
 
         return(
@@ -538,9 +606,29 @@ class Keypad extends React.Component {
 
             {/* newly added screen */}
             {/* ref={ ref => this.refID = ref} */}
-            <View style={styles.screen}><Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text><Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text><View style={styles.midScreenMsgContainer}><Text style={midScreenMessageStyle}>{screenMidScreenMessage}</Text></View>
-                <IconCurrencySign/><IconDeciPoints/>
+            <View style={styles.screen}>
+                <Text>
+                    <Text style={portion1Style}>{mirrorScreenMainLine1Object.portion1}</Text>
+                    <Text style={portion2Style}>{mirrorScreenMainLine1Object.portion2}</Text>
+                    <Text style={portion3Style}>{mirrorScreenMainLine1Object.portion3}</Text>
+                    <Text style={portionAnswerStyle}>{mirrorScreenMainLine1Object.portionAnswer}</Text>
+                </Text>
+                <View style={styles.midScreenMsgContainer}>
+                    <Text style={midScreenMessageStyle}>{screenMidScreenMessage}</Text>
+                </View>
+                <IconCurrencySign/>
+                <IconDeciPoints/>
+                <Text style={[styles.screenLiveAnswerLineStyle]}>{screenLiveAnswerLine}</Text>
             </View>
+            {/* ORIGINAL <View style={styles.screen}>
+                <Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text>
+                <Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text>
+                <View style={styles.midScreenMsgContainer}>
+                    <Text style={midScreenMessageStyle}>{screenMidScreenMessage}</Text>
+                </View>
+                <IconCurrencySign/>
+                <IconDeciPoints/>
+            </View> */}
 
 
 

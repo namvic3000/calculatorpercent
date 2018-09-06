@@ -209,7 +209,7 @@ class ButtonNegSign extends React.Component {
 
         return(
             <TouchableOpacity style={styles.standardButtonContainer} onPress={()=> {this.handleCalcButtonClicked("+-")}}>
-                <Text style={styles.calcButtonText}>+-</Text>
+                <Text style={styles.calcButtonText}>±</Text>
             </TouchableOpacity>
         )
     }

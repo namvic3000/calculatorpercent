@@ -234,7 +234,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     calculationText: {
-        fontSize: Dimensions.get('window').height*0.025,
+        fontSize: Dimensions.get('window').width * 0.045,
     },
     sideDeleteButtonContainer: {//delte button on the side of calculation
         // backgroundColor: "orange",
@@ -242,15 +242,15 @@ let styles = StyleSheet.create({
         // width: '10%',
         backgroundColor: 'transparent',
         margin: '1.5%',
-        height: Dimensions.get('window').height*0.035,
+        height: Dimensions.get('window').width * 0.06,
         justifyContent: 'center',
         alignItems: 'center',
     },
     sideDeleteButtonText: {
-        lineHeight: Dimensions.get('window').height*0.035,
+        lineHeight: Dimensions.get('window').width * 0.06,
         textAlign: 'center',
         color: 'orange',
-        fontSize: Dimensions.get('window').height*0.025,
+        fontSize: Dimensions.get('window').width * 0.045,
         position: 'relative',
         bottom: '12%',
     },
@@ -261,22 +261,22 @@ let styles = StyleSheet.create({
         backgroundColor: 'transparent',
         margin: '1.5%',
         marginRight: '2.5%',
-        height: Dimensions.get('window').height*0.035,
+        height: Dimensions.get('window').width * 0.06,
         justifyContent: 'center',
         alignItems: 'center',
     },
     sideAddNoteButtonText: {
         position: 'relative',
         bottom: '12%',
-        lineHeight: Dimensions.get('window').height*0.035,
+        lineHeight: Dimensions.get('window').width * 0.06,
+        fontSize: Dimensions.get('window').width * 0.045,
         textAlign: 'center',
         color: 'blue',
-        fontSize: Dimensions.get('window').height*0.025,
     },
 
     topButtonsContainer: {//contains the deletealll and copy buttons at top
         flexDirection: 'row',
-        height: Dimensions.get('window').height*0.035,//'3.5%',
+        height: Dimensions.get('window').width * 0.06,
         width: '100%',
         backgroundColor: 'white'
     },
@@ -300,7 +300,7 @@ let styles = StyleSheet.create({
         // textAlign: 'center',
         // lineHeight: Dimensions.get('window').height/25,
         // fontSize: Dimensions.get('window').height/33,
-        fontSize: Dimensions.get('window').height*0.027,
+        fontSize: Dimensions.get('window').width * 0.05,
         color: 'darkred'
     },
    
@@ -325,7 +325,7 @@ let styles = StyleSheet.create({
     // },
     copyButtonText: {
         color: 'green',
-        fontSize: Dimensions.get('window').height*0.027,
+        fontSize: Dimensions.get('window').width * 0.05,
     }
 })
 
