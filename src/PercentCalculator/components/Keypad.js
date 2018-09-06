@@ -256,7 +256,7 @@ class Keypad extends React.Component {
         fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12
     }
     else {//length is OVER allowed initial limit, now smaller font and start shrinking as length gets longer
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.1))
+        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.06))
     }
     
     // //******TESTING , TO DELTE***** */
@@ -569,10 +569,12 @@ class Keypad extends React.Component {
     //insert thousands separators into each portion, because these portions
     //come from segments array, not screenmainline1, so separators
     //not yet inserted
-    mirrorScreenMainLine1Object.portion1 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion1)
-    mirrorScreenMainLine1Object.portion2 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion2)
-    mirrorScreenMainLine1Object.portion3 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion3)
-    mirrorScreenMainLine1Object.portionAnswer = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portionAnswer)
+   
+    ///TO COMMENT OUT OR NOT?
+    // mirrorScreenMainLine1Object.portion1 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion1)
+    // mirrorScreenMainLine1Object.portion2 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion2)
+    // mirrorScreenMainLine1Object.portion3 = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portion3)
+    // mirrorScreenMainLine1Object.portionAnswer = helpers.insertThousandsSeparatorsForOneSingleNumberString(mirrorScreenMainLine1Object.portionAnswer)
 
 
     //REPLACE SQUARE BRACKET IN PORTION2, THE PERCENT PORTION WITH
@@ -607,7 +609,7 @@ class Keypad extends React.Component {
             {/* newly added screen */}
             {/* ref={ ref => this.refID = ref} */}
             <View style={styles.screen}>
-                <Text>
+                <Text style={{backgroundColor: 'white', paddingLeft:'2%', paddingRight: '2%'}}>
                     <Text style={portion1Style}>{mirrorScreenMainLine1Object.portion1}</Text>
                     <Text style={portion2Style}>{mirrorScreenMainLine1Object.portion2}</Text>
                     <Text style={portion3Style}>{mirrorScreenMainLine1Object.portion3}</Text>

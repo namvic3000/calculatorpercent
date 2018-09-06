@@ -830,7 +830,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
     
     passedInString = passedInString.toString()
 
-    // console.log('THOUSANDS SEPARATOR SUBMETHOD: PASSEDINSTRING IS: ', passedInString)
+    console.log('THOUSANDS SEPARATOR SUBMETHOD: PASSEDINSTRING IS: ', passedInString)
     let stringToReturn = passedInString //default
 
     //first find index of decipoint if exists, if not, it is assumed
@@ -864,7 +864,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
                 // console.log('OK TO INSERT SEPARATOR, NOT START OF LINE, HAS PRIOR NUMERAL')
                 //if not at start of line, and preceding char is a numeral
                 //then insert a separator
-                let thousandsSeparatorChar = "'"//e.g 12'000'234.50
+                let thousandsSeparatorChar = "\'"//e.g 12'000'234.50
                 let tempStr = passedInString.slice(0, i) + thousandsSeparatorChar + passedInString.slice(i)
                 passedInString = tempStr
                 stringToReturn = passedInString
@@ -877,11 +877,16 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
         }//if count is 3
     }//for
 
-    // console.log('THOUSANDS SEPARATOR SUBMETHOD, STIRNG TO RETURN IS: ' + stringToReturn)
+    console.log('THOUSANDS SEPARATOR SUBMETHOD, STIRNG TO RETURN IS: ' + stringToReturn)
 
     return stringToReturn
 
 }
+
+
+
+
+
 
 
 
@@ -1167,6 +1172,13 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
 
 
 export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => {
+    
+    ///method returns constituents of calculations, and inserts 
+    //thousands separators before returning constituents wrapped
+    //in ann object
+    
+    
+    
     //portion1 is portion beore the [ bracket
     //portion2 is portion from [ to ] brackets
     //portion3 is portion after the ] bracket
@@ -1198,14 +1210,11 @@ export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => 
     let portionNote = '' //segment after = segment
 
 
-    let wholeString = collateStringsIntoOneString(segmentsArray) || ''
-    
-    let hasOpenSquareBracket = /\[/.test(wholeString)
-    let hasEqualsSign = /\=/.test(wholeString)
+    //get a copy of segmentsarray, so can remove the segment with
+    //note if it exists
 
-    let indexOfOpenSquareBracket = wholeString.search(/\[/) 
-    let indexOfCloseSquareBracket = wholeString.search(/\]/)  
-    let indexOfEqualsSign = wholeString.search(/\=/)  
+
+
 
     let indexOfSegmentNumberWithEqualsSign = -100//not exist
 
@@ -1214,6 +1223,36 @@ export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => 
             indexOfSegmentNumberWithEqualsSign = index
         }
     })
+
+
+    //note segment is immediately after segment with =sign
+    let indexOfSegmentNumberWithNote = indexOfSegmentNumberWithEqualsSign + 1
+
+
+    //copy
+    let copySegmentsArray = JSON.parse(JSON.stringify(segmentsArray))
+
+    //if has note, then remove notesegment
+    if(copySegmentsArray[indexOfSegmentNumberWithNote]) {//if exists
+        copySegmentsArray.pop()//remove last segment, it has note in it
+        //so when collate string, it does not include note with the answer
+    }
+
+
+
+    //let wholeString = collateStringsIntoOneString(copySegmentsArray) || ''
+    
+    //first insert thousands separator to wwhole calculaton, note segment been removed already
+    let wholeString = insertThousandsSeparatorsForWholeCalculation(copySegmentsArray)
+    
+
+    
+    let hasOpenSquareBracket = /\[/.test(wholeString)
+    let hasEqualsSign = /\=/.test(wholeString)
+
+    let indexOfOpenSquareBracket = wholeString.search(/\[/) 
+    let indexOfCloseSquareBracket = wholeString.search(/\]/)  
+    let indexOfEqualsSign = wholeString.search(/\=/)  
 
 
 
@@ -1229,17 +1268,26 @@ export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => 
     }
 
 
+
+
+
+
+
+
+
     //if no open squre brackt, means only 1 portion exists
     //eg 12% of 25 = 3.2
     if( ! hasOpenSquareBracket) {//no open [ braket
         portion1 = wholeString.slice(0, indexOfEqualsSign -1 )//exclude space before =sign
         portion2 = ''
         portion3 = ''
-        if(segmentsArray[indexOfSegmentNumberWithEqualsSign]) {//if exists
-            portionAnswer = segmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
+        if(copySegmentsArray[indexOfSegmentNumberWithEqualsSign]) {//if exists
+            portionAnswer = copySegmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
         }
-        if(segmentsArray[indexOfSegmentNumberWithEqualsSign + 1]) {//exists
-            portionNote = segmentsArray[indexOfSegmentNumberWithEqualsSign + 1].stringValue || ''
+
+        //use original array, it has note segment inn it
+        if(segmentsArray[indexOfSegmentNumberWithNote]) {//exists
+            portionNote = segmentsArray[indexOfSegmentNumberWithNote].stringValue || ''
         }
          
         return {
@@ -1253,18 +1301,23 @@ export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => 
     
 
 
+
+
+
+
     //mixed calculation, completed or incomplete pecentage calculation
     //eg 12 x [15% of 25] + 150  or 12 x [15% of 25  ... incomplete
     if(hasOpenSquareBracket) {//has open square bracket, may or may not have close squre bracket
         portion1 = wholeString.slice(0, indexOfOpenSquareBracket)//exclude open square bracket
         portion2 = wholeString.slice(indexOfOpenSquareBracket, indexOfCloseSquareBracket + 1) || ''//include close square bracket
         portion3 = wholeString.slice(indexOfCloseSquareBracket+1, indexOfEqualsSign - 1)//exclude equals sign and space before it
-        if(segmentsArray[indexOfSegmentNumberWithEqualsSign]) {//exists
-            portionAnswer = segmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
+        if(copySegmentsArray[indexOfSegmentNumberWithEqualsSign]) {//exists
+            portionAnswer = copySegmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
         }
 
-        if(segmentsArray[indexOfSegmentNumberWithEqualsSign + 1]) {//exists
-            portionNote = segmentsArray[indexOfSegmentNumberWithEqualsSign + 1].stringValue || ''
+        //use original array, it has note segment inn it
+        if(segmentsArray[indexOfSegmentNumberWithNote]) {//exists
+            portionNote = segmentsArray[indexOfSegmentNumberWithNote].stringValue || ''
         }
          
         return {
