@@ -49,9 +49,14 @@ import {updateSkinData} from '../../../actions/skinDataActions'
 
 class Keypad extends React.Component {
 
+
+    
     state = {
         showThenButtonFlag: false 
     }
+
+
+
 
     showThenButton = (booleanFlag) => {
         this.setState({showThenButton: booleanFlag})

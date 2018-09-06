@@ -139,7 +139,7 @@ class ButtonThen extends React.Component {
                 flex: 1,//each button has equal width, because the flexdir is now 'row'
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: "yellow",//"rgb(250,250,255)",
+                backgroundColor: "darkgreen",//"rgb(250,250,255)",
                 borderWidth: 0,
                 height: "100%",
             },
