@@ -67,6 +67,11 @@ class Keypad extends React.Component {
         else {
             this.showThenButton(false)
         }
+
+
+      
+       if(window.document) (this.mainTextLine1ID = window.document.getElementById('mainTextLine1ID'))
+
     }
 
 
@@ -145,8 +150,6 @@ class Keypad extends React.Component {
         }
 
 
-
-
      //console.log('MEMORY PRESSED, MEMORY NUMER: ' + memoryNumber)
 
         //update memory status to correct memory number
@@ -162,7 +165,7 @@ class Keypad extends React.Component {
 
 
 
-    
+
 
     render() {
 
@@ -238,7 +241,7 @@ class Keypad extends React.Component {
     
     let fontSizeOfScreenMainLine1;//default
     ////////fontsize for mainline1
-    let allowedLengthBeforeShrinking = 65
+    let allowedLengthBeforeShrinking = 79
 
     let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
@@ -250,12 +253,26 @@ class Keypad extends React.Component {
     //large fontsize for initial x number of characters, before start shrinking
     if(screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
         //length is within allowed initial length, gets large font
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/11.5
+        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12
     }
     else {//length is OVER allowed initial limit, now smaller font and start shrinking as length gets longer
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.1))
+        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12.5 - ((overflow * 0.1))
     }
     
+    // //******TESTING , TO DELTE***** */
+    // console.log('LENGTH OF LINE1 IS: ' , screenMainTextLine1.length)
+
+    // let numberOfLFs = screenMainTextLine1.match(/\+/g)
+    // console.log('NUMBER OF LFs IN LINE1 IS: ' , numberOfLFs)
+
+    // let splitStr = screenMainTextLine1.split(/\r?\n/g)
+    // console.log('SPLIT LINE1 IS: ', splitStr)
+
+    // // let mainTextLine1ID = document.getElementById('mainTextLine1ID')
+    
+    // this.mainTextLine1ID && console.log('VIA DOM ID, LINE HEIGHT IS IS: ', this.mainTextLine1ID.style.lineHeight)
+    // //************** */
+
 
     let allowedLengthOfLiveAnswerLineBeforeShrinking = 16
     let excess = screenLiveAnswerLine.length - allowedLengthOfLiveAnswerLineBeforeShrinking
@@ -270,6 +287,43 @@ class Keypad extends React.Component {
 
 
 
+
+ 
+    //insert separators to the mem value to be dipsplayed
+    // let mem1ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory1Value)
+    let mem1ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory1Value)
+    // let mem2ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory2Value)
+    let mem2ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory2Value)
+
+
+
+
+
+    let allowedLengthOfMemoryValueBeforeShrinking = 10
+        
+    let mem1Excess = this.props.memory1Value.length - allowedLengthOfMemoryValueBeforeShrinking
+    if (mem1Excess < 0) {
+      mem1Excess = 0
+    }
+    
+    let mem2Excess = this.props.memory2Value.length - allowedLengthOfMemoryValueBeforeShrinking
+    if (mem2Excess < 0) {
+      mem2Excess = 0
+    }
+
+ //console.log('MEMVALUES PANEL: MEM1 AND MEM2 EXCESSES AREE: '+mem1Excess, mem2Excess)
+    let fontSizeOfMem1Value = Dimensions.get('window').width/22 - ((mem1Excess * 0.4))
+    let fontSizeOfMem2Value = Dimensions.get('window').width/22 - ((mem2Excess * 0.4))
+
+    
+
+ //console.log('MEMVALUES CONTAINER, BGCOLORS ARE: ' + this.props.skinData.memoryBoxesColor)
+ 
+
+
+
+    // this.refID && console.log('REFID IS: ' , this.refID)
+    // this.refID && console.log('REFID STYLE IS: ' , this.refID.viewConfig.validAttributes.style.lineHeight)
 
 
 
@@ -462,29 +516,6 @@ class Keypad extends React.Component {
 
 
 
- 
-
-    let allowedLengthOfMemoryValueBeforeShrinking = 10
-        
-    let mem1Excess = this.props.memory1Value.length - allowedLengthOfMemoryValueBeforeShrinking
-    if (mem1Excess < 0) {
-      mem1Excess = 0
-    }
-    
-    let mem2Excess = this.props.memory2Value.length - allowedLengthOfMemoryValueBeforeShrinking
-    if (mem2Excess < 0) {
-      mem2Excess = 0
-    }
-
- //console.log('MEMVALUES PANEL: MEM1 AND MEM2 EXCESSES AREE: '+mem1Excess, mem2Excess)
-    let fontSizeOfMem1Value = Dimensions.get('window').width/12 - ((mem1Excess * 0.4))
-    let fontSizeOfMem2Value = Dimensions.get('window').width/12 - ((mem2Excess * 0.4))
-
-    
-
- //console.log('MEMVALUES CONTAINER, BGCOLORS ARE: ' + this.props.skinData.memoryBoxesColor)
- 
-
 
 
     let memory1ValueTextStyle, memory2ValueText;
@@ -499,14 +530,6 @@ class Keypad extends React.Component {
     }
 
 
-    //insert separators to the mem value to be dipsplayed
-    // let mem1ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory1Value)
-    let mem1ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory1Value)
-    // let mem2ValueWithSeparators = helpers.truncateDecimalPlacesOfString(this.props.memory2Value)
-    let mem2ValueWithSeparators = helpers.insertThousandsSeparatorsForOneSingleNumberString(this.props.memory2Value)
-
-
-
 
 
         return(
@@ -514,6 +537,7 @@ class Keypad extends React.Component {
 
 
             {/* newly added screen */}
+            {/* ref={ ref => this.refID = ref} */}
             <View style={styles.screen}><Text style={styles.screenMainTextLine1Style}>{screenMainTextLine1}</Text><Text style={styles.screenLiveAnswerLineStyle}>{screenLiveAnswerLine}</Text><View style={styles.midScreenMsgContainer}><Text style={midScreenMessageStyle}>{screenMidScreenMessage}</Text></View>
                 <IconCurrencySign/><IconDeciPoints/>
             </View>
