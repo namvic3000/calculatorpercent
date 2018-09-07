@@ -136,6 +136,17 @@ class ButtonSmallSkin extends Component {
 
     
     render() {
+ 
+
+        let isTabletDevice = Dimensions.get('window').width >= 768
+        let tabletScaleFactor;
+
+        if(isTabletDevice) {//table, so make font smaller
+            tabletScaleFactor = 0.75
+        }
+        else {
+            tabletScaleFactor = 1//no change
+        }
 
 
 
@@ -156,11 +167,11 @@ class ButtonSmallSkin extends Component {
             },
             buttonTextActive: {
                 color: 'black',
-                fontSize: Dimensions.get('window').width/18
+                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
             },
             buttonTextInactive: {
                 color: 'white',
-                fontSize: Dimensions.get('window').width/18
+                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
             }
         })
 

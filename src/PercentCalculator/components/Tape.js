@@ -261,7 +261,7 @@ let styles = StyleSheet.create({
     sideDeleteButtonText: {
         lineHeight: Dimensions.get('window').width * 0.06 * tabletScaleFactor,
         textAlign: 'center',
-        color: 'orange',
+        color: 'rgb(244, 104, 65)',
         fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
         position: 'relative',
         bottom: '12%',

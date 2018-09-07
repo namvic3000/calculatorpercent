@@ -102,6 +102,16 @@ class ButtonSmallTape extends Component {
 
 
 
+        let isTabletDevice = Dimensions.get('window').width >= 768
+        let tabletScaleFactor;
+
+        if(isTabletDevice) {//table, so make font smaller
+            tabletScaleFactor = 0.75
+        }
+        else {
+            tabletScaleFactor = 1//no change
+        }
+
 
         let styles = StyleSheet.create({
             buttonBackgroundInactive: {
@@ -120,11 +130,11 @@ class ButtonSmallTape extends Component {
             },
             buttonTextActive: {
                 color: 'black',
-                fontSize: Dimensions.get('window').width/18
+                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
             },
             buttonTextInactive: {
                 color: 'white',
-                fontSize: Dimensions.get('window').width/18
+                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
             }
         })
 

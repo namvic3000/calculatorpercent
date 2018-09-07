@@ -537,17 +537,23 @@ class Keypad extends React.Component {
                 color: 'darkgray',
             },
             line1PortionPercentActive: {
-                color: 'orange',
+                color: 'rgb(244, 104, 65)',
             },
             line1PortionPercentInActive: {
-                color: 'pink',
+                color: 'rgba(244, 104, 65, 0.4)',
             },
-            line1PortionAnswer: {
-                // lineHeight:
+            line1PortionAnswerBlack: {
                 color: 'black',
                 lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/5),
-
-            }
+            },
+            line1PortionAnswerGreen: {
+                color: 'green',
+                lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/5),
+            },
+            line1PortionAnswerRed: {
+                color: 'red',
+                lineHeight: fontSizeOfScreenMainLine1 + (fontSizeOfScreenMainLine1/5),
+            },
 
                 
         })
@@ -633,9 +639,16 @@ class Keypad extends React.Component {
  
     }
     
-    ///answer style is always same
-    portionAnswerStyle = [styles.screenMainTextLine1Style, styles.line1PortionAnswer ]
+    ///answer style is always black, unless it is % change
+    portionAnswerStyle = [styles.screenMainTextLine1Style, styles.line1PortionAnswerBlack ]
 
+    //if it it is %change, then change color of answer
+    if(/increase/i.test(mirrorScreenMainLine1Object.portionAnswer)) {//means %change increase
+        portionAnswerStyle = [styles.screenMainTextLine1Style, styles.line1PortionAnswerGreen]
+    }
+    if(/decrease/i.test(mirrorScreenMainLine1Object.portionAnswer)) {//means %change decrease
+        portionAnswerStyle = [styles.screenMainTextLine1Style, styles.line1PortionAnswerRed]
+    }
 
         return(
             <View style={styles.wholeKeypadContainer}>
