@@ -186,6 +186,17 @@ class ButtonNegSign extends React.Component {
 
         let fontSizeOfStandardButton = standardButtonWidth/2.8
 
+        
+        
+        let isTabletDevice = Dimensions.get('window').width >= 768
+        let tabletScaleFactor = 0.75
+        
+        if(isTabletDevice) {//table, so make font smaller
+            fontSizeOfStandardButton *= tabletScaleFactor
+        }
+
+        
+
 
         let styles = StyleSheet.create({
             standardButtonContainer: {

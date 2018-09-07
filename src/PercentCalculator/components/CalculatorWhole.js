@@ -271,23 +271,24 @@ class CalculatorWhole extends React.Component {
         //REACT NATIVE THAT CAUSED HORIZONTAL LINES DUE TO 
         //GAPS OF 1 TO 2 PIXELS,
         //DUE TO ROUNDING OF PIXEL VALUES BY REACT NATIVE.
-        let gapFillerStyle;
-        if(Platform.OS == 'ios') {
-            // console.log('GAPFILLER: PLATFORM IS IOS')
-            gapFillerStyle = {
-                height: '0.3%',
-                backgroundColor: 'white',
-                color: 'white'
-            }
-        }
-        else {
-            // console.log('GAPFILLER: PLATFORM IS ANDROID')
-            gapFillerStyle = {
-                height: '0.25%',
-                backgroundColor: 'white',
-                color: 'white'
-            }
-        }
+        
+        // let gapFillerStyle;
+        // if(Platform.OS == 'ios') {
+        //     // console.log('GAPFILLER: PLATFORM IS IOS')
+        //     gapFillerStyle = {
+        //         height: '0.3%',
+        //         backgroundColor: 'white',
+        //         color: 'white'
+        //     }
+        // }
+        // else {
+        //     // console.log('GAPFILLER: PLATFORM IS ANDROID')
+        //     gapFillerStyle = {
+        //         height: '0.25%',
+        //         backgroundColor: 'white',
+        //         color: 'white'
+        //     }
+        // }
 
 
 

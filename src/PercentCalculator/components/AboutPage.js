@@ -38,6 +38,17 @@ class AboutPage extends React.Component {
 
 
 
+let isTabletDevice = Dimensions.get('window').width >= 768
+let tabletScaleFactor;
+
+if(isTabletDevice) {//table, so make font smaller
+    tabletScaleFactor = 0.75
+}
+else {
+    tabletScaleFactor = 1//no change
+}
+
+
 let styles = StyleSheet.create({
     outerContainer: {
         position: 'absolute',
@@ -55,17 +66,17 @@ let styles = StyleSheet.create({
         alignItems: 'center',
     },
     appTitleText: {
-        fontSize: Dimensions.get('window').width * 0.045,
+        fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
         color: 'blue'
 
     },
     feedbackText: {
-        fontSize: Dimensions.get('window').width * 0.045,
+        fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
         color: 'brown'
 
     },
     copyrightText: {
-        fontSize: Dimensions.get('window').width * 0.045,
+        fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
         color: 'black'
 
     }

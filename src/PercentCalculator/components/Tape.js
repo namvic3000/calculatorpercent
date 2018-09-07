@@ -177,6 +177,18 @@ class Tape extends Component {
 
 
 
+let isTabletDevice = Dimensions.get('window').width >= 768
+let tabletScaleFactor;
+
+if(isTabletDevice) {//table, so make font smaller
+    tabletScaleFactor = 0.75
+}
+else {
+    tabletScaleFactor = 1//no change
+}
+
+
+
 
 
 
@@ -234,7 +246,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     calculationText: {
-        fontSize: Dimensions.get('window').width * 0.045,
+        fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
     },
     sideDeleteButtonContainer: {//delte button on the side of calculation
         // backgroundColor: "orange",
@@ -242,15 +254,15 @@ let styles = StyleSheet.create({
         // width: '10%',
         backgroundColor: 'transparent',
         margin: '1.5%',
-        height: Dimensions.get('window').width * 0.06,
+        height: Dimensions.get('window').width * 0.06 * tabletScaleFactor,
         justifyContent: 'center',
         alignItems: 'center',
     },
     sideDeleteButtonText: {
-        lineHeight: Dimensions.get('window').width * 0.06,
+        lineHeight: Dimensions.get('window').width * 0.06 * tabletScaleFactor,
         textAlign: 'center',
         color: 'orange',
-        fontSize: Dimensions.get('window').width * 0.045,
+        fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
         position: 'relative',
         bottom: '12%',
     },
@@ -261,22 +273,22 @@ let styles = StyleSheet.create({
         backgroundColor: 'transparent',
         margin: '1.5%',
         marginRight: '2.5%',
-        height: Dimensions.get('window').width * 0.06,
+        height: Dimensions.get('window').width * 0.06 * tabletScaleFactor,
         justifyContent: 'center',
         alignItems: 'center',
     },
     sideAddNoteButtonText: {
         position: 'relative',
         bottom: '12%',
-        lineHeight: Dimensions.get('window').width * 0.06,
-        fontSize: Dimensions.get('window').width * 0.045,
+        lineHeight: Dimensions.get('window').width * 0.06 * tabletScaleFactor,
+        fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
         textAlign: 'center',
         color: 'blue',
     },
 
     topButtonsContainer: {//contains the deletealll and copy buttons at top
         flexDirection: 'row',
-        height: Dimensions.get('window').width * 0.06,
+        height: Dimensions.get('window').width * 0.06 * tabletScaleFactor,
         width: '100%',
         backgroundColor: 'white'
     },
@@ -300,7 +312,7 @@ let styles = StyleSheet.create({
         // textAlign: 'center',
         // lineHeight: Dimensions.get('window').height/25,
         // fontSize: Dimensions.get('window').height/33,
-        fontSize: Dimensions.get('window').width * 0.05,
+        fontSize: Dimensions.get('window').width * 0.05 * tabletScaleFactor,
         color: 'darkred'
     },
    
@@ -325,7 +337,7 @@ let styles = StyleSheet.create({
     // },
     copyButtonText: {
         color: 'green',
-        fontSize: Dimensions.get('window').width * 0.05,
+        fontSize: Dimensions.get('window').width * 0.05 * tabletScaleFactor,
     }
 })
 

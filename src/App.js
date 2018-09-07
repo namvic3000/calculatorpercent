@@ -11,7 +11,7 @@ class App extends Component {//<Props> {
  
   render() {
 
-    //status bar is enabled, so allow 20 for ios status bar, 
+    //status bar is enabled, so allow 20 for ios status bar + 5 buffer, 
     //0 for android since app automatically is placed below status bar
     let STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 25 : 0//NativeModules.StatusBarManager.HEIGHT 
 

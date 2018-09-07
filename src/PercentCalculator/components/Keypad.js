@@ -180,6 +180,15 @@ class Keypad extends React.Component {
         let fontSizeOfStandardButton = standardButtonWidth/2.8
 
  
+        
+        let isTabletDevice = Dimensions.get('window').width >= 768
+        let tabletScaleFactor = 0.75
+        
+        if(isTabletDevice) {//table, so make font smaller
+            fontSizeOfStandardButton *= tabletScaleFactor
+        }
+
+
 
 
 
@@ -248,6 +257,11 @@ class Keypad extends React.Component {
     ////////fontsize for mainline1
     let allowedLengthBeforeShrinking = 79
 
+    if(isTabletDevice) {
+        allowedLengthBeforeShrinking = 100
+    }
+
+
     let overflow = screenMainTextLine1.length - allowedLengthBeforeShrinking//allow 50 chars before shrinking
     if(overflow < 0) {//error check
         overflowFromInitialExpectedLength = 0
@@ -259,9 +273,16 @@ class Keypad extends React.Component {
     if(screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
         //length is within allowed initial length, gets large font
         fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12
+        if(isTabletDevice) {
+            fontSizeOfScreenMainLine1 *= tabletScaleFactor
+        }
     }
     else {//length is OVER allowed initial limit, now smaller font and start shrinking as length gets longer
         fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.06))
+        
+        if(isTabletDevice) {
+            fontSizeOfScreenMainLine1 = tabletScaleFactor * Dimensions.get('window').width/13 - ((overflow * 0.06/tabletScaleFactor))
+        }
     }
     
     // //******TESTING , TO DELTE***** */
@@ -286,6 +307,11 @@ class Keypad extends React.Component {
     }
 
     fontSizeOfScreenLiveAnswerLine = Dimensions.get('window').width/16 - ((excess * 0.1))
+
+
+    if(isTabletDevice) {
+        fontSizeOfScreenLiveAnswerLine *= tabletScaleFactor
+    }
 
 
 
@@ -321,6 +347,10 @@ class Keypad extends React.Component {
     let fontSizeOfMem2Value = Dimensions.get('window').width/22 - ((mem2Excess * 0.4))
 
     
+    if(isTabletDevice) {
+        fontSizeOfMem1Value *= tabletScaleFactor
+        fontSizeOfMem2Value *= tabletScaleFactor
+    }
 
  //console.log('MEMVALUES CONTAINER, BGCOLORS ARE: ' + this.props.skinData.memoryBoxesColor)
  
@@ -614,7 +644,7 @@ class Keypad extends React.Component {
             {/* newly added screen */}
             {/* ref={ ref => this.refID = ref} */}
             <View style={styles.screen}>
-                <Text style={{backgroundColor: 'white', paddingLeft:'2%', paddingRight: '2%'}}>
+                <Text style={{backgroundColor: 'white', paddingLeft:'2%', paddingRight: '2%', paddingTop: '3%'}}>
                     <Text style={portion1Style}>{mirrorScreenMainLine1Object.portion1}</Text>
                     <Text style={portion2Style}>{mirrorScreenMainLine1Object.portion2}</Text>
                     <Text style={portion3Style}>{mirrorScreenMainLine1Object.portion3}</Text>

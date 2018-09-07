@@ -46,6 +46,34 @@ class IconDeciPoints extends React.Component {
     render() {
 
 
+        let tabletScaleFactor = 1
+        if(Dimensions.get('window').width >= 768 ) {
+            tabletScaleFactor = 0.75
+        }
+
+
+
+        let styles = StyleSheet.create({
+            container: {
+                position:'absolute',
+                bottom: '2%',
+                right: '1.5%',
+                backgroundColor: 'transparent',
+                height: '10%',
+                width: '50%',
+            },
+            iconText: {
+                color: 'grey',
+                fontSize: Dimensions.get('window').width * 0.035 * tabletScaleFactor,
+                textAlign: 'right'
+            }
+        })
+        
+        
+
+
+
+
         let iconTextToShow;
         
         //show icon only when 'reeady' is shown,, else get out of calculatoin's way
@@ -64,24 +92,6 @@ class IconDeciPoints extends React.Component {
         )
     }
 }
-
-
-
-let styles = StyleSheet.create({
-    container: {
-        position:'absolute',
-        bottom: '2%',
-        right: '1.5%',
-        backgroundColor: 'transparent',
-        height: '10%',
-        width: '50%',
-    },
-    iconText: {
-        color: 'grey',
-        fontSize: Dimensions.get('window').width * 0.035,
-        textAlign: 'right'
-    }
-})
 
 
 
