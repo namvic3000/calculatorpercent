@@ -154,7 +154,7 @@ class ButtonSmallTape extends Component {
                 alignItems: 'center',
             },
             buttonBackgroundFlashStage1: {
-                backgroundColor: 'rgb(32, 142, 45)',//`${this.props.skinData.buttonSmallsColor}`,//'rgb(32, 142, 45)',
+                backgroundColor: 'orange',//'rgb(32, 142, 45)',//`${this.props.skinData.buttonSmallsColor}`,//'rgb(32, 142, 45)',
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',

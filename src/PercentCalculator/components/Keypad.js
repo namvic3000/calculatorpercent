@@ -75,7 +75,7 @@ class Keypad extends React.Component {
 
 
       
-       if(window.document) (this.mainTextLine1ID = window.document.getElementById('mainTextLine1ID'))
+       //if(window.document) (this.mainTextLine1ID = window.document.getElementById('mainTextLine1ID'))
 
     }
 
