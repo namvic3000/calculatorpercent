@@ -9,6 +9,17 @@ import {updateShowButtonSmallsPanelStatus} from '../../../actions/buttonSmallsPa
 
 class ButtonSmallAbout extends Component {
     
+
+
+    state = {
+        flashStage: 1//1 = flash stage 1, 2 = flash stage 2
+        //only effective if skinbuttonsmll is active
+    }
+
+
+
+
+
     handleClick = () => {
 
 
@@ -80,11 +91,30 @@ class ButtonSmallAbout extends Component {
             this.props.dispatch(updateShowAboutPageStatus(false))
             //dismiss the buttonsmalls panel also
             this.props.dispatch(updateShowButtonSmallsPanelStatus(false))
+        
+        
+            //remove setintervall timer
+            clearInterval(this.flashingAnimationTimer)
+        
         }
         else {//not currently shwing, so show it
             this.props.dispatch(updateShowAboutPageStatus(true))
             //buttonsmalls panell will not autodismiss if any buttonsmalls
             //is active, so no need for any action on it
+        
+
+            //set interval timer to change skinbuttonsmall color, to
+            //make it look lik it is flashing
+            this.flashingAnimationTimer = setInterval( () => {
+                if(this.state.flashStage == 1) {
+                    this.setState( {flashStage: 2})
+                }
+                else{// is flash stage 2 or anything else
+                    this.setState( {flashStage: 1})
+                }
+            }, 500)
+        
+        
         }
 
 
@@ -112,45 +142,69 @@ class ButtonSmallAbout extends Component {
         let styles = StyleSheet.create({
             buttonBackgroundInactive: {
                 backgroundColor: `${this.props.skinData.buttonSmallsColor}`,
-                color: 'white',
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
             },
-            buttonBackgroundActive: {
-                backgroundColor: 'yellow',
-                color: 'black',
+            buttonBackgroundFlashStage1: {
+                backgroundColor: 'rgb(32, 142, 45)',//`${this.props.skinData.buttonSmallsColor}`,//'rgb(32, 142, 45)',
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
             },
-            buttonTextActive: {
-                color: 'black',
-                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
+            buttonBackgroundFlashStage2: {
+                backgroundColor: 'white',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
             },
+            // buttonBackgroundActive: {
+            //     backgroundColor: 'yellow',
+            //     color: 'black',
+            //     flex: 1,
+            //     justifyContent: 'center',
+            //     alignItems: 'center',
+            // },
+            // buttonTextActive: {
+            //     color: 'black',
+            //     fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
+            // },
             buttonTextInactive: {
                 color: 'white',
                 fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
-            }
+            },
+            buttonTextFlashStage1: {
+                color: 'white',
+                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
+            },
+            buttonTextFlashStage2: {
+                color: 'black',
+                fontSize: Dimensions.get('window').width/18 * tabletScaleFactor
+           }
         })
-
-
-
-
 
 
 
         let styleToApplyContainer;
         let styleToApplyText
         //get the correct styleing depending on state
-        if(this.props.showAboutPageStatus){
-            styleToApplyContainer = styles.buttonBackgroundActive
-            styleToApplyText = styles.buttonTextActive
+        if(this.props.showAboutPageStatus){//about button is active
+            // styleToApplyContainer = styles.buttonBackgroundActive
+            // styleToApplyText = styles.buttonTextActive
+            if(this.state.flashStage == 1) {
+                styleToApplyContainer = styles.buttonBackgroundFlashStage1
+                styleToApplyText = styles.buttonTextFlashStage1
+            }
+            else{//is stage 2
+                styleToApplyContainer = styles.buttonBackgroundFlashStage2
+                styleToApplyText = styles.buttonTextFlashStage2
+            }
         }
         else {
             styleToApplyContainer = styles.buttonBackgroundInactive
             styleToApplyText = styles.buttonTextInactive
         }
+
 
 
 

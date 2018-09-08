@@ -272,30 +272,33 @@ class CalculatorWhole extends React.Component {
         //GAPS OF 1 TO 2 PIXELS,
         //DUE TO ROUNDING OF PIXEL VALUES BY REACT NATIVE.
         
-        // let gapFillerStyle;
-        // if(Platform.OS == 'ios') {
-        //     // console.log('GAPFILLER: PLATFORM IS IOS')
-        //     gapFillerStyle = {
-        //         height: '0.3%',
-        //         backgroundColor: 'white',
-        //         color: 'white'
-        //     }
-        // }
-        // else {
-        //     // console.log('GAPFILLER: PLATFORM IS ANDROID')
-        //     gapFillerStyle = {
-        //         height: '0.25%',
-        //         backgroundColor: 'white',
-        //         color: 'white'
-        //     }
-        // }
+        ///GAP FILLER STILLL NEEDED FOR ANDROID, GAP FILLER IS TO
+        //MAKE COMPONENTS CLOSER, SO THERE IS NO GAP IN BETWEEN OF
+        //1 OR 2PX, DUE TO ROUNDING ERRORS BY REACT NATIVE
+        let gapFillerStyle;
+        if(Platform.OS == 'ios') {
+            // console.log('GAPFILLER: PLATFORM IS IOS')
+            gapFillerStyle = {
+                height: '0%',//not exist
+                backgroundColor: 'white',
+                color: 'white'
+            }
+        }
+        else {
+            // console.log('GAPFILLER: PLATFORM IS ANDROID')
+            gapFillerStyle = {
+                height: '0.5%',
+                backgroundColor: 'white',
+                color: 'white'
+            }
+        }
 
 
 
         return(
             <View style={styles.containerOfWholeCalculator}>
                 
-                {/* <View style={gapFillerStyle}></View> */}
+                <View style={gapFillerStyle}></View>
 
                 {/* <View style={styles.screenContainer}>
                     <Screen />
