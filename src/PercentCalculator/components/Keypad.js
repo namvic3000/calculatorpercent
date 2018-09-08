@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { TouchableOpacity,View, Text, StyleSheet, Dimensions } from 'react-native'
+import { Platform, TouchableOpacity,View, Text, StyleSheet, Dimensions } from 'react-native'
 import Button0To9 from './Button0To9'
 import ButtonArithmetic from './ButtonArithmetic';
 import ButtonBackSpace from './ButtonBackSpace';
@@ -182,6 +182,7 @@ class Keypad extends React.Component {
  
         
         let isTabletDevice = Dimensions.get('window').width >= 768
+        
         let tabletScaleFactor = 0.75
         
         if(isTabletDevice) {//table, so make font smaller
@@ -269,16 +270,30 @@ class Keypad extends React.Component {
 
     // console.log('AT SCREEN, SCREENMAINTEXTLINE1 IS: ', screenMainTextLine1)
 
+
     //large fontsize for initial x number of characters, before start shrinking
     if(screenMainTextLine1.length <= allowedLengthBeforeShrinking) {
         //length is within allowed initial length, gets large font
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12
+        if(Platform.OS === 'ios') { //ios, normal sized
+            fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12
+        }
+        ////else android, make fontsize a little smaller, due to narrower screenn 
+        //due to the gap filler taking up room, pushing text down tto the live answer
+        else{
+            fontSizeOfScreenMainLine1 = Dimensions.get('window').width/12.6
+        }
+        
         if(isTabletDevice) {
             fontSizeOfScreenMainLine1 *= tabletScaleFactor
         }
     }
     else {//length is OVER allowed initial limit, now smaller font and start shrinking as length gets longer
-        fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.06))
+        if(Platform.OS === 'ios') { //ios, normal sized
+            fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.06))
+        }
+        else{//android, shrink a little faster
+            fontSizeOfScreenMainLine1 = Dimensions.get('window').width/13 - ((overflow * 0.08))        
+        }
         
         if(isTabletDevice) {
             fontSizeOfScreenMainLine1 = tabletScaleFactor * Dimensions.get('window').width/13 - ((overflow * 0.06/tabletScaleFactor))
@@ -342,9 +357,13 @@ class Keypad extends React.Component {
       mem2Excess = 0
     }
 
+
+
  //console.log('MEMVALUES PANEL: MEM1 AND MEM2 EXCESSES AREE: '+mem1Excess, mem2Excess)
     let fontSizeOfMem1Value = Dimensions.get('window').width/22 - ((mem1Excess * 0.4))
     let fontSizeOfMem2Value = Dimensions.get('window').width/22 - ((mem2Excess * 0.4))
+
+
 
     
     if(isTabletDevice) {
