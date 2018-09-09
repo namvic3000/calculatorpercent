@@ -86,7 +86,7 @@ class IconDeciPoints extends React.Component {
 
 
         return(
-            <TouchableOpacity style={styles.container}onPress={this.handleClick}>
+            <TouchableOpacity style={styles.container} onPress={this.handleClick}>
                 <Text style={styles.iconText}>{iconTextToShow}</Text>
             </TouchableOpacity>
         )

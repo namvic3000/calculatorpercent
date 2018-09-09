@@ -5,6 +5,7 @@ import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import {addRecordToTape} from '../../../actions/tapeActions'
 import { updateSkinData } from "../../../actions/skinDataActions";
+import {updateShowSwitchOperandsStatus} from '../../../actions/switchOperandsActions'
 
 
 
@@ -202,6 +203,10 @@ class ButtonEquals extends React.Component {
             timeMachineArrayOfSegmentsArraySnapShots
         ))
 
+
+        //remove switchoperands icon
+        this.props.dispatch(updateShowSwitchOperandsStatus(false))
+    
     }//handleclick
 
 
