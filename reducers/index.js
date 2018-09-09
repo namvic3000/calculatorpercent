@@ -7,6 +7,9 @@ import skinDataReducer   from '../reducers/skinDataReducer'
 import aboutPageReducer from './aboutPageReducer';
 import currencyReducer from './currencyReducer';
 import {deciPointsReducer} from './deciPointsReducer';
+import switchOperandsReducer from './switchOperandsReducer';
+
+
 
 const rootReducer = combineReducers({
         calculatorStateData: calculatorDataReducer,
@@ -16,7 +19,8 @@ const rootReducer = combineReducers({
         skinData: skinDataReducer,
         aboutPage: aboutPageReducer,
         currency: currencyReducer,
-        deciPoints: deciPointsReducer
+        deciPoints: deciPointsReducer,
+        switchOperands: switchOperandsReducer
 })
 
 

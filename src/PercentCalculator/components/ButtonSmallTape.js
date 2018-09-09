@@ -100,7 +100,6 @@ class ButtonSmallTape extends Component {
             //set interval timer to change skinbuttonsmall color, to
             //make it look lik it is flashing
             this.flashingAnimationTimer = setInterval( () => {
-                console.log('GOT TO INSIDE SET TIMER, state is: ' + this.state.flashStage)
                 if(this.state.flashStage == 1) {
                     this.setState( {flashStage: 2})
                 }

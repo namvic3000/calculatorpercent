@@ -351,7 +351,7 @@ export const calculateResultOfWholeCalculation = (passedInString) => {
      //replace 'x' with '*', and '÷' with '/' for js to evaluate automatically
      wholeString = wholeString.replace(/x/g, '*')
      wholeString = wholeString.replace(/÷/g, '/')
-  console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
+    // console.log('AT CALCULATE WHOLESTRING, AFTER OPERATOR REPLACEMTNS, WHOLESTIRNG IS ' + wholeString)
   
 
     // //if whole string has text in it, dont evaluate, just return the text
@@ -830,7 +830,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
     
     passedInString = passedInString.toString()
 
-    console.log('THOUSANDS SEPARATOR SUBMETHOD: PASSEDINSTRING IS: ', passedInString)
+    // console.log('THOUSANDS SEPARATOR SUBMETHOD: PASSEDINSTRING IS: ', passedInString)
     let stringToReturn = passedInString //default
 
     //first find index of decipoint if exists, if not, it is assumed
@@ -877,7 +877,7 @@ export const insertThousandsSeparatorsForOneSingleNumberString = (passedInString
         }//if count is 3
     }//for
 
-    console.log('THOUSANDS SEPARATOR SUBMETHOD, STIRNG TO RETURN IS: ' + stringToReturn)
+    // console.log('THOUSANDS SEPARATOR SUBMETHOD, STIRNG TO RETURN IS: ' + stringToReturn)
 
     return stringToReturn
 
@@ -1329,4 +1329,121 @@ export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => 
         }
     }
 
+}
+
+
+
+
+
+
+
+
+export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
+
+    //displays switch opernds only whenn inside a percentge 
+    //calculation.  returns true if conditions are right to 
+    //display the switch operands icon, false if not.
+
+    let wholeString = collateStringsIntoOneString(segmentsArray)
+    console.log('WHOLESTRING IS: ' + wholeString)
+
+    //see if has a percent calculation, if%is is not included, as it
+    //never qualifies for a switchoopernds action
+    let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted)/.test(wholeString)
+ 
+    // console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
+    
+    let stringHasOpenSquareBracketFlag = /\[/.test(wholeString)
+    // console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)
+    
+    let stringHasCloseSquareBracketFlag = /\]/.test(wholeString)
+    // console.log('STRING HAS CLOSE SQUARE BRACKET ] FLAG IS : ' + stringHasCloseSquareBracketFlag)
+    
+
+
+
+    //if not for percentge calculation, then just return
+    if( ! stringHasPercentCalculationFlag) {
+        console.log('RETURNING, NO PERCENT CALCULATION')
+        return false 
+    }
+
+
+    //if gets here, it is at operand2 of a percentcalculatoin,
+    //or past the percent calculation e.g 2 x [20% of 120] x 8
+
+
+
+    //if string has open square bracket [ but not close ssquare bracket ], 
+    //means incomplete, ie in middle of 2nd percent operand or no 2nd percent
+    // operand e.g 2 x [2% of ...    or 2 x [2% of ( 20 x 2...
+    if(stringHasOpenSquareBracketFlag && (! stringHasCloseSquareBracketFlag)) {
+        console.log('RETURNING, HAS OPEN [ BUT NO CLOSING ]')
+           return false
+    }
+       
+
+    //if string has arith opeator after square brackt, then not
+    //at 2nd operand of percent calc, eg [25% of 250] x 2...
+    
+
+    let indexOfOpenSquareBracket = wholeString.search(/\[/)// -1 if not found
+    let indexOfCloseSquareBracket = wholeString.search(/\]/)// -1 if not found
+    
+        
+    //. first get portion of string after the square bracket
+    let tempStr = wholeString.slice(indexOfCloseSquareBracket)
+    console.log('TEMPSTR AFTER ] IS: ' + tempStr)
+    if(/(\+|-|x|÷)/.test(tempStr)) {
+        //there is arith operator after close square bracket
+        //so returrn, no action, not at 2nd operand of percnt calc
+        console.log('RETURNIG, HAS ARITH AFTER SQUARE BRACKET, NO LOONGR AT OPERAND2 OF PERCENTCALC')
+        return false
+    }
+
+
+
+    //if gets here, then eiher has both [] open and close square
+    //brackets with no arith afterwards, or no [] square brackkets
+    //at all
+    //e.g 23 x [22% of (25 x 22)]   or 22% of (25 x 22) no square brackets
+
+ 
+     let contentOfSquareBrackets;
+
+    //if there is square brackets, get the content
+    if (stringHasOpenSquareBracketFlag && stringHasCloseSquareBracketFlag) {
+        console.log('HAS SQUAARE BRACKET, GETTING CONTENT OF SQUARE BRACKT')
+         contentOfSquareBrackets = wholeString.slice(indexOfOpenSquareBracket+1, indexOfCloseSquareBracket)
+    }
+    else {//there is no square brackkts, e.g 22% of 222
+        console.log('NO SQUAARE BRACKET, PURE PERCENT CALCULATION, GETTING CONTENT OF WHOLE STRING')
+        contentOfSquareBrackets = wholeString.slice(0)//get whole string
+        //now need to make sure operand2 has a number
+        let indexOfPercentOperator = contentOfSquareBrackets.search(/(of|add|deduct|to|added|deducted)/)
+        let temp = contentOfSquareBrackets.slice(indexOfPercentOperator)
+        console.log('TEMP IS: ' + temp)
+        if( ! /[0-9]/.test(temp)) {//no numerals in opeand2
+            console.log('RETURNING FALSE, PURE PERCENT CQLCULATOIN, 2ND OPERAND IS EMPTY')
+            return false
+        }
+    }
+
+
+
+    //now, with contentt of square bracket, if number of parenthesis
+    //is balanced, thenn ok, else return false
+
+    //if parenthesis open and close dont equal, means calculation incomplete
+    if(getParenthesesNetValueFromString(contentOfSquareBrackets) !== 0) {
+        console.log(' CONTENT OF PERCENTCALC HAS UNBALANCED BRACKETS, RETURN INCOMPLETE')
+           return false
+    }
+
+
+    //if gets here, then calculation is at 2nd operand of percentcalculation
+    //and 2nd operand is complete
+    console.log('OK, PASSED ALL TESTS, RETURNING TRUE')
+    return true 
+ 
 }

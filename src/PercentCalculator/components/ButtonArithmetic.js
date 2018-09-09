@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import { updateSkinData } from "../../../actions/skinDataActions";
+import {updateShowSwitchOperandsStatus} from '../../../actions/switchOperandsActions'
 
 
 class ButtonArithmetic extends React.Component {
@@ -277,6 +278,12 @@ class ButtonArithmetic extends React.Component {
              currentSegmentIndex, 
              timeMachineArrayOfSegmentsArraySnapShots
          ))
+
+
+
+        //check if should show the switchoperands icon
+        let correctStatusBool = helpers.determineIfNeedToShowSwitchIcon(segmentsArray)
+        this.props.dispatch(updateShowSwitchOperandsStatus(correctStatusBool))
 
     }//handleclick
 

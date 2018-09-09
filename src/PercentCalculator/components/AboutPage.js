@@ -13,7 +13,7 @@ class AboutPage extends React.Component {
     render() {
 
 
-    console.log('ABOUT PAGE WIDTH IS ' + Dimensions.get('window').width)
+    // console.log('ABOUT PAGE WIDTH IS ' + Dimensions.get('window').width)
 
         return(
             this.props.showAboutPageStatus ? (

@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import { updateSkinData } from "../../../actions/skinDataActions";
+import {updateShowSwitchOperandsStatus} from '../../../actions/switchOperandsActions'
 
 
 class ButtonClearAll extends React.Component {
@@ -65,6 +66,7 @@ class ButtonClearAll extends React.Component {
                 timeMachineArrayOfSegmentsArraySnapShots
             ))
 
+
             return;//dont process below code
         }
 
@@ -94,6 +96,11 @@ class ButtonClearAll extends React.Component {
             currentSegmentIndex, 
             timeMachineArrayOfSegmentsArraySnapShots
         ))
+
+
+        //remove switchoperands icon
+        this.props.dispatch(updateShowSwitchOperandsStatus(false))
+    
 
         return//done , dont process below
 

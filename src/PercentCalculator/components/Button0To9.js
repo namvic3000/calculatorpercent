@@ -4,6 +4,11 @@ import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import { updateSkinData } from "../../../actions/skinDataActions";
+import {updateShowSwitchOperandsStatus} from '../../../actions/switchOperandsActions'
+
+
+
+
 
 class Button0To9 extends React.Component {
 
@@ -21,7 +26,6 @@ class Button0To9 extends React.Component {
     handleCalcButtonClicked = (buttonValue) => {
 
 
-        
         ////check if in skinn color selection mode, if so, indicate that
         //that component to chage is keysSet1
         if(this.props.skinData.skinSelectionModeActiveStatus) {
@@ -378,6 +382,12 @@ class Button0To9 extends React.Component {
              timeMachineArrayOfSegmentsArraySnapShots
          ))
 
+
+
+        //check if should show the switchoperands icon
+        let correctStatusBool = helpers.determineIfNeedToShowSwitchIcon(segmentsArray)
+        this.props.dispatch(updateShowSwitchOperandsStatus(correctStatusBool))
+       
     }//handleclick
 
 

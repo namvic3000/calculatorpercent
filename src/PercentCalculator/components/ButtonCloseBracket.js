@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
 import { updateSkinData } from "../../../actions/skinDataActions"
+import {updateShowSwitchOperandsStatus} from '../../../actions/switchOperandsActions'
 
 
 
@@ -25,7 +26,6 @@ class ButtonCloseBracket extends React.Component {
 
 
     handleCalcButtonClicked = (buttonValue) => {
-
 
 
         ////check if in skinn color selection mode, if so, indicate that
@@ -236,6 +236,13 @@ class ButtonCloseBracket extends React.Component {
             timeMachineArrayOfSegmentsArraySnapShots
         ))
 
+
+
+
+        //check if should show the switchoperands icon
+        let correctStatusBool = helpers.determineIfNeedToShowSwitchIcon(segmentsArray)
+        this.props.dispatch(updateShowSwitchOperandsStatus(correctStatusBool))
+        
     }//handleclick
 
 

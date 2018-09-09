@@ -29,6 +29,7 @@ import ButtonCurrency from './ButtonCurrency'
 import * as helpers from '../helpers.js'
 import IconCurrencySign from './IconCurrencySign.js';
 import IconDeciPoints from './IconDeciPoints.js';
+import IconSwitchOperands from './IconSwitchOperands.js';
 
 
 
@@ -622,7 +623,7 @@ class Keypad extends React.Component {
     //1 COMBINED LINE, BUT WE USE MIRROR LINE HERE TO SPLIT 
     //CALCULATION INTO PORTIONS FOR COLORING PURPOSES
     let mirrorScreenMainLine1Object = helpers.splitScreenMainTextLine1IntoConstituents(segmentsArray)
-    console.log('RESULT OBJECT IS ', mirrorScreenMainLine1Object)
+    // console.log('RESULT OBJECT IS ', mirrorScreenMainLine1Object)
 
 
     
@@ -687,6 +688,7 @@ class Keypad extends React.Component {
                 </View>
                 <IconCurrencySign/>
                 <IconDeciPoints/>
+                <IconSwitchOperands/>
                 <Text style={[styles.screenLiveAnswerLineStyle]}>{screenLiveAnswerLine}</Text>
             </View>
             {/* ORIGINAL <View style={styles.screen}>
