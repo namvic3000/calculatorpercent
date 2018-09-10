@@ -299,7 +299,7 @@ class IconSwitchOperands extends React.Component {
         switchedOperand2SegmentsArray[0].stringValue = switchedOperand2SegmentsArray[0].stringValue.replace(/ +/g, '')
 
 
-        
+
         //now re-add the last portion ]) to operand2
         switchedOperand2SegmentsArray[switchedOperand2SegmentsArray.length-1].stringValue += portion2OfLastSegment
 
@@ -398,7 +398,7 @@ class IconSwitchOperands extends React.Component {
             container: {
                 position:'absolute',
                 zIndex: 1000,//so it is above the liveanswerview and can receive touch
-                bottom: '3%',
+                bottom: '7%',
                 right: '1.5%',
                 backgroundColor: 'transparent',
                 height: '10%',
