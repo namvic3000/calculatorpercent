@@ -293,15 +293,17 @@ class ButtonPercentOf extends React.Component {
                     //has prior arth operator, so we insert a square bracket 
                     //in front of the number
 
+
                     //get index of first numeral in segment, note: no g flag
                     let tempStr = segmentsArray[currentSegmentIndex].stringValue
-                    let indexOfFirstNumeral = tempStr.search(/[0-9]/)
+                    let indexOfFirstNumeral = tempStr.search(/[0-9]|-/)
                     //need to slice and recombine, to insert the square bracket
                     let portion1 = tempStr.slice(0, indexOfFirstNumeral)
                     let portion2 = tempStr.slice(indexOfFirstNumeral)//defaults to eostring, ie lenght-1
                      
-                    //remove any currency in portion1,  eg porion1 has ($  portion2 has [22%
+                    //remove any currency in portion1 and 2,  eg porion1 has ($  portion2 has [22%
                     portion1 = portion1.replace(/\$|£|¥|€/g, '')
+                    portion2 = portion2.replace(/\$|£|¥|€/g, '')
 
                     tempStr = portion1 + '[' + portion2//insert
                     //copy back to real string

@@ -1127,6 +1127,14 @@ export const addCurrencySymbolToAnswerIfAppropriate = (passedInAnswerString, pas
         return passedInAnswerString
     }
 
+
+    //if no numerals in string, dont add currency symbol
+    if( ! /[0-9]/.test(passedInAnswerString)) {
+        return passedInAnswerString
+    }
+
+
+
     let wholeStringHasPercentCalculation = /(of|add|deduct|to|added|deducted|if)/.test(passedInWholeString)
     let wholeStringHasCurrencySign = /\$|£|¥|€/.test(passedInWholeString)
 
@@ -1276,11 +1284,22 @@ export const splitScreenMainTextLine1IntoConstituents = (segmentsArray = []) => 
 
 
     //if no open squre brackt, means only 1 portion exists
-    //eg 12% of 25 = 3.2
+    //eg 12% of 25 = 3.2 or 3 x 5 = 15
     if( ! hasOpenSquareBracket) {//no open [ braket
+        //if it is 3 x 5 , assign it to portion 1
         portion1 = wholeString.slice(0, indexOfEqualsSign -1 )//exclude space before =sign
         portion2 = ''
         portion3 = ''
+
+        //but if it is pure percent, e.g 23% of 200 , then put it
+        //in portion2 so it gets orange color text
+        if(/(of|add|deduct|to|added|deducted|if)/.test(wholeString)) {
+            portion1 = ''
+            portion2 = wholeString.slice(0, indexOfEqualsSign -1 )//exclude space before =sign
+            portion3 = ''
+        }
+
+        //now get the answer poriton and the note portion
         if(copySegmentsArray[indexOfSegmentNumberWithEqualsSign]) {//if exists
             portionAnswer = copySegmentsArray[indexOfSegmentNumberWithEqualsSign].stringValue || ''
         }
@@ -1345,13 +1364,16 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
     //display the switch operands icon, false if not.
 
     let wholeString = collateStringsIntoOneString(segmentsArray)
-    // console.log('WHOLESTRING IS: ' + wholeString)
+    console.log('AT DETERMINE IF SHOW ICON: WHOLESTRING IS: ' + wholeString)
 
-    //see if has a percent calculation, if%is is not included, as it
-    //never qualifies for a switchoopernds action
-    let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted)/.test(wholeString)
+    //see if has a percent calculation, dont include if%is
+    let stringHasPercentCalculationFlag = /(out|of|add|deduct|to|after|is)/.test(wholeString)
+
+    let stringHasThenWordFlag = /then/.test(wholeString)
+    let stringHasIfWordFlag = /if/.test(wholeString)
  
-    // console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
+    console.log('STRING HAS THENWORD  FLAG IS : ' + stringHasThenWordFlag)
+    console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
     
     let stringHasOpenSquareBracketFlag = /\[/.test(wholeString)
     // console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)
@@ -1373,6 +1395,15 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
     }
 
 
+    //if string has 'then' then dont allow switch , becuause is
+    //at 3rd operand 
+    if(stringHasThenWordFlag) {
+        return false
+    }
+
+
+
+
     //if gets here, it is at operand2 of a percentcalculatoin,
     //or past the percent calculation e.g 2 x [20% of 120] x 8
 
@@ -1383,7 +1414,24 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
     // operand e.g 2 x [2% of ...    or 2 x [2% of ( 20 x 2...
     if(stringHasOpenSquareBracketFlag && (! stringHasCloseSquareBracketFlag)) {
         // console.log('RETURNING, HAS OPEN [ BUT NO CLOSING ]')
-           return false
+           
+        //when gets here, there is open [ square bracket but 
+        //no close square bracket, return, unless it is if%is
+        //which must wait for 3rd operand
+
+
+        // if( ! stringHasIfWordFlag) {
+        //     //return for all percent calcs, except if%is
+        //     return false
+        // }
+
+        //at the moment, if if%is is in brackets 2x (if 3% is ... 
+        //then dont allow, no icon to appear, there is a bug when switchng, no time
+        //to fix, so becuase if%is has no closing square bracket, 
+        //it is treated as incomplete and return , no action,
+        //If it is a pure if%is, thenn there is no square bracket at a ll
+        //and wouldnt get here, so if%is is allowd to switch elsewhere
+        return false 
     }
        
 
@@ -1421,7 +1469,7 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
      //console.log('NO SQUAARE BRACKET, PURE PERCENT CALCULATION, GETTING CONTENT OF WHOLE STRING')
         contentOfSquareBrackets = wholeString.slice(0)//get whole string
         //now need to make sure operand2 has a number
-        let indexOfPercentOperator = contentOfSquareBrackets.search(/(of|add|deduct|to|added|deducted)/)
+        let indexOfPercentOperator = contentOfSquareBrackets.search(/(out|of|add|deduct|to|after|is)/)
         let temp = contentOfSquareBrackets.slice(indexOfPercentOperator)
      //console.log('TEMP IS: ' + temp)
         if( ! /[0-9]/.test(temp)) {//no numerals in opeand2
@@ -1444,7 +1492,7 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
 
     //if gets here, then calculation is at 2nd operand of percentcalculation
     //and 2nd operand is complete
- //console.log('OK, PASSED ALL TESTS, RETURNING TRUE')
+    //console.log('OK, PASSED ALL TESTS, RETURNING TRUE')
     return true 
  
 }

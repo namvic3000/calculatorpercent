@@ -251,7 +251,7 @@ class ButtonOutOf extends React.Component {
 
                     //get index of first numeral in segment, note: no g flag
                     let tempStr = segmentsArray[currentSegmentIndex].stringValue
-                    let indexOfFirstNumeral = tempStr.search(/[0-9]/)
+                    let indexOfFirstNumeral = tempStr.search(/[0-9]|-|\$|¥|£|€/)
                     //need to slice and recombine, to insert the square bracket
                     let portion1 = tempStr.slice(0, indexOfFirstNumeral)
                     let portion2 = tempStr.slice(indexOfFirstNumeral)//defaults to eostring, ie lenght-1

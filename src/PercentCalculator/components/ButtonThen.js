@@ -3,7 +3,7 @@ import { Button, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 're
 import {connect} from 'react-redux'
 import * as helpers from '../helpers'
 import {updateCalculatorData} from '../../../actions/calculatorDataActions'
-
+import {updateShowSwitchOperandsStatus} from '../../../actions/switchOperandsActions'
 
 
 
@@ -120,6 +120,13 @@ class ButtonThen extends React.Component {
             timeMachineArrayOfSegmentsArraySnapShots
         ))
 
+
+
+        //check if should show the switchoperands icon
+        let correctStatusBool = helpers.determineIfNeedToShowSwitchIcon(segmentsArray)
+        this.props.dispatch(updateShowSwitchOperandsStatus(correctStatusBool))
+       
+
     }//handleclick
 
 
@@ -153,7 +160,7 @@ class ButtonThen extends React.Component {
                 flex: 1,//each button has equal width, because the flexdir is now 'row'
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: "darkgreen",//"rgb(250,250,255)",
+                backgroundColor: "darkorange",//"rgb(250,250,255)",
                 borderWidth: 0,
                 height: "100%",
             },

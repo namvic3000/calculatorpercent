@@ -557,10 +557,10 @@ class Keypad extends React.Component {
                 color: 'darkgray',
             },
             line1PortionPercentActive: {
-                color: 'rgb(244, 104, 65)',
+                color: 'rgb(2, 14, 255)'//'rgb(255, 82, 43)',//'rgb(244, 104, 65)',
             },
             line1PortionPercentInActive: {
-                color: 'rgba(244, 104, 65, 0.4)',
+                color: 'rgba(2, 14, 255 ,0.4)'//'rgba(244, 104, 65, 0.4)',
             },
             line1PortionAnswerBlack: {
                 color: 'black',

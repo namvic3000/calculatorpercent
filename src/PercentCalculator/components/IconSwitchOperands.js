@@ -23,9 +23,8 @@ class IconSwitchOperands extends React.Component {
         let wholeString = helpers.collateStringsIntoOneString(segmentsArray)
         console.log('WHOLESTRING IS: ' , wholeString)
     
-        //see if has a percent calculation, if%is is not included, as it
-        //never qualifies for a switchoopernds action
-        let stringHasPercentCalculationFlag = /(of|add|deduct|to|added|deducted)/.test(wholeString)
+        //see if has a percent calculation, 
+        let stringHasPercentCalculationFlag = /(out|of|add|deduct|after|to|is)/.test(wholeString)
      
         // console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' , stringHasPercentCalculationFlag)
         
@@ -72,7 +71,7 @@ class IconSwitchOperands extends React.Component {
 
             //segment that has percent operator, evenif multiple
             //words, e.g after deducted, the percent operarot is just 1 segment
-            if(/(of|add|deduct|to|added|deducted)/.test(segment.stringValue)) {
+            if(/(out|of|add|deduct|to|after|is)/.test(segment.stringValue)) {
                 indexOfSegmentWithPercentOperator = index 
             }
 
@@ -125,14 +124,22 @@ class IconSwitchOperands extends React.Component {
         console.log('OPAND1 HAS PERCENTSIGN FLAG IS: ' + operand1HasPercentSignFlag)
         let operand1HasCurrencySignFlag = /\$|£|€|¥/.test(tempStr)
         console.log('OPAND1 HAS CURRENCY FLAG IS: ' + operand1HasCurrencySignFlag)
+        let operand1HasIsTextFlag = /is/.test(tempStr)
+        console.log('OPAND1 HAS IS TEXT FLAG IS: ' + operand1HasIsTextFlag)
+        let operand1HasFromTextFlag = /from/.test(tempStr)
+        console.log('OPAND1 HAS FROM TEXT FLAG IS: ' + operand1HasFromTextFlag)
+        let operand1HasIfTextFlag = /if/.test(tempStr)
+        console.log('OPAND1 HAS FROM TEXT FLAG IS: ' + operand1HasIfTextFlag)
 
 
+        //NOW FOR OPAND2
         tempStr = helpers.collateStringsIntoOneString(operand2SegmentsArray)
         
         let operand2HasPercentSignFlag = /%/.test(tempStr)
         console.log('OPAND2 HAS PERCENTSIGN FLAG IS: ' + operand2HasPercentSignFlag)
         let operand2HasCurrencySignFlag = /\$|£|€|¥/.test(tempStr)
         console.log('OPAND2 HAS CURRENCY FLAG IS: ' + operand2HasCurrencySignFlag)
+        
 
 
 
@@ -170,8 +177,15 @@ class IconSwitchOperands extends React.Component {
         })
 
 
+        //now remove the 'is' and 'from' and 'if' in [is xxx after deducted .....
+        //or [from xxx to xxx]
+        operand1SegmentsArray.forEach( segment => {
+            segment.stringValue = segment.stringValue.replace(/is|from|if/, '')
+        })
 
-        //switch the 2 operand segmentarrays
+
+
+        //now switch the 2 operand segmentarrays
         let tempArr = JSON.parse(JSON.stringify(operand1SegmentsArray))
         let switchedOperand1SegmentsArray = JSON.parse(JSON.stringify(operand2SegmentsArray))
         let switchedOperand2SegmentsArray = tempArr
@@ -181,26 +195,79 @@ class IconSwitchOperands extends React.Component {
         //now re-add the % and currency signs for opand1 if exists
         if(operand1HasPercentSignFlag) {
             switchedOperand1SegmentsArray[switchedOperand1SegmentsArray.length-1].stringValue += '%'
+            console.log('AFTER RE-ADD % SIGN, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
+
+
 
         //readd currency sign, to every numeral, since we can only
         //guess, as user may have [$23 add (5 x 2)%] , we can only
         //guess that it is ($5 x $2) add 23%
         if(operand1HasCurrencySignFlag) {
             switchedOperand1SegmentsArray.forEach( segment => {
-                let indexOfFirstNumeral = segment.stringValue.search(/[0-9]/)
+                let indexOfFirstNumeral = segment.stringValue.search(/[0-9]|-/)
                 //insert currency sign
                 if(indexOfFirstNumeral >= 0) {
-                    segment.stringValue = this.props.currentCurrency + segment.stringValue.slice(indexOfFirstNumeral)
+                    if(segment.stringValue[indexOfFirstNumeral] !== '-') {
+                        //is a numeral, not a '-' sign, so ok to add in front of numeral
+                        segment.stringValue = this.props.currentCurrency + segment.stringValue.slice(indexOfFirstNumeral)
+                    }
+                    else {//is a -sign, so add currency after -sign
+                        segment.stringValue = segment.stringValue.slice(0,indexOfFirstNumeral+1)//includes - sign
+                         + this.props.currentCurrency + segment.stringValue.slice(indexOfFirstNumeral+1)
+                    }
                 }
             })
+            console.log('AFTER RE-ADD CURRENCY, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
+
+
+
+        //if opand1 has 'is' then re-add the 'is'
+        if(operand1HasIsTextFlag) {
+            switchedOperand1SegmentsArray[0].stringValue = 'is ' + 
+                switchedOperand1SegmentsArray[0].stringValue
+            //bug fix, a space is added after 'from' each time 'from ' is added,
+            //and accumulates, so remove multiple occurences, replace with 1 space
+            switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
+            console.log('AFTER RE-ADD IS WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+        }
+
+
+
+        //if opand1 has 'from' then re-add the 'from'
+        if(operand1HasFromTextFlag) {
+            switchedOperand1SegmentsArray[0].stringValue = 'from ' + 
+                switchedOperand1SegmentsArray[0].stringValue
+            //bug fix, a space is added after 'from' each time 'from ' is added,
+            //and accumulates, so remove multiple occurences, replace with 1 space
+            switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
+            console.log('AFTER RE-ADD FROM WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+        }
+
+
+
+        //if opand1 has 'if' then re-add the 'if'
+        if(operand1HasIfTextFlag) {
+            switchedOperand1SegmentsArray[0].stringValue = 'if ' + 
+                switchedOperand1SegmentsArray[0].stringValue
+            //bug fix, a space is added after 'from' each time 'from ' is added,
+            //and accumulates, so remove multiple occurences, replace with 1 space
+            switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
+            console.log('AFTER RE-ADD IF WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+        }
+
+
+
+        //bug fix, a space is added after 'from' each time 'from ' is added,
+        //and accumulates, so remove multiple occurences, replace with 1 space
+        switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
+
+
 
         //now readd the first portion ([ to operand1
         switchedOperand1SegmentsArray[0].stringValue = portion1OfFirstSegment + 
                     switchedOperand1SegmentsArray[0].stringValue
-
-
 
 
 
@@ -224,6 +291,15 @@ class IconSwitchOperands extends React.Component {
             })
         }
 
+
+        //bug fix, a space is added after 'from' each time 'from ' is added,
+        //and accumulates, so remove multiple occurences, replace with 1 space
+        //after switching,there is a space before the operand2 segment 0,
+        //so remove it, it is from transfering from operand1
+        switchedOperand2SegmentsArray[0].stringValue = switchedOperand2SegmentsArray[0].stringValue.replace(/ +/g, '')
+
+
+        
         //now re-add the last portion ]) to operand2
         switchedOperand2SegmentsArray[switchedOperand2SegmentsArray.length-1].stringValue += portion2OfLastSegment
 
@@ -239,7 +315,6 @@ class IconSwitchOperands extends React.Component {
         //now replace opeand1 with opand2
         copySegmentsArray.splice(indexOfSegmentWithOpenSquareBracket,operand1SegmentsArray.length, ...switchedOperand1SegmentsArray)
 
-        console.log('AFTER REPLACING OPERAN1 WITH OPAND2, WHOLE ARRAY IS ',copySegmentsArray)
                 
 
 
@@ -255,7 +330,7 @@ class IconSwitchOperands extends React.Component {
 
             //segment that has percent operator, evenif multiple
             //words, e.g after deducted, the percent operarot is just 1 segment
-            if(/(of|add|deduct|to|added|deducted)/.test(segment.stringValue)) {
+            if(/(out|of|add|deduct|to|after|is)/.test(segment.stringValue)) {
                 indexOfSegmentWithPercentOperator = index 
             }
 
@@ -330,7 +405,7 @@ class IconSwitchOperands extends React.Component {
                 width: '50%',
             },
             iconText: {
-                color: 'rgb(244, 77, 65)',//'darkorange',
+                color: 'rgb(2, 14, 255)',//'rgb(244, 77, 65)',//'darkorange',
                 fontSize: Dimensions.get('window').width * 0.045 * tabletScaleFactor,
                 textAlign: 'right'
             }
