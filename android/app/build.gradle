@@ -101,8 +101,8 @@ android {
         applicationId "com.calculator365rn"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 21
+        versionName "21"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -127,7 +127,7 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
-    
+
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
