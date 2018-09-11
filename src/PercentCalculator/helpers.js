@@ -1364,7 +1364,7 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
     //display the switch operands icon, false if not.
 
     let wholeString = collateStringsIntoOneString(segmentsArray)
-    console.log('AT DETERMINE IF SHOW ICON: WHOLESTRING IS: ' + wholeString)
+    // console.log('AT DETERMINE IF SHOW ICON: WHOLESTRING IS: ' + wholeString)
 
     //see if has a percent calculation, dont include if%is
     let stringHasPercentCalculationFlag = /(out|of|add|deduct|to|after|is)/.test(wholeString)
@@ -1372,8 +1372,8 @@ export const determineIfNeedToShowSwitchIcon = (segmentsArray) => {
     let stringHasThenWordFlag = /then/.test(wholeString)
     let stringHasIfWordFlag = /if/.test(wholeString)
  
-    console.log('STRING HAS THENWORD  FLAG IS : ' + stringHasThenWordFlag)
-    console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
+    // console.log('STRING HAS THENWORD  FLAG IS : ' + stringHasThenWordFlag)
+    // console.log('STRING HAS PERCENT CALCULAION FLAG IS : ' + stringHasPercentCalculationFlag)
     
     let stringHasOpenSquareBracketFlag = /\[/.test(wholeString)
     // console.log('STRING HAS OPEN SQUARE BRACKET [ FLAG IS : ' + stringHasOpenSquareBracketFlag)

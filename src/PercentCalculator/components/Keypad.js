@@ -504,7 +504,8 @@ class Keypad extends React.Component {
                 // flex:0.1,
                 height: '2.5%',
                 width: '100%',
-                backgroundColor: 'blue'
+                backgroundColor: `${this.props.skinData.buttonSmallsColor}`,
+
             },
             memoryValuesContainer: {
                 // flex: 0.3,

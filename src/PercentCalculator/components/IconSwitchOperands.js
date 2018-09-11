@@ -21,7 +21,7 @@ class IconSwitchOperands extends React.Component {
 
 
         let wholeString = helpers.collateStringsIntoOneString(segmentsArray)
-        console.log('WHOLESTRING IS: ' , wholeString)
+     //console.log('WHOLESTRING IS: ' , wholeString)
     
         //see if has a percent calculation, 
         let stringHasPercentCalculationFlag = /(out|of|add|deduct|after|to|is)/.test(wholeString)
@@ -78,11 +78,9 @@ class IconSwitchOperands extends React.Component {
         })
 
 
-        console.log('BEFORE ALTERING: IDEX OF SEGMENT WITH OPEN AND CLOSE, AND OPERAND ARE: ' ,
-        indexOfSegmentWithOpenSquareBracket , indexOfSegmentWithCloseSquareBracket , indexOfSegmentWithPercentOperator)
+     //console.log('BEFORE ALTERING: IDEX OF SEGMENT WITH OPEN AND CLOSE, AND OPERAND ARE: ' ,indexOfSegmentWithOpenSquareBracket , indexOfSegmentWithCloseSquareBracket , indexOfSegmentWithPercentOperator)
 
-        console.log('INDEX OF [ CHAR AND ] CHAR WITHIN THEIR SEGMENT ARE: ' ,
-            indexOfOpenSquareBracketCharWithinSegment , indexOfCloseSquareBracketCharWithinSegment)
+     //console.log('INDEX OF [ CHAR AND ] CHAR WITHIN THEIR SEGMENT ARE: ' ,indexOfOpenSquareBracketCharWithinSegment , indexOfCloseSquareBracketCharWithinSegment)
 
 
         //if is a pure percent calulatin, then has no open or close
@@ -91,15 +89,14 @@ class IconSwitchOperands extends React.Component {
             //if gets here, it is a pure percent calculation, no 
             //square brackets
 
-            console.log('NO OPEN OR CLOSE SQUARE BRACKET, PURE PERCENT CALCULATION')
+         //console.log('NO OPEN OR CLOSE SQUARE BRACKET, PURE PERCENT CALCULATION')
             indexOfSegmentWithOpenSquareBracket = 0
             indexOfSegmentWithCloseSquareBracket = segmentsArray.length-1//last
             indexOfOpenSquareBracketCharWithinSegment = -1//so +1 will bring it to 0
             indexOfCloseSquareBracketCharWithinSegment = segmentsArray[indexOfSegmentWithCloseSquareBracket].stringValue.length
 
 
-            console.log('IDEX OF SEGMENT WITH OPEN AND CLOSE, AND OPERAND ARE: ' ,
-                        indexOfSegmentWithOpenSquareBracket, indexOfSegmentWithCloseSquareBracket, indexOfSegmentWithPercentOperator)
+         //console.log('IDEX OF SEGMENT WITH OPEN AND CLOSE, AND OPERAND ARE: ' ,indexOfSegmentWithOpenSquareBracket, indexOfSegmentWithCloseSquareBracket, indexOfSegmentWithPercentOperator)
                     
         }
 
@@ -113,32 +110,32 @@ class IconSwitchOperands extends React.Component {
    
 
 
-        console.log('OPEAND1 SEGMENTS ARRAY IS ', operand1SegmentsArray)
-        console.log('OPEAND2 SEGMENTS ARRAY IS ', operand2SegmentsArray)
+     //console.log('OPEAND1 SEGMENTS ARRAY IS ', operand1SegmentsArray)
+     //console.log('OPEAND2 SEGMENTS ARRAY IS ', operand2SegmentsArray)
 
  
         //now record if opand1 and 2 have percent or currency signs
         let tempStr = helpers.collateStringsIntoOneString(operand1SegmentsArray)
         
         let operand1HasPercentSignFlag = /%/.test(tempStr)
-        console.log('OPAND1 HAS PERCENTSIGN FLAG IS: ' + operand1HasPercentSignFlag)
+     //console.log('OPAND1 HAS PERCENTSIGN FLAG IS: ' + operand1HasPercentSignFlag)
         let operand1HasCurrencySignFlag = /\$|£|€|¥/.test(tempStr)
-        console.log('OPAND1 HAS CURRENCY FLAG IS: ' + operand1HasCurrencySignFlag)
+     //console.log('OPAND1 HAS CURRENCY FLAG IS: ' + operand1HasCurrencySignFlag)
         let operand1HasIsTextFlag = /is/.test(tempStr)
-        console.log('OPAND1 HAS IS TEXT FLAG IS: ' + operand1HasIsTextFlag)
+     //console.log('OPAND1 HAS IS TEXT FLAG IS: ' + operand1HasIsTextFlag)
         let operand1HasFromTextFlag = /from/.test(tempStr)
-        console.log('OPAND1 HAS FROM TEXT FLAG IS: ' + operand1HasFromTextFlag)
+     //console.log('OPAND1 HAS FROM TEXT FLAG IS: ' + operand1HasFromTextFlag)
         let operand1HasIfTextFlag = /if/.test(tempStr)
-        console.log('OPAND1 HAS FROM TEXT FLAG IS: ' + operand1HasIfTextFlag)
+     //console.log('OPAND1 HAS FROM TEXT FLAG IS: ' + operand1HasIfTextFlag)
 
 
         //NOW FOR OPAND2
         tempStr = helpers.collateStringsIntoOneString(operand2SegmentsArray)
         
         let operand2HasPercentSignFlag = /%/.test(tempStr)
-        console.log('OPAND2 HAS PERCENTSIGN FLAG IS: ' + operand2HasPercentSignFlag)
+     //console.log('OPAND2 HAS PERCENTSIGN FLAG IS: ' + operand2HasPercentSignFlag)
         let operand2HasCurrencySignFlag = /\$|£|€|¥/.test(tempStr)
-        console.log('OPAND2 HAS CURRENCY FLAG IS: ' + operand2HasCurrencySignFlag)
+     //console.log('OPAND2 HAS CURRENCY FLAG IS: ' + operand2HasCurrencySignFlag)
         
 
 
@@ -162,7 +159,7 @@ class IconSwitchOperands extends React.Component {
         
         //now remove this last portion from opeand2
         operand2SegmentsArray[operand2SegmentsArray.length -1].stringValue = operand2SegmentsArray[operand2SegmentsArray.length -1].stringValue.slice(0,indexOfCloseSquareBracketCharWithinSegment)
-        console.log('OPEAND2SEGMENTS ARRAY IS:',operand2SegmentsArray)
+     //console.log('OPEAND2SEGMENTS ARRAY IS:',operand2SegmentsArray)
 
 
 
@@ -195,7 +192,7 @@ class IconSwitchOperands extends React.Component {
         //now re-add the % and currency signs for opand1 if exists
         if(operand1HasPercentSignFlag) {
             switchedOperand1SegmentsArray[switchedOperand1SegmentsArray.length-1].stringValue += '%'
-            console.log('AFTER RE-ADD % SIGN, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+         //console.log('AFTER RE-ADD % SIGN, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
 
 
@@ -218,7 +215,7 @@ class IconSwitchOperands extends React.Component {
                     }
                 }
             })
-            console.log('AFTER RE-ADD CURRENCY, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+         //console.log('AFTER RE-ADD CURRENCY, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
 
 
@@ -230,7 +227,7 @@ class IconSwitchOperands extends React.Component {
             //bug fix, a space is added after 'from' each time 'from ' is added,
             //and accumulates, so remove multiple occurences, replace with 1 space
             switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
-            console.log('AFTER RE-ADD IS WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+         //console.log('AFTER RE-ADD IS WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
 
 
@@ -242,7 +239,7 @@ class IconSwitchOperands extends React.Component {
             //bug fix, a space is added after 'from' each time 'from ' is added,
             //and accumulates, so remove multiple occurences, replace with 1 space
             switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
-            console.log('AFTER RE-ADD FROM WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+         //console.log('AFTER RE-ADD FROM WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
 
 
@@ -254,7 +251,7 @@ class IconSwitchOperands extends React.Component {
             //bug fix, a space is added after 'from' each time 'from ' is added,
             //and accumulates, so remove multiple occurences, replace with 1 space
             switchedOperand1SegmentsArray[0].stringValue = switchedOperand1SegmentsArray[0].stringValue.replace(/ +/g, ' ')
-            console.log('AFTER RE-ADD IF WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
+         //console.log('AFTER RE-ADD IF WORD, OPAND1ARRAY IS ',switchedOperand1SegmentsArray)
         }
 
 
@@ -340,7 +337,7 @@ class IconSwitchOperands extends React.Component {
 
         //now replace opand2 with opand1
         copySegmentsArray.splice(indexOfSegmentWithPercentOperator+1, operand2SegmentsArray.length, ...switchedOperand2SegmentsArray)
-        console.log('AFTER REPLACING OPERAN2 WITH OPAND2, WHOLE ARRAY IS ',copySegmentsArray)
+     //console.log('AFTER REPLACING OPERAN2 WITH OPAND2, WHOLE ARRAY IS ',copySegmentsArray)
 
 
         //copy back to real segments array
@@ -398,7 +395,7 @@ class IconSwitchOperands extends React.Component {
             container: {
                 position:'absolute',
                 zIndex: 1000,//so it is above the liveanswerview and can receive touch
-                bottom: '7%',
+                bottom: '12%',
                 right: '1.5%',
                 backgroundColor: 'transparent',
                 height: '10%',
