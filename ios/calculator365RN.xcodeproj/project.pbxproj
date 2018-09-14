@@ -1208,10 +1208,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.leisuremob.percentcalc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leisuremob.calculatorpercentpaid;
 				PRODUCT_NAME = calculator365RN;
-				PROVISIONING_PROFILE = "bfc6b529-6cfd-41cd-9bc1-1735bef06c51";
-				PROVISIONING_PROFILE_SPECIFIER = "PAIDVERSION percentcalc DEV PROV PROFILE";
+				PROVISIONING_PROFILE = "218f1035-61ff-4195-888d-663646d30c3e";
+				PROVISIONING_PROFILE_SPECIFIER = calculatorpercentpaidDEVPROVPROFILE;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1235,10 +1235,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.leisuremob.percentcalc;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leisuremob.calculatorpercentpaid;
 				PRODUCT_NAME = calculator365RN;
-				PROVISIONING_PROFILE = "ac8abc5c-27ab-4dc7-a632-550de9fdad44";
-				PROVISIONING_PROFILE_SPECIFIER = "PAIDVERSION percentcalc DIST PROV PROFILE";
+				PROVISIONING_PROFILE = "f82a982c-4216-4e1c-9b66-92167c1d97e4";
+				PROVISIONING_PROFILE_SPECIFIER = calculatorpercentpaidDISTPROVPROFILE;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
