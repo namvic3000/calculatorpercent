@@ -146,7 +146,7 @@ class ColorPickerTool extends React.Component {
                                 onColorChange={color => { this.colorPicked(color) }}
                                 hideSliders={true}/>
                         <TouchableOpacity style={styles.okButtonContainer} onPress={this.dismissColorPicker}>
-                            <Text style={styles.buttonText}>Save</Text>
+                            <Text style={styles.buttonText}>OK</Text>
                         </TouchableOpacity>
                     </View>
                     </View>
@@ -191,7 +191,7 @@ let styles = StyleSheet.create({
         height: Dimensions.get('window').width*0.07,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '10%'
+        marginTop: '5%'
     },
     buttonText: {
         // textAlign: 'center', NO NEED IF CONTAINER HAS CENTERED IT
