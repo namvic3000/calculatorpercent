@@ -19,7 +19,7 @@ class AboutPage extends React.Component {
             this.props.showAboutPageStatus ? (
                 <View style={styles.outerContainer}>
                     <View style={styles.middleBoxContainer}>
-                        <Text style={styles.appTitleText}>Percentage Calculator 360</Text>
+                        <Text style={styles.appTitleText}>Calculator 365</Text>
                         {/* <Text style={styles.appTitleText}>Version 18.1</Text> */}
                         <Text style={styles.appTitleText}></Text>
                         <Text style={styles.feedbackText}>contact and feedback:</Text>
