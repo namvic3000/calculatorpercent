@@ -1,1 +1,1 @@
-**This is the original Objective C percentage calculator app first developed in 2010, now rewritten in in React Native**
+**React Native calculator app**
